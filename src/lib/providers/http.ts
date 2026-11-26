@@ -1,4 +1,4 @@
-import { sqlite } from "@/db";
+import { db } from "@/db";
 
 const UA = "BOOKLORE/0.1 (book discovery app)";
 
@@ -6,9 +6,9 @@ const UA = "BOOKLORE/0.1 (book discovery app)";
 export async function cachedJson<T>(url: string, ttlSeconds = 60 * 60 * 24, timeoutMs = 8000): Promise<T | null> {
   const key = `http:${url}`;
   const now = Math.floor(Date.now() / 1000);
-  const hit = sqlite.prepare(`SELECT value, expires_at FROM api_cache WHERE key = ?`).get(key) as
-    | { value: string; expires_at: number }
-    | undefined;
+  const hit = await db
+    .get<{ value: string; expires_at: number }>(`SELECT value, expires_at FROM api_cache WHERE key = ?`, key)
+    .catch(() => undefined);
   if (hit && hit.expires_at > now) return JSON.parse(hit.value) as T;
   try {
     const res = await fetch(url, {
@@ -18,9 +18,11 @@ export async function cachedJson<T>(url: string, ttlSeconds = 60 * 60 * 24, time
     });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     const data = (await res.json()) as T;
-    sqlite
-      .prepare(`INSERT INTO api_cache (key, value, expires_at) VALUES (?,?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value, expires_at=excluded.expires_at`)
-      .run(key, JSON.stringify(data), now + ttlSeconds);
+    await db.run(
+      `INSERT INTO api_cache (key, value, expires_at) VALUES (?,?,?)
+       ON CONFLICT (key) DO UPDATE SET value = excluded.value, expires_at = excluded.expires_at`,
+      key, JSON.stringify(data), now + ttlSeconds,
+    );
     return data;
   } catch (err) {
     // Serve stale data rather than nothing when the remote is down or rate-limited.

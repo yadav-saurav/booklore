@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter_Tight, Newsreader, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import { getCurrentUser } from "@/lib/auth";
-import { sqlite } from "@/db";
+import { db } from "@/db";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 
@@ -25,7 +25,7 @@ const themeScript = `try{var t=localStorage.getItem('bl-theme');if(t)document.do
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser();
   const listCount = user
-    ? (sqlite.prepare(`SELECT count(*) n FROM shelf WHERE user_id = ? AND status = 'want'`).get(user.id) as { n: number }).n
+    ? (await db.get<{ n: number }>(`SELECT count(*) n FROM shelf WHERE user_id = ? AND status = 'want'`, user.id))!.n
     : 0;
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${newsreader.variable} ${notoJp.variable}`}>

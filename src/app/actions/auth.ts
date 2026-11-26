@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { sqlite } from "@/db";
+import { db } from "@/db";
 import { createSession, destroySession, hashPassword, verifyPassword } from "@/lib/auth";
 
 export type AuthState = { error?: string; fields?: Record<string, string> } | undefined;
@@ -25,22 +25,23 @@ export async function register(_: AuthState, form: FormData): Promise<AuthState>
   const fields = { displayName: raw.displayName, username: raw.username, email: raw.email };
   if (!parsed.success) return { error: parsed.error.issues[0].message, fields };
   const { displayName, username, email, password } = parsed.data;
-  if (sqlite.prepare(`SELECT 1 FROM users WHERE username = ?`).get(username)) return { error: "That username is taken", fields };
-  if (sqlite.prepare(`SELECT 1 FROM users WHERE email = ?`).get(email)) return { error: "An account with that email already exists", fields };
+  if (await db.get(`SELECT 1 FROM users WHERE username = ?`, username)) return { error: "That username is taken", fields };
+  if (await db.get(`SELECT 1 FROM users WHERE email = ?`, email)) return { error: "An account with that email already exists", fields };
   const hue = Math.floor(Math.random() * 360);
-  const r = sqlite
-    .prepare(`INSERT INTO users (username, display_name, email, password_hash, avatar_hue) VALUES (?,?,?,?,?)`)
-    .run(username, displayName, email, hashPassword(password), hue);
-  await createSession(Number(r.lastInsertRowid));
+  const r = await db.get<{ id: number }>(
+    `INSERT INTO users (username, display_name, email, password_hash, avatar_hue) VALUES (?,?,?,?,?) RETURNING id`,
+    username, displayName, email, hashPassword(password), hue,
+  );
+  await createSession(r!.id);
   redirect(safeNext(form.get("next")) === "/" ? "/recommendations?welcome=1" : safeNext(form.get("next")));
 }
 
 export async function signIn(_: AuthState, form: FormData): Promise<AuthState> {
   const id = String(form.get("identifier") ?? "").trim().toLowerCase();
   const password = String(form.get("password") ?? "");
-  const u = sqlite.prepare(`SELECT id, password_hash FROM users WHERE email = ? OR username = ?`).get(id, id) as
-    | { id: number; password_hash: string | null }
-    | undefined;
+  const u = await db.get<{ id: number; password_hash: string | null }>(
+    `SELECT id, password_hash FROM users WHERE email = ? OR username = ?`, id, id,
+  );
   if (!u || !verifyPassword(password, u.password_hash)) return { error: "Incorrect email/username or password", fields: { identifier: id } };
   await createSession(u.id);
   redirect(safeNext(form.get("next")));

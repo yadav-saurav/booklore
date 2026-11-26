@@ -1,19 +1,19 @@
 import "server-only";
-import { sqlite, reindexBook } from "@/db";
+import { db, reindexBook, type Db } from "@/db";
 import { getProvider } from "@/lib/providers/registry";
 import type { ExternalAuthorRef, ExternalBook } from "@/lib/providers/types";
 import { slugify } from "@/lib/util";
 
 /**
  * Bridges external providers and the local catalog. External results are addressed as
- * "<source>:<externalId>" (e.g. "openlibrary:OL45883W"). Visiting one imports it into SQLite
+ * "<source>:<externalId>" (e.g. "openlibrary:OL45883W"). Visiting one imports it into the database
  * so it can be rated, reviewed, listed and recommended like any seeded book.
  */
 export const externalRef = (b: Pick<ExternalBook, "source" | "externalId">) => `${b.source}:${b.externalId}`;
 
-function uniqueSlug(table: "books" | "authors", base: string): string {
+async function uniqueSlug(d: Db, table: "books" | "authors", base: string): Promise<string> {
   let slug = base;
-  for (let i = 2; sqlite.prepare(`SELECT 1 FROM ${table} WHERE id = ?`).get(slug); i++) slug = `${base}-${i}`;
+  for (let i = 2; await d.get(`SELECT 1 FROM ${table} WHERE id = ?`, slug); i++) slug = `${base}-${i}`;
   return slug;
 }
 
@@ -50,54 +50,52 @@ export function inferGenres(subjects: string[]): string[] {
   return [...out].slice(0, 3);
 }
 
-function upsertAuthor(ref: ExternalAuthorRef, source: string): string {
+async function upsertAuthor(d: Db, ref: ExternalAuthorRef, source: string): Promise<string> {
   if (ref.externalId && source === "openlibrary") {
-    const hit = sqlite.prepare(`SELECT id FROM authors WHERE ol_key = ?`).get(ref.externalId) as { id: string } | undefined;
+    const hit = await d.get<{ id: string }>(`SELECT id FROM authors WHERE ol_key = ?`, ref.externalId);
     if (hit) return hit.id;
   }
-  const byName = sqlite.prepare(`SELECT id FROM authors WHERE lower(name) = lower(?)`).get(ref.name) as { id: string } | undefined;
+  const byName = await d.get<{ id: string }>(`SELECT id FROM authors WHERE lower(name) = lower(?)`, ref.name);
   if (byName) return byName.id;
-  const id = uniqueSlug("authors", slugify(ref.name));
-  sqlite
-    .prepare(`INSERT INTO authors (id, ol_key, name, source) VALUES (?,?,?,?)`)
-    .run(id, source === "openlibrary" ? ref.externalId ?? null : null, ref.name, source);
+  const id = await uniqueSlug(d, "authors", slugify(ref.name));
+  await d.run(
+    `INSERT INTO authors (id, ol_key, name, source) VALUES (?,?,?,?)`,
+    id, source === "openlibrary" ? ref.externalId ?? null : null, ref.name, source,
+  );
   return id;
 }
 
-export function findLocalByExternal(source: string, externalId: string): string | null {
+export async function findLocalByExternal(source: string, externalId: string): Promise<string | null> {
   const col = source === "openlibrary" ? "ol_work_key" : source === "google" ? "google_id" : null;
   if (!col) return null;
-  const r = sqlite.prepare(`SELECT id FROM books WHERE ${col} = ?`).get(externalId) as { id: string } | undefined;
+  const r = await db.get<{ id: string }>(`SELECT id FROM books WHERE ${col} = ?`, externalId);
   return r?.id ?? null;
 }
 
-export function importExternalBook(b: ExternalBook): string {
-  const existing = findLocalByExternal(b.source, b.externalId);
+export async function importExternalBook(b: ExternalBook): Promise<string> {
+  const existing = await findLocalByExternal(b.source, b.externalId);
   if (existing) return existing;
-  const id = uniqueSlug("books", slugify(b.title));
-  const tx = sqlite.transaction(() => {
-    sqlite
-      .prepare(
-        `INSERT INTO books (id, ol_work_key, google_id, title, subtitle, first_publish_year, cover_id, cover_url, isbn13, pages,
-          publisher, language, synopsis, subjects, source, ol_rating_avg, ol_rating_count, ol_want_to_read)
-         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
-      )
-      .run(
-        id, b.source === "openlibrary" ? b.externalId : null, b.source === "google" ? b.externalId : null,
-        b.title, b.subtitle ?? null, b.firstPublishYear ?? null, b.coverId ?? null, b.coverUrl ?? null, b.isbn13 ?? null,
-        b.pages ?? null, b.publisher ?? null, b.language ?? null, b.description ?? null, JSON.stringify(b.subjects ?? []),
-        b.source, b.ratingAvg ?? null, b.ratingCount ?? 0, b.wantToRead ?? 0,
-      );
-    b.authors.slice(0, 4).forEach((a, i) => {
-      const authorId = upsertAuthor(a, b.source);
-      sqlite.prepare(`INSERT OR IGNORE INTO book_authors (book_id, author_id, position) VALUES (?,?,?)`).run(id, authorId, i);
-    });
+  return db.tx(async (t) => {
+    const id = await uniqueSlug(t, "books", slugify(b.title));
+    await t.run(
+      `INSERT INTO books (id, ol_work_key, google_id, title, subtitle, first_publish_year, cover_id, cover_url, isbn13, pages,
+         publisher, language, synopsis, subjects, source, ol_rating_avg, ol_rating_count, ol_want_to_read)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+      id, b.source === "openlibrary" ? b.externalId : null, b.source === "google" ? b.externalId : null,
+      b.title, b.subtitle ?? null, b.firstPublishYear ?? null, b.coverId ?? null, b.coverUrl ?? null, b.isbn13 ?? null,
+      b.pages ?? null, b.publisher ?? null, b.language ?? null, b.description ?? null, JSON.stringify(b.subjects ?? []),
+      b.source, b.ratingAvg ?? null, b.ratingCount ?? 0, b.wantToRead ?? 0,
+    );
+    let i = 0;
+    for (const a of b.authors.slice(0, 4)) {
+      const authorId = await upsertAuthor(t, a, b.source);
+      await t.run(`INSERT INTO book_authors (book_id, author_id, position) VALUES (?,?,?) ON CONFLICT DO NOTHING`, id, authorId, i++);
+    }
     for (const g of inferGenres(b.subjects ?? []))
-      sqlite.prepare(`INSERT OR IGNORE INTO book_genres (book_id, genre_slug) SELECT ?, slug FROM genres WHERE slug = ?`).run(id, g);
+      await t.run(`INSERT INTO book_genres (book_id, genre_slug) SELECT ?, slug FROM genres WHERE slug = ? ON CONFLICT DO NOTHING`, id, g);
+    await reindexBook(id, t);
+    return id;
   });
-  tx();
-  reindexBook(id);
-  return id;
 }
 
 /** Resolve "<source>:<id>" to a local slug, importing (full metadata fetch) when needed. */
@@ -106,7 +104,7 @@ export async function resolveExternalRef(ref: string): Promise<string | null> {
   if (i < 0) return null;
   const source = ref.slice(0, i);
   const externalId = ref.slice(i + 1);
-  const local = findLocalByExternal(source, externalId);
+  const local = await findLocalByExternal(source, externalId);
   if (local) return local;
   const provider = getProvider(source);
   if (!provider) return null;
@@ -116,15 +114,15 @@ export async function resolveExternalRef(ref: string): Promise<string | null> {
 
 /** Fill in author details (dates, photo, bio) from Open Library the first time an author page is viewed. */
 export async function hydrateAuthor(authorId: string) {
-  const a = sqlite.prepare(`SELECT ol_key, bio, birth_date, photo_id FROM authors WHERE id = ?`).get(authorId) as
-    | { ol_key: string | null; bio: string | null; birth_date: string | null; photo_id: number | null }
-    | undefined;
+  const a = await db.get<{ ol_key: string | null; bio: string | null; photo_id: number | null }>(
+    `SELECT ol_key, bio, photo_id FROM authors WHERE id = ?`, authorId,
+  );
   if (!a?.ol_key || (a.bio && a.photo_id)) return;
-  const ol = getProvider("openlibrary");
-  const ext = await ol?.getAuthor?.(a.ol_key);
+  const ext = await getProvider("openlibrary")?.getAuthor?.(a.ol_key);
   if (!ext) return;
-  sqlite
-    .prepare(`UPDATE authors SET bio = coalesce(bio, ?), birth_date = coalesce(birth_date, ?), death_date = coalesce(death_date, ?),
-      photo_id = coalesce(photo_id, ?) WHERE id = ?`)
-    .run(ext.bio?.slice(0, 1200) ?? null, ext.birthDate ?? null, ext.deathDate ?? null, ext.photoId ?? null, authorId);
+  await db.run(
+    `UPDATE authors SET bio = coalesce(bio, ?), birth_date = coalesce(birth_date, ?), death_date = coalesce(death_date, ?),
+       photo_id = coalesce(photo_id, ?) WHERE id = ?`,
+    ext.bio?.slice(0, 1200) ?? null, ext.birthDate ?? null, ext.deathDate ?? null, ext.photoId ?? null, authorId,
+  );
 }

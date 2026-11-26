@@ -2,7 +2,7 @@ import "server-only";
 import { cookies } from "next/headers";
 import { cache } from "react";
 import crypto from "node:crypto";
-import { sqlite } from "@/db";
+import { db } from "@/db";
 
 const COOKIE = "bl_session";
 const TTL_DAYS = 30;
@@ -29,7 +29,7 @@ const sha = (t: string) => crypto.createHash("sha256").update(t).digest("hex");
 export async function createSession(userId: number) {
   const token = crypto.randomBytes(32).toString("base64url");
   const expires = Math.floor(Date.now() / 1000) + TTL_DAYS * 86400;
-  sqlite.prepare(`INSERT INTO sessions (id, user_id, expires_at) VALUES (?,?,?)`).run(sha(token), userId, expires);
+  await db.run(`INSERT INTO sessions (id, user_id, expires_at) VALUES (?,?,?)`, sha(token), userId, expires);
   (await cookies()).set(COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
@@ -42,7 +42,7 @@ export async function createSession(userId: number) {
 export async function destroySession() {
   const jar = await cookies();
   const token = jar.get(COOKIE)?.value;
-  if (token) sqlite.prepare(`DELETE FROM sessions WHERE id = ?`).run(sha(token));
+  if (token) await db.run(`DELETE FROM sessions WHERE id = ?`, sha(token));
   jar.delete(COOKIE);
 }
 
@@ -50,12 +50,11 @@ export async function destroySession() {
 export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
   const token = (await cookies()).get(COOKIE)?.value;
   if (!token) return null;
-  const row = sqlite
-    .prepare(
-      `SELECT u.id, u.username, u.display_name displayName, u.avatar_hue avatarHue
-       FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.id = ? AND s.expires_at > unixepoch()`,
-    )
-    .get(sha(token)) as SessionUser | undefined;
+  const row = await db.get<SessionUser>(
+    `SELECT u.id, u.username, u.display_name displayName, u.avatar_hue avatarHue
+     FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.id = ? AND s.expires_at > unixepoch()`,
+    sha(token),
+  );
   return row ?? null;
 });
 

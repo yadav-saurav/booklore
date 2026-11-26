@@ -45,11 +45,10 @@ export default async function TopPage({ searchParams }: { searchParams: SP }) {
   const viewRaw = str("view");
   const view: ChartView = viewRaw === "grid" || viewRaw === "compact" ? viewRaw : "list";
 
-  maybeRefreshRankings();
+  await maybeRefreshRankings();
   const user = await getCurrentUser();
-  const books = getTopRated({ sort, dir, genre });
-  const genres = getGenres();
-  const states = getUserStates(user?.id, books.map((b) => b.id));
+  const [books, genres, mean] = await Promise.all([getTopRated({ sort, dir, genre }), getGenres(), catalogMean()]);
+  const states = await getUserStates(user?.id, books.map((b) => b.id));
   const genreName = genres.find((g) => g.slug === genre)?.name ?? null;
   const base = { sort: sort === "ranking" ? undefined : sort, dir, genre, view: view === "list" ? undefined : view };
 
@@ -87,7 +86,7 @@ export default async function TopPage({ searchParams }: { searchParams: SP }) {
       <div className="page grid gap-10 pb-16 md:grid-cols-[minmax(0,1fr)_268px]">
         <div className="min-w-0">
           <ChartHeader kanji="頂 250" title="BOOKLORE Top 250 Books" subtitle="As rated by regular BOOKLORE readers">
-            <RankingExplainer minVotes={TOP_MIN_VOTES} mean={catalogMean()} />
+            <RankingExplainer minVotes={TOP_MIN_VOTES} mean={mean} />
           </ChartHeader>
 
           <div className="flex flex-col gap-3 border-y border-hair py-3.5">

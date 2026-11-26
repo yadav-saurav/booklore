@@ -1,5 +1,5 @@
 import "server-only";
-import { sqlite } from "@/db";
+import { db } from "@/db";
 import { itemItemCF, tfidf, tokenize, jaccard, sparseCosine, eraProximity, type Neighbour, type SparseVec, type RatingTriple } from "./math";
 
 /**
@@ -39,26 +39,35 @@ const cache = (g.__blRec ??= {});
 
 export const CF_PARAMS = { lambda: 12, k: 50, minCo: 3, minSim: 0.06 };
 
-function contentSig(): string {
-  const r = sqlite.prepare(`SELECT (SELECT count(*) FROM books) a, (SELECT max(created_at) FROM books) b,
-    (SELECT count(*) FROM book_genres) c, (SELECT count(*) FROM book_authors) d`).get() as Record<string, number | null>;
+async function contentSig(): Promise<string> {
+  const r = (await db.get<Record<string, number | null>>(`SELECT (SELECT count(*) FROM books) a, (SELECT max(created_at) FROM books) b,
+    (SELECT count(*) FROM book_genres) c, (SELECT count(*) FROM book_authors) d`))!;
   return `${r.a}|${r.b}|${r.c}|${r.d}`;
 }
 
-export function ratingsSig(): string {
-  const r = sqlite.prepare(`SELECT count(*) n, max(updated_at) m, total(score) t FROM ratings`).get() as { n: number; m: number | null; t: number };
+export async function ratingsSig(): Promise<string> {
+  const r = (await db.get<{ n: number; m: number | null; t: number }>(`SELECT count(*) n, max(updated_at) m, coalesce(sum(score), 0) t FROM ratings`))!;
   return `${r.n}|${r.m}|${r.t}`;
 }
 
-export function loadContent(): ContentModel {
-  const sig = contentSig();
+/** Concurrent requests share one in-flight rebuild instead of each scanning the tables. */
+let contentBuild: Promise<ContentModel> | null = null;
+let cfBuild: Promise<CFModel> | null = null;
+
+export async function loadContent(): Promise<ContentModel> {
+  const sig = await contentSig();
   if (cache.content?.sig === sig) return cache.content;
-  const rows = sqlite.prepare(`SELECT b.id, b.title, b.first_publish_year year, b.subjects, b.rating_count rc,
+  if (!contentBuild) contentBuild = buildContent(sig).finally(() => { contentBuild = null; });
+  return contentBuild;
+}
+
+async function buildContent(sig: string): Promise<ContentModel> {
+  const rows = await db.all<{ id: string; title: string; year: number | null; subjects: string; rc: number; ws: number | null; ps: number; sc: number; gcsv: string | null; acsv: string | null }>(`SELECT b.id, b.title, b.first_publish_year AS year, b.subjects, b.rating_count AS rc,
       b.weighted_score ws, b.popularity_score ps, b.shelf_count sc,
-      (SELECT group_concat(genre_slug) FROM book_genres bg WHERE bg.book_id = b.id) gcsv,
-      (SELECT group_concat(author_id) FROM book_authors ba WHERE ba.book_id = b.id) acsv
-    FROM books b`).all() as { id: string; title: string; year: number | null; subjects: string; rc: number; ws: number | null; ps: number; sc: number; gcsv: string | null; acsv: string | null }[];
-  const names = new Map((sqlite.prepare(`SELECT slug, name FROM genres`).all() as { slug: string; name: string }[]).map((x) => [x.slug, x.name]));
+      (SELECT string_agg(genre_slug, ',') FROM book_genres bg WHERE bg.book_id = b.id) gcsv,
+      (SELECT string_agg(author_id, ',' ORDER BY ba.position) FROM book_authors ba WHERE ba.book_id = b.id) acsv
+    FROM books b ORDER BY b.id`);
+  const names = new Map((await db.all<{ slug: string; name: string }>(`SELECT slug, name FROM genres`)).map((x) => [x.slug, x.name]));
 
   const books: ContentBook[] = rows.map((r) => ({
     id: r.id, title: r.title, year: r.year, ratingCount: r.rc,
@@ -66,7 +75,7 @@ export function loadContent(): ContentModel {
   }));
   const docs = rows.map((r) => {
     let subj: string[] = [];
-    try { subj = JSON.parse(r.subjects || "[]"); } catch { /* ignore */ }
+    try { subj = typeof r.subjects === "string" ? JSON.parse(r.subjects || "[]") : (r.subjects ?? []); } catch { /* ignore */ }
     return tokenize(subj.join(" "));
   });
   const { vecs } = tfidf(docs);
@@ -82,11 +91,10 @@ export function loadContent(): ContentModel {
   const cut = [...pop].sort((a, b) => b - a)[Math.floor(pop.length * 0.2)] ?? 1;
   const popular = Uint8Array.from(pop, (p) => (p >= cut ? 1 : 0));
 
-  cache.content = {
+  return (cache.content = {
     sig, books, index: new Map(books.map((b, i) => [b.id, i])), tfidf: vecs, quality, pop, popular,
     genreName: (s) => (s ? names.get(s) ?? s : "the archive"),
-  };
-  return cache.content;
+  });
 }
 
 /** Build item–item CF from one ratings scan. Pure function of (content model, rating rows). */
@@ -114,15 +122,21 @@ export function buildCF(content: ContentModel, rows: { u: number; b: string; r: 
   };
 }
 
-export function loadCF(content = loadContent()): CFModel {
-  const sig = ratingsSig();
-  if (cache.cf && cache.cf.sig === sig && cache.cf.content === content) return cache.cf;
-  const t0 = performance.now();
-  const rows = sqlite.prepare(`SELECT user_id u, book_id b, score r FROM ratings`).all() as { u: number; b: string; r: number }[];
-  const cf = buildCF(content, rows, sig);
-  cf.buildMs = performance.now() - t0; // include the scan
-  cache.cf = cf;
-  return cf;
+export async function loadCF(content?: ContentModel): Promise<CFModel> {
+  const c = content ?? (await loadContent());
+  const sig = await ratingsSig();
+  if (cache.cf && cache.cf.sig === sig && cache.cf.content === c) return cache.cf;
+  if (!cfBuild) {
+    cfBuild = (async () => {
+      const t0 = performance.now();
+      const rows = await db.all<{ u: number; b: string; r: number }>(`SELECT user_id u, book_id b, score r FROM ratings`);
+      const cf = buildCF(c, rows, sig);
+      cf.buildMs = performance.now() - t0; // include the scan
+      cache.cf = cf;
+      return cf;
+    })().finally(() => { cfBuild = null; });
+  }
+  return cfBuild;
 }
 
 /**

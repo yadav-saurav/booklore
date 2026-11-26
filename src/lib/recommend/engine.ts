@@ -1,5 +1,5 @@
 import "server-only";
-import { sqlite } from "@/db";
+import { db } from "@/db";
 import { loadContent, loadCF, contentSim, type ContentModel, type CFModel } from "./model";
 import { mmr, scoreFromNeighbours, sparseCosine, jaccard, type SparseVec } from "./math";
 
@@ -21,11 +21,12 @@ type UserData = {
   shelf: { bookId: string; status: string }[];
 };
 
-function loadUser(userId: number): UserData {
-  return {
-    ratings: sqlite.prepare(`SELECT book_id bookId, score, updated_at updatedAt FROM ratings WHERE user_id = ?`).all(userId) as UserData["ratings"],
-    shelf: sqlite.prepare(`SELECT book_id bookId, status FROM shelf WHERE user_id = ?`).all(userId) as UserData["shelf"],
-  };
+async function loadUser(userId: number): Promise<UserData> {
+  const [ratings, shelf] = await Promise.all([
+    db.all<UserData["ratings"][number]>(`SELECT book_id bookId, score, updated_at updatedAt FROM ratings WHERE user_id = ?`, userId),
+    db.all<UserData["shelf"][number]>(`SELECT book_id bookId, status FROM shelf WHERE user_id = ?`, userId),
+  ]);
+  return { ratings, shelf };
 }
 
 /** Seen = rated or shelved in any status. */
@@ -49,11 +50,11 @@ function diversitySim(c: ContentModel, a: number, b: number): number {
  * Hybrid similarity for one item: α·CF + (1−α)·content, where α grows with the item's CF support
  * (number of ratings). Unrated / freshly imported books get α = 0 → content only.
  */
-export function similarIds(bookId: string, limit = 12, exclude?: Set<number>): Scored[] {
-  const c = loadContent();
+export async function similarIds(bookId: string, limit = 12, exclude?: Set<number>): Promise<Scored[]> {
+  const c = await loadContent();
   const i = c.index.get(bookId);
   if (i === undefined) return [];
-  const cf = loadCF(c);
+  const cf = await loadCF(c);
   const cfMap = new Map<number, number>();
   const ci = cf.itemOf[i];
   if (ci >= 0) for (const { j, s } of cf.neighbours[ci]) cfMap.set(cf.bookOf[j], s);
@@ -116,25 +117,25 @@ function tasteVectors(c: ContentModel, prof: Profile) {
   return { genre, subj, author };
 }
 
-export function favouriteGenres(userId: number, n = 3): string[] {
-  const c = loadContent(); const cf = loadCF(c);
-  const prof = buildProfile(c, cf, loadUser(userId));
+export async function favouriteGenres(userId: number, n = 3): Promise<string[]> {
+  const c = await loadContent(); const cf = await loadCF(c);
+  const prof = buildProfile(c, cf, await loadUser(userId));
   const { genre } = tasteVectors(c, prof);
   return [...genre].filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).slice(0, n).map(([g]) => g);
 }
 
-export function ratingCount(userId: number): number {
-  return (sqlite.prepare(`SELECT count(*) n FROM ratings WHERE user_id = ?`).get(userId) as { n: number }).n;
+export async function ratingCount(userId: number): Promise<number> {
+  return (await db.get<{ n: number }>(`SELECT count(*) n FROM ratings WHERE user_id = ?`, userId))?.n ?? 0;
 }
 
-export function recommendIds(userId: number | null, limit = 24): Scored[] {
-  const c = loadContent();
+export async function recommendIds(userId: number | null, limit = 24): Promise<Scored[]> {
+  const c = await loadContent();
   if (!c.books.length) return [];
-  const u = userId ? loadUser(userId) : { ratings: [], shelf: [] };
+  const u = userId ? await loadUser(userId) : { ratings: [], shelf: [] };
   const seen = seenSet(c, u);
   if (u.ratings.length < COLD_START_MIN_RATINGS) return coldStart(c, seen, limit);
 
-  const cf = loadCF(c);
+  const cf = await loadCF(c);
   const prof = buildProfile(c, cf, u);
   const { genre, subj, author } = tasteVectors(c, prof);
 
@@ -229,16 +230,16 @@ function coldStart(c: ContentModel, seen: Set<number>, limit: number, genre?: st
 }
 
 /** Popular + highly rated in one genre, excluding what the user has seen. */
-export function popularInGenreIds(userId: number | null, genre: string, limit = 12): Scored[] {
-  const c = loadContent();
-  const seen = userId ? seenSet(c, loadUser(userId)) : new Set<number>();
+export async function popularInGenreIds(userId: number | null, genre: string, limit = 12): Promise<Scored[]> {
+  const c = await loadContent();
+  const seen = userId ? seenSet(c, await loadUser(userId)) : new Set<number>();
   return coldStart(c, seen, limit, genre);
 }
 
 /** Books for the onboarding "rate what you've read" grid: widely read, diverse, unseen. */
-export function onboardingIds(userId: number | null, limit = 24): string[] {
-  const c = loadContent();
-  const seen = userId ? seenSet(c, loadUser(userId)) : new Set<number>();
+export async function onboardingIds(userId: number | null, limit = 24): Promise<string[]> {
+  const c = await loadContent();
+  const seen = userId ? seenSet(c, await loadUser(userId)) : new Set<number>();
   const cands: { j: number; rel: number }[] = [];
   for (let j = 0; j < c.books.length; j++) if (!seen.has(j)) cands.push({ j, rel: 0.75 * c.pop[j] + 0.25 * c.quality[j] });
   cands.sort((a, b) => b.rel - a.rel);
@@ -246,9 +247,9 @@ export function onboardingIds(userId: number | null, limit = 24): string[] {
 }
 
 /** "Because you rated X": top-rated recent seeds, each with similar unseen books (deduped across rails). */
-export function becauseYouRatedIds(userId: number, rails = 2, perRail = 12): { seed: string; score: number; items: Scored[] }[] {
-  const c = loadContent();
-  const u = loadUser(userId);
+export async function becauseYouRatedIds(userId: number, rails = 2, perRail = 12): Promise<{ seed: string; score: number; items: Scored[] }[]> {
+  const c = await loadContent();
+  const u = await loadUser(userId);
   if (!u.ratings.length) return [];
   const seen = seenSet(c, u);
   const mean = u.ratings.reduce((s, r) => s + r.score, 0) / u.ratings.length;
@@ -262,7 +263,7 @@ export function becauseYouRatedIds(userId: number, rails = 2, perRail = 12): { s
     if (out.length >= rails) break;
     const b = c.books[c.index.get(s.bookId)!];
     if (b.authors.some((a) => seedAuthors.has(a))) continue; // one rail per author
-    const items = similarIds(s.bookId, perRail, used);
+    const items = await similarIds(s.bookId, perRail, used);
     if (items.length < Math.min(4, perRail)) continue;
     for (const it of items) used.add(c.index.get(it.id)!);
     b.authors.forEach((a) => seedAuthors.add(a));

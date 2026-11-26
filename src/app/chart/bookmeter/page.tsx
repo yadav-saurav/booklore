@@ -26,11 +26,11 @@ export default async function BookMeterPage({ searchParams }: { searchParams: SP
   const viewRaw = Array.isArray(sp.view) ? sp.view[0] : sp.view;
   const view: ChartView = viewRaw === "grid" || viewRaw === "compact" ? viewRaw : "list";
 
-  maybeRefreshRankings();
+  await maybeRefreshRankings();
   const user = await getCurrentUser();
-  const books = getMostPopular(POPULAR_LIMIT);
-  const states = getUserStates(user?.id, books.map((b) => b.id));
-  const genres = getGenres();
+  const books = await getMostPopular(POPULAR_LIMIT);
+  const states = await getUserStates(user?.id, books.map((b) => b.id));
+  const genres = await getGenres();
 
   const viewSegments: Segment[] = CHART_VIEWS.map((v) => ({
     label: v.label,

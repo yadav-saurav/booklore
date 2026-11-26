@@ -19,14 +19,14 @@ const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 const decode = (id: string) => { try { return decodeURIComponent(id); } catch { return id; } };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const b = getBookDetail(decode((await params).id));
+  const b = await getBookDetail(decode((await params).id));
   return { title: b ? `${b.title}: User reviews` : "Reviews" };
 }
 
 export default async function ReviewsPage({ params, searchParams }: Props) {
   const id = decode((await params).id);
   if (id.includes(":")) redirect(`/book/${encodeURIComponent(id)}`);
-  const book = getBookDetail(id);
+  const book = await getBookDetail(id);
   if (!book) notFound();
   const sp = await searchParams;
   const sort = (SORTS as string[]).includes(one(sp.sort) ?? "") ? (one(sp.sort) as ReviewSort) : "helpful";
@@ -37,11 +37,11 @@ export default async function ReviewsPage({ params, searchParams }: Props) {
   const write = one(sp.write) === "1";
 
   const user = await getCurrentUser();
-  const viewer = getViewerState(user?.id, id);
-  const mine = getMyReview(id, user?.id);
-  const { items, total } = getReviews(id, { sort, rating, hideSpoilers, limit: page * PER_PAGE, viewerId: user?.id });
-  const ratingCounts = getReviewRatingCounts(id);
-  const stats = getRatingStats(id);
+  const viewer = await getViewerState(user?.id, id);
+  const mine = await getMyReview(id, user?.id);
+  const { items, total } = await getReviews(id, { sort, rating, hideSpoilers, limit: page * PER_PAGE, viewerId: user?.id });
+  const ratingCounts = await getReviewRatingCounts(id);
+  const stats = await getRatingStats(id);
   const others = items.filter((x) => !x.mine || !!rating || hideSpoilers);
 
   const nextParams = new URLSearchParams();

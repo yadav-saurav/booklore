@@ -15,24 +15,29 @@ import {
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  maybeRefreshRankings();
+  await maybeRefreshRankings();
   const user = await getCurrentUser();
 
-  const shelf = getShelfBooks(12);
-  const picks = await getRecommendationsForUser(user?.id ?? null, 18);
-  const readingList = user ? getReadingList(user.id) : [];
-  const favorites = getFanFavorites();
-  const trending = getTrending(10);
-  const fresh = getNewAndNotable();
-  const genres = getGenreTiles().sort((a, b) => b.count - a.count).slice(0, 8);
-  const born = getBornToday();
-  const lists = getFeaturedLists(6);
-  const reviews = getLatestReviews(3);
-  const top = getTopPreview(10);
+  const [shelf, picks, readingList, favorites, trending, fresh, genreRows, born, lists, reviews, top] = await Promise.all([
+    getShelfBooks(12),
+    getRecommendationsForUser(user?.id ?? null, 18),
+    user ? getReadingList(user.id) : Promise.resolve([]),
+    getFanFavorites(),
+    getTrending(10),
+    getNewAndNotable(),
+    getGenreTiles(),
+    getBornToday(),
+    getFeaturedLists(6),
+    getLatestReviews(3),
+    getTopPreview(10),
+  ]);
+  const genres = genreRows.sort((a, b) => b.count - a.count).slice(0, 8);
 
   const ids = [...new Set([...picks, ...readingList, ...favorites, ...trending, ...fresh, ...top].map((b) => b.id))];
-  const states = getUserStates(user?.id, ids);
-  const shelfStatus = getUserShelfStatus(user?.id, shelf.map((b) => b.id));
+  const [states, shelfStatus] = await Promise.all([
+    getUserStates(user?.id, ids),
+    getUserShelfStatus(user?.id, shelf.map((b) => b.id)),
+  ]);
 
   return (
     <>

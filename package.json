@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p ${PORT:-3000}",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
     "db:seed": "tsx scripts/seed.ts",
-    "test": "vitest run"
+    "db:prepare": "tsx scripts/seed.ts --if-empty",
+    "vercel-build": "npm run db:prepare && next build"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.6.0",
@@ -34,5 +36,8 @@
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vitest": "^5.1.2"
+  },
+  "engines": {
+    "node": ">=20.9"
   }
 }

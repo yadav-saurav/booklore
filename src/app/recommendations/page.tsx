@@ -19,19 +19,19 @@ const ONBOARD_TARGET = 5;
 export default async function RecommendationsPage({ searchParams }: { searchParams: Promise<{ welcome?: string }> }) {
   const { welcome } = await searchParams;
   const user = await getCurrentUser();
-  const nRated = user ? ratingCount(user.id) : 0;
+  const nRated = user ? await ratingCount(user.id) : 0;
   const showOnboarding = !!user && (welcome === "1" || nRated < ONBOARD_TARGET);
 
   const picks = await getRecommendationsForUser(user?.id ?? null, 24);
   const because = user ? await getBecauseYouRated(user.id, 3, 12) : [];
-  const genres = getGenres();
+  const genres = await getGenres();
   const genreBySlug = new Map(genres.map((g) => [g.slug, g]));
-  const favSlugs = user && nRated >= 3 ? favouriteGenres(user.id, 3) : genres.slice().sort((a, b) => b.count - a.count).slice(0, 3).map((g) => g.slug);
-  const genreRails = favSlugs.map((slug) => ({ slug, books: getCardsByIds(popularInGenreIds(user?.id ?? null, slug, 12).map((x) => x.id)) }));
-  const onboarding = showOnboarding ? getCardsByIds(onboardingIds(user!.id, 24)) : [];
+  const favSlugs = user && nRated >= 3 ? await favouriteGenres(user.id, 3) : genres.slice().sort((a, b) => b.count - a.count).slice(0, 3).map((g) => g.slug);
+  const genreRails = await Promise.all(favSlugs.map(async (slug) => ({ slug, books: await getCardsByIds((await popularInGenreIds(user?.id ?? null, slug, 12)).map((x) => x.id)) })));
+  const onboarding = showOnboarding ? await getCardsByIds(await onboardingIds(user!.id, 24)) : [];
 
   const allIds = [...picks, ...because.flatMap((r) => [r.seed, ...r.books]), ...genreRails.flatMap((r) => r.books)].map((b) => b.id);
-  const states = getUserStates(user?.id, [...new Set(allIds)]);
+  const states = await getUserStates(user?.id, [...new Set(allIds)]);
   const personal = !!user && nRated >= 3;
 
   return (

@@ -30,7 +30,7 @@ const decode = (id: string) => { try { return decodeURIComponent(id); } catch { 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = decode((await params).id);
   if (id.includes(":")) return { title: "Opening book…" };
-  const b = getBookDetail(id);
+  const b = await getBookDetail(id);
   if (!b) return { title: "Book not found" };
   const by = b.authorName ? ` by ${b.authorName}` : "";
   const desc = b.synopsis ? b.synopsis.slice(0, 180) : `${b.title}${by}: ratings, reviews and reading lists on BOOKLORE.`;
@@ -48,23 +48,24 @@ export default async function BookPage({ params }: Props) {
     if (!slug) notFound();
     redirect(`/book/${slug}`);
   }
-  if (!getBookDetail(id)) notFound();
+  if (!(await getBookDetail(id))) notFound();
 
-  recordView(id);
-  maybeRefreshRankings();
-  const book = getBookDetail(id)!;
+  await Promise.all([recordView(id), maybeRefreshRankings()]);
+  const book = (await getBookDetail(id))!;
   const user = await getCurrentUser();
-  const viewer = getViewerState(user?.id, id);
-  const stats = getRatingStats(id);
-  const { items: reviews } = getReviews(id, { sort: "helpful", limit: 9, viewerId: user?.id, hideSpoilers: false });
-  const mine = getMyReview(id, user?.id);
-  const similar = await getSimilarBooks(id, 12);
-  const authorsMore = book.authors.slice(0, 3).map((a) => ({ author: a, books: getOtherBooksByAuthor(a.id, id, 6) }));
-  const lists = getListsContaining(id, 4);
-  const genreRanks = getGenreRanks(id);
-  const topRank = getTopRank(id);
-  const explore = getExploreGenres(book.genres.map((g) => g.slug), 6);
-  const states = getUserStates(user?.id, [...similar.map((b) => b.id), ...authorsMore.flatMap((x) => x.books.map((b) => b.id))]);
+  const [viewer, stats, { items: reviews }, mine, similar, authorsMore, lists, genreRanks, topRank, explore] = await Promise.all([
+    getViewerState(user?.id, id),
+    getRatingStats(id),
+    getReviews(id, { sort: "helpful", limit: 9, viewerId: user?.id, hideSpoilers: false }),
+    getMyReview(id, user?.id),
+    getSimilarBooks(id, 12),
+    Promise.all(book.authors.slice(0, 3).map(async (a) => ({ author: a, books: await getOtherBooksByAuthor(a.id, id, 6) }))),
+    getListsContaining(id, 4),
+    getGenreRanks(id),
+    getTopRank(id),
+    getExploreGenres(book.genres.map((g) => g.slug), 6),
+  ]);
+  const states = await getUserStates(user?.id, [...similar.map((b) => b.id), ...authorsMore.flatMap((x) => x.books.map((b) => b.id))]);
 
   const [featured, ...rest] = reviews;
   const lang = languageName(book.language);

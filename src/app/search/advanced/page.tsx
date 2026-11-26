@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
-import { sqlite } from "@/db";
+import { db } from "@/db";
+import { tsQuery } from "@/lib/search";
 import { CARD_COLUMNS, getGenres, getUserStates, queryCards } from "@/lib/queries/books";
 import {
   ADV_PAGE_SIZE,
@@ -32,19 +33,19 @@ export default async function AdvancedSearchPage({ searchParams }: { searchParam
   const raw = await searchParams;
   const f = parseAdvanced(raw);
   const user = await getCurrentUser();
-  const genres = getGenres();
+  const genres = await getGenres();
   const genreName = (slug: string) => genres.find((g) => g.slug === slug)?.name ?? slug;
 
-  const { where, params, orderBy } = buildAdvancedQuery(f, user?.id);
-  const total = (sqlite.prepare(`SELECT count(*) n FROM books b WHERE ${where}`).get(...params) as { n: number }).n;
+  const { where, params, orderBy } = buildAdvancedQuery(f, user?.id, tsQuery);
+  const total = (await db.get<{ n: number }>(`SELECT count(*) n FROM books b WHERE ${where}`, ...params))?.n ?? 0;
   const offset = (f.page - 1) * ADV_PAGE_SIZE;
-  const books = queryCards(
+  const books = await queryCards(
     `SELECT ${CARD_COLUMNS} FROM books b WHERE ${where} ORDER BY ${orderBy} LIMIT ? OFFSET ?`,
     ...params,
     ADV_PAGE_SIZE,
     offset,
   );
-  const states = getUserStates(user?.id, books.map((b) => b.id));
+  const states = await getUserStates(user?.id, books.map((b) => b.id));
 
   const entries = filtersToEntries(f);
   const chips = activeChips(f, genreName);

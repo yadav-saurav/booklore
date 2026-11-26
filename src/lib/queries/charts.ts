@@ -1,5 +1,5 @@
 import "server-only";
-import { sqlite } from "@/db";
+import { db } from "@/db";
 import { TOP_MIN_VOTES } from "@/lib/aggregates";
 import { CARD_COLUMNS, queryCards, type BookCard } from "./books";
 
@@ -16,7 +16,7 @@ export const TOP_SORTS = {
   rating: { expr: "b.rating_avg", dir: "desc", label: "Rating" },
   votes: { expr: "b.rating_count", dir: "desc", label: "Number of ratings" },
   year: { expr: "b.first_publish_year", dir: "desc", label: "Year" },
-  title: { expr: "b.title COLLATE NOCASE", dir: "asc", label: "Title" },
+  title: { expr: "lower(b.title)", dir: "asc", label: "Title" },
   pages: { expr: "b.pages", dir: "desc", label: "Pages" },
 } as const;
 export type TopSort = keyof typeof TOP_SORTS;
@@ -29,7 +29,7 @@ export function parseTopSort(v: string | undefined): TopSort {
  * BOOKLORE Top 250: books with at least TOP_MIN_VOTES ratings, ranked by the Bayesian weighted
  * score. The global rank is computed before the genre filter, so a genre view keeps real ranks.
  */
-export function getTopRated(opts: { sort: TopSort; dir?: "asc" | "desc"; genre?: string | null }): ChartBook[] {
+export async function getTopRated(opts: { sort: TopSort; dir?: "asc" | "desc"; genre?: string | null }): Promise<ChartBook[]> {
   const s = TOP_SORTS[opts.sort];
   const d = (opts.dir ?? s.dir) === "asc" ? "ASC" : "DESC";
   const genreClause = opts.genre
@@ -37,22 +37,22 @@ export function getTopRated(opts: { sort: TopSort; dir?: "asc" | "desc"; genre?:
     : "";
   const params: unknown[] = [TOP_MIN_VOTES, TOP_LIMIT];
   if (opts.genre) params.push(opts.genre);
-  const rows = queryCards(
+  const rows = await queryCards(
     `WITH ranked AS (
-       SELECT id, row_number() OVER (ORDER BY weighted_score DESC, rating_count DESC, id) AS rnk
+       SELECT id, row_number() OVER (ORDER BY weighted_score DESC NULLS LAST, rating_count DESC, id) AS rnk
        FROM books WHERE rating_count >= ? AND weighted_score IS NOT NULL
      )
      SELECT ${CARD_COLUMNS}, r.rnk AS chartRank
      FROM ranked r JOIN books b ON b.id = r.id
      WHERE r.rnk <= ? ${genreClause}
-     ORDER BY (${s.expr}) IS NULL, ${s.expr} ${d}, r.rnk ASC`,
+     ORDER BY ${s.expr} ${d} NULLS LAST, r.rnk ASC`,
     ...params,
   );
   return rows as ChartBook[];
 }
 
 /** BookMeter: the top books by popularity_rank, with previous rank for the movement arrows. */
-export function getMostPopular(limit = POPULAR_LIMIT): BookCard[] {
+export async function getMostPopular(limit = POPULAR_LIMIT): Promise<BookCard[]> {
   return queryCards(
     `SELECT ${CARD_COLUMNS} FROM books b
      WHERE b.popularity_rank IS NOT NULL AND b.popularity_rank <= ?
@@ -66,7 +66,7 @@ export function newYearOptions(now = new Date().getFullYear()): number[] {
   return Array.from({ length: NEW_WINDOW_YEARS }, (_, i) => now - i);
 }
 
-export function getNewAndNotable(opts: { year?: number | null; offset?: number; limit?: number; now?: number } = {}): BookCard[] {
+export async function getNewAndNotable(opts: { year?: number | null; offset?: number; limit?: number; now?: number } = {}): Promise<BookCard[]> {
   const now = opts.now ?? new Date().getFullYear();
   const { from, to } = { from: now - NEW_WINDOW_YEARS + 1, to: now };
   const yearClause = opts.year ? "AND b.first_publish_year = ?" : "";
@@ -81,15 +81,15 @@ export function getNewAndNotable(opts: { year?: number | null; offset?: number; 
   );
 }
 
-export function countNewAndNotable(opts: { year?: number | null; now?: number } = {}): number {
+export async function countNewAndNotable(opts: { year?: number | null; now?: number } = {}): Promise<number> {
   const now = opts.now ?? new Date().getFullYear();
   const yearClause = opts.year ? "AND first_publish_year = ?" : "";
   const params: unknown[] = [now - NEW_WINDOW_YEARS + 1, now];
   if (opts.year) params.push(opts.year);
-  return (sqlite.prepare(`SELECT count(*) n FROM books WHERE first_publish_year BETWEEN ? AND ? ${yearClause}`).get(...params) as { n: number }).n;
+  return (await db.get<{ n: number }>(`SELECT count(*) n FROM books WHERE first_publish_year BETWEEN ? AND ? ${yearClause}`, ...params))?.n ?? 0;
 }
 
 /** Catalog mean rating, shown in the "how is this ranked" explainer. */
-export function catalogMean(): number {
-  return (sqlite.prepare(`SELECT avg(score) m FROM ratings`).get() as { m: number | null }).m ?? 7;
+export async function catalogMean(): Promise<number> {
+  return (await db.get<{ m: number | null }>(`SELECT avg(score) m FROM ratings`))?.m ?? 7;
 }

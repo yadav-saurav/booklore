@@ -19,7 +19,7 @@ const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "");
 export async function ExternalResults({ q, isbn, local, limit = 20 }: {
   q: string; isbn?: string | null; local: BookCard[]; limit?: number;
 }) {
-  const keys = dedupeKeys(local);
+  const keys = await dedupeKeys(local);
   const raw = await searchExternal(q, { limit, ...(isbn ? { isbn } : {}) });
   const items = raw.filter((b) => {
     if (b.source === "openlibrary" && keys.olKeys.has(b.externalId)) return false;

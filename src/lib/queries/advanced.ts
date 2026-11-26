@@ -1,7 +1,7 @@
 /**
  * Advanced title search: URL params → validated filters → parameterised SQL fragments.
  *
- * Pure module (no DB, no "server-only") so it can be unit-tested. Every user value reaches SQL
+ * Pure module (no DB, no "server-only") so it can be unit-tested. Postgres dialect. Every user value reaches SQL
  * only through `?` placeholders; sort keys and directions come from fixed whitelists.
  * Callers compose the fragments with CARD_COLUMNS:
  *   SELECT ${CARD_COLUMNS} FROM books b WHERE ${where} ORDER BY ${orderBy} LIMIT ? OFFSET ?
@@ -27,7 +27,7 @@ const SORT_SQL: Record<AdvSort, { expr: string; dir: "asc" | "desc" }> = {
   rating: { expr: "b.rating_avg", dir: "desc" },
   votes: { expr: "b.rating_count", dir: "desc" },
   year: { expr: "b.first_publish_year", dir: "desc" },
-  title: { expr: "b.title COLLATE NOCASE", dir: "asc" },
+  title: { expr: "lower(b.title)", dir: "asc" },
   pages: { expr: "b.pages", dir: "desc" },
 };
 
@@ -188,12 +188,8 @@ export function escapeLike(s: string): string {
   return s.replace(/[\\%_]/g, (m) => `\\${m}`);
 }
 
-/** FTS5 prefix query from free text: "dune herb" → `"dune"* "herb"*` (letters and digits only). */
-export function ftsTerms(q: string): string | null {
-  const terms = q.toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, "").match(/[\p{L}\p{N}]+/gu);
-  if (!terms?.length) return null;
-  return terms.slice(0, 8).map((t) => `"${t}"*`).join(" ");
-}
+/** Free text → safe prefix tsquery string, or null. Pass `tsQuery` from src/lib/search.ts. */
+export type ToTsQuery = (q: string) => string | null;
 
 export type AdvancedQuery = {
   where: string;
@@ -205,28 +201,28 @@ export type AdvancedQuery = {
  * Build the WHERE / ORDER BY for the filters. `userId` is only needed for the two personal
  * filters (Reading List, not rated); without it those filters are ignored.
  */
-export function buildAdvancedQuery(f: AdvancedFilters, userId?: number | null): AdvancedQuery {
+export function buildAdvancedQuery(f: AdvancedFilters, userId: number | null | undefined, toTsQuery: ToTsQuery): AdvancedQuery {
   const clauses: string[] = [];
   const params: (string | number)[] = [];
   const like = (v: string) => `%${escapeLike(v)}%`;
 
   if (f.title) {
-    clauses.push(`(b.title LIKE ? ESCAPE '\\' OR b.subtitle LIKE ? ESCAPE '\\')`);
+    clauses.push(`(b.title ILIKE ? ESCAPE '\\' OR b.subtitle ILIKE ? ESCAPE '\\')`);
     params.push(like(f.title), like(f.title));
   }
   if (f.author) {
-    clauses.push(`EXISTS (SELECT 1 FROM book_authors ba JOIN authors a ON a.id = ba.author_id WHERE ba.book_id = b.id AND a.name LIKE ? ESCAPE '\\')`);
+    clauses.push(`EXISTS (SELECT 1 FROM book_authors ba JOIN authors a ON a.id = ba.author_id WHERE ba.book_id = b.id AND a.name ILIKE ? ESCAPE '\\')`);
     params.push(like(f.author));
   }
   if (f.keyword) {
-    const fts = ftsTerms(f.keyword);
-    if (fts) {
-      clauses.push(`b.id IN (SELECT book_id FROM books_fts WHERE books_fts MATCH ?)`);
-      params.push(fts);
+    const tq = toTsQuery(f.keyword);
+    if (tq) {
+      clauses.push(`b.id IN (SELECT s.book_id FROM books_search s WHERE s.doc @@ to_tsquery('simple', ?))`);
+      params.push(tq);
     }
   }
   if (f.subject) {
-    clauses.push(`b.subjects LIKE ? ESCAPE '\\'`);
+    clauses.push(`b.subjects ILIKE ? ESCAPE '\\'`);
     params.push(like(f.subject));
   }
   for (const g of f.genres) {
@@ -254,7 +250,7 @@ export function buildAdvancedQuery(f: AdvancedFilters, userId?: number | null): 
 
   const { expr, dir: natural } = SORT_SQL[f.sort];
   const d = (f.dir ?? natural).toUpperCase();
-  const orderBy = `(${expr}) IS NULL, ${expr} ${d}, b.id ASC`;
+  const orderBy = `${expr} ${d} NULLS LAST, b.id ASC`;
 
   return { where: clauses.length ? clauses.join(" AND ") : "1 = 1", params, orderBy };
 }

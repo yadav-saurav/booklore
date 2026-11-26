@@ -1,6 +1,6 @@
 import "server-only";
 import { cache } from "react";
-import { sqlite } from "@/db";
+import { db } from "@/db";
 import { CARD_COLUMNS, queryCards, type BookCard } from "@/lib/queries/books";
 
 /* Data for /book/[id], /book/[id]/reviews and /book/[id]/ratings. */
@@ -20,26 +20,18 @@ export type BookDetail = {
   authorName: string | null;
 };
 
-export const getBookDetail = cache((id: string): BookDetail | null => {
-  const b = sqlite
-    .prepare(
+export const getBookDetail = cache(async (id: string): Promise<BookDetail | null> => {
+  const b = await db.get(
       `SELECT id, title, subtitle, first_publish_year year, cover_id coverId, cover_url coverUrl, isbn13, pages, publisher, language,
         synopsis, subjects, source, ol_work_key olWorkKey, google_id googleId, rating_avg ratingAvg, rating_count ratingCount,
         weighted_score weightedScore, review_count reviewCount, shelf_count shelfCount, popularity_rank popularityRank,
         prev_popularity_rank prevPopularityRank, ol_rating_avg olRatingAvg, ol_rating_count olRatingCount
-       FROM books WHERE id = ?`,
-    )
-    .get(id) as (Omit<BookDetail, "subjects" | "authors" | "genres" | "authorName"> & { subjects: string }) | undefined;
+       FROM books WHERE id = ?`, id) as (Omit<BookDetail, "subjects" | "authors" | "genres" | "authorName"> & { subjects: string }) | undefined;
   if (!b) return null;
-  const authors = sqlite
-    .prepare(
+  const authors = await db.all(
       `SELECT a.id, a.name, a.photo_id photoId, a.photo_url photoUrl, a.bio, a.birth_date birthDate, a.death_date deathDate, a.nationality
-       FROM book_authors ba JOIN authors a ON a.id = ba.author_id WHERE ba.book_id = ? ORDER BY ba.position`,
-    )
-    .all(id) as BookAuthor[];
-  const genres = sqlite
-    .prepare(`SELECT g.slug, g.name, g.kanji FROM book_genres bg JOIN genres g ON g.slug = bg.genre_slug WHERE bg.book_id = ? ORDER BY g.position`)
-    .all(id) as BookDetail["genres"];
+       FROM book_authors ba JOIN authors a ON a.id = ba.author_id WHERE ba.book_id = ? ORDER BY ba.position`, id) as BookAuthor[];
+  const genres = await db.all(`SELECT g.slug, g.name, g.kanji FROM book_genres bg JOIN genres g ON g.slug = bg.genre_slug WHERE bg.book_id = ? ORDER BY g.position`, id) as BookDetail["genres"];
   let subjects: string[] = [];
   try { subjects = JSON.parse(b.subjects || "[]"); } catch { /* keep empty */ }
   return { ...b, subjects, authors, genres, authorName: authors.map((a) => a.name).join(", ") || null };
@@ -47,11 +39,11 @@ export const getBookDetail = cache((id: string): BookDetail | null => {
 
 export type ViewerState = { rating: number | null; status: "want" | "reading" | "read" | null; ratedAt: number | null };
 
-export function getViewerState(userId: number | null | undefined, bookId: string): ViewerState {
+export async function getViewerState(userId: number | null | undefined, bookId: string): Promise<ViewerState> {
   if (!userId) return { rating: null, status: null, ratedAt: null };
-  const r = sqlite.prepare(`SELECT score, updated_at FROM ratings WHERE user_id = ? AND book_id = ?`).get(userId, bookId) as
+  const r = await db.get(`SELECT score, updated_at FROM ratings WHERE user_id = ? AND book_id = ?`, userId, bookId) as
     | { score: number; updated_at: number } | undefined;
-  const s = sqlite.prepare(`SELECT status FROM shelf WHERE user_id = ? AND book_id = ?`).get(userId, bookId) as { status: ViewerState["status"] } | undefined;
+  const s = await db.get(`SELECT status FROM shelf WHERE user_id = ? AND book_id = ?`, userId, bookId) as { status: ViewerState["status"] } | undefined;
   return { rating: r?.score ?? null, ratedAt: r?.updated_at ?? null, status: s?.status ?? null };
 }
 
@@ -62,8 +54,8 @@ export type RatingStats = {
   total: number; mean: number | null; median: number | null; stdDev: number | null;
 };
 
-export function getRatingStats(bookId: string): RatingStats {
-  const rows = sqlite.prepare(`SELECT score, count(*) n FROM ratings WHERE book_id = ? GROUP BY score`).all(bookId) as { score: number; n: number }[];
+export async function getRatingStats(bookId: string): Promise<RatingStats> {
+  const rows = await db.all(`SELECT score, count(*) n FROM ratings WHERE book_id = ? GROUP BY score`, bookId) as { score: number; n: number }[];
   const counts = Array.from({ length: 10 }, () => 0);
   for (const r of rows) if (r.score >= 1 && r.score <= 10) counts[r.score - 1] = r.n;
   const total = counts.reduce((a, b) => a + b, 0);
@@ -75,17 +67,14 @@ export function getRatingStats(bookId: string): RatingStats {
   return { counts, total, mean, median, stdDev: Math.sqrt(variance) };
 }
 
-export function getRatingsByYear(bookId: string): { year: number; count: number; avg: number }[] {
-  return sqlite
-    .prepare(
-      `SELECT CAST(strftime('%Y', created_at, 'unixepoch') AS INTEGER) year, count(*) count, avg(score) avg
-       FROM ratings WHERE book_id = ? GROUP BY year ORDER BY year`,
-    )
-    .all(bookId) as never;
+export async function getRatingsByYear(bookId: string): Promise<{ year: number; count: number; avg: number }[]> {
+  return await db.all(
+      `SELECT extract(year from to_timestamp(created_at))::int AS year, count(*) count, avg(score) avg
+       FROM ratings WHERE book_id = ? GROUP BY year ORDER BY year`, bookId) as never;
 }
 
-export function getCatalogMean(): number {
-  return (sqlite.prepare(`SELECT avg(score) m FROM ratings`).get() as { m: number | null }).m ?? 7;
+export async function getCatalogMean(): Promise<number> {
+  return (await db.get(`SELECT avg(score) m FROM ratings`) as { m: number | null }).m ?? 7;
 }
 
 /* ───────────── Reviews ───────────── */
@@ -117,10 +106,10 @@ const ORDER: Record<ReviewSort, string> = {
   "rating-low": `rating ASC NULLS LAST, r.helpful_count DESC`,
 };
 
-export function getReviews(
+export async function getReviews(
   bookId: string,
   opts: { sort?: ReviewSort; rating?: number | null; hideSpoilers?: boolean; limit?: number; offset?: number; viewerId?: number | null },
-): { items: ReviewItem[]; total: number } {
+): Promise<{ items: ReviewItem[]; total: number }> {
   const viewer = Math.trunc(opts.viewerId ?? 0);
   const where = [`r.book_id = ?`];
   const params: unknown[] = [bookId];
@@ -130,34 +119,29 @@ export function getReviews(
     params.push(opts.rating);
   }
   const w = where.join(" AND ");
-  const total = (sqlite.prepare(`SELECT count(*) n FROM reviews r WHERE ${w}`).get(...params) as { n: number }).n;
-  const items = (sqlite
-    .prepare(`${REVIEW_SELECT(viewer)} WHERE ${w} ORDER BY ${ORDER[opts.sort ?? "helpful"]} LIMIT ? OFFSET ?`)
-    .all(...params, opts.limit ?? 10, opts.offset ?? 0) as RawReview[]).map(toReview);
+  const total = (await db.get(`SELECT count(*) n FROM reviews r WHERE ${w}`, ...params) as { n: number }).n;
+  const items = (await db.all(`${REVIEW_SELECT(viewer)} WHERE ${w} ORDER BY ${ORDER[opts.sort ?? "helpful"]} LIMIT ? OFFSET ?`, ...params, opts.limit ?? 10, opts.offset ?? 0) as RawReview[]).map(toReview);
   return { items, total };
 }
 
-export function getMyReview(bookId: string, userId: number | null | undefined): ReviewItem | null {
+export async function getMyReview(bookId: string, userId: number | null | undefined): Promise<ReviewItem | null> {
   if (!userId) return null;
-  const r = sqlite.prepare(`${REVIEW_SELECT(Math.trunc(userId))} WHERE r.book_id = ? AND r.user_id = ?`).get(bookId, userId) as RawReview | undefined;
+  const r = await db.get(`${REVIEW_SELECT(Math.trunc(userId))} WHERE r.book_id = ? AND r.user_id = ?`, bookId, userId) as RawReview | undefined;
   return r ? toReview(r) : null;
 }
 
 /** Counts per reviewer rating, for the filter chips on the reviews page. */
-export function getReviewRatingCounts(bookId: string): Record<number, number> {
-  const rows = sqlite
-    .prepare(
+export async function getReviewRatingCounts(bookId: string): Promise<Record<number, number>> {
+  const rows = await db.all(
       `SELECT rt.score s, count(*) n FROM reviews r JOIN ratings rt ON rt.user_id = r.user_id AND rt.book_id = r.book_id
-       WHERE r.book_id = ? GROUP BY rt.score`,
-    )
-    .all(bookId) as { s: number; n: number }[];
+       WHERE r.book_id = ? GROUP BY rt.score`, bookId) as { s: number; n: number }[];
   return Object.fromEntries(rows.map((r) => [r.s, r.n]));
 }
 
 /* ───────────── Related ───────────── */
 
-export function getOtherBooksByAuthor(authorId: string, excludeId: string, limit = 6): BookCard[] {
-  return queryCards(
+export async function getOtherBooksByAuthor(authorId: string, excludeId: string, limit = 6): Promise<BookCard[]> {
+  return await queryCards(
     `SELECT ${CARD_COLUMNS} FROM books b JOIN book_authors ba ON ba.book_id = b.id
      WHERE ba.author_id = ? AND b.id != ? ORDER BY b.popularity_rank ASC NULLS LAST LIMIT ?`,
     authorId, excludeId, limit,
@@ -166,56 +150,45 @@ export function getOtherBooksByAuthor(authorId: string, excludeId: string, limit
 
 export type ListMention = { id: number; title: string; description: string; itemCount: number; likeCount: number; ownerName: string; ownerUsername: string; coverBooks: BookCard[] };
 
-export function getListsContaining(bookId: string, limit = 4): { items: ListMention[]; total: number } {
-  const total = (sqlite
-    .prepare(`SELECT count(*) n FROM list_items li JOIN lists l ON l.id = li.list_id WHERE li.book_id = ? AND l.is_public = 1`)
-    .get(bookId) as { n: number }).n;
-  const rows = sqlite
-    .prepare(
+export async function getListsContaining(bookId: string, limit = 4): Promise<{ items: ListMention[]; total: number }> {
+  const total = (await db.get(`SELECT count(*) n FROM list_items li JOIN lists l ON l.id = li.list_id WHERE li.book_id = ? AND l.is_public = 1`, bookId) as { n: number }).n;
+  const rows = await db.all(
       `SELECT l.id, l.title, l.description, l.like_count likeCount, u.display_name ownerName, u.username ownerUsername,
         (SELECT count(*) FROM list_items x WHERE x.list_id = l.id) itemCount
        FROM list_items li JOIN lists l ON l.id = li.list_id JOIN users u ON u.id = l.user_id
-       WHERE li.book_id = ? AND l.is_public = 1 ORDER BY l.is_featured DESC, l.like_count DESC LIMIT ?`,
-    )
-    .all(bookId, limit) as Omit<ListMention, "coverBooks">[];
-  const items = rows.map((l) => ({
+       WHERE li.book_id = ? AND l.is_public = 1 ORDER BY l.is_featured DESC, l.like_count DESC LIMIT ?`, bookId, limit) as Omit<ListMention, "coverBooks">[];
+  const items = await Promise.all(rows.map(async (l) => ({
     ...l,
-    coverBooks: queryCards(
+    coverBooks: await queryCards(
       `SELECT ${CARD_COLUMNS} FROM list_items li JOIN books b ON b.id = li.book_id WHERE li.list_id = ? ORDER BY li.position LIMIT 3`,
       l.id,
     ),
-  }));
+  })));
   return { items, total };
 }
 
-export function getListCountForBook(bookId: string): number {
-  return (sqlite.prepare(`SELECT count(*) n FROM shelf WHERE book_id = ? AND status = 'want'`).get(bookId) as { n: number }).n;
+export async function getListCountForBook(bookId: string): Promise<number> {
+  return (await db.get(`SELECT count(*) n FROM shelf WHERE book_id = ? AND status = 'want'`, bookId) as { n: number }).n;
 }
 
 /** Book's rank inside each of its genres (by weighted score), for the "More to explore" rail. */
-export function getGenreRanks(bookId: string): { slug: string; name: string; rank: number | null; total: number }[] {
-  return sqlite
-    .prepare(
+export async function getGenreRanks(bookId: string): Promise<{ slug: string; name: string; rank: number | null; total: number }[]> {
+  return await db.all(
       `SELECT g.slug, g.name,
         (SELECT count(*) FROM book_genres x WHERE x.genre_slug = g.slug) total,
         (SELECT rnk FROM (SELECT bg.book_id, row_number() OVER (ORDER BY b.weighted_score DESC NULLS LAST, b.id) rnk
            FROM book_genres bg JOIN books b ON b.id = bg.book_id WHERE bg.genre_slug = g.slug) WHERE book_id = ?) rank
-       FROM book_genres bg JOIN genres g ON g.slug = bg.genre_slug WHERE bg.book_id = ? ORDER BY g.position`,
-    )
-    .all(bookId, bookId) as never;
+       FROM book_genres bg JOIN genres g ON g.slug = bg.genre_slug WHERE bg.book_id = ? ORDER BY g.position`, bookId, bookId) as never;
 }
 
-export function getTopRank(bookId: string): number | null {
-  const r = sqlite
-    .prepare(
+export async function getTopRank(bookId: string): Promise<number | null> {
+  const r = await db.get(
       `SELECT rnk FROM (SELECT id, row_number() OVER (ORDER BY weighted_score DESC) rnk FROM books
-        WHERE weighted_score IS NOT NULL AND rating_count >= 25) WHERE id = ?`,
-    )
-    .get(bookId) as { rnk: number } | undefined;
+        WHERE weighted_score IS NOT NULL AND rating_count >= 25) WHERE id = ?`, bookId) as { rnk: number } | undefined;
   return r && r.rnk <= 250 ? r.rnk : null;
 }
 
-export function getExploreGenres(exclude: string[], limit = 6): { slug: string; name: string; kanji: string | null }[] {
+export async function getExploreGenres(exclude: string[], limit = 6): Promise<{ slug: string; name: string; kanji: string | null }[]> {
   const ph = exclude.length ? `WHERE slug NOT IN (${exclude.map(() => "?").join(",")})` : "";
-  return sqlite.prepare(`SELECT slug, name, kanji FROM genres ${ph} ORDER BY position LIMIT ?`).all(...exclude, limit) as never;
+  return await db.all(`SELECT slug, name, kanji FROM genres ${ph} ORDER BY position LIMIT ?`, ...exclude, limit) as never;
 }

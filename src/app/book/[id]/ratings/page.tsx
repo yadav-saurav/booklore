@@ -14,7 +14,7 @@ type Props = { params: Promise<{ id: string }> };
 const decode = (id: string) => { try { return decodeURIComponent(id); } catch { return id; } };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const b = getBookDetail(decode((await params).id));
+  const b = await getBookDetail(decode((await params).id));
   return { title: b ? `${b.title}: Ratings` : "Ratings" };
 }
 
@@ -23,16 +23,16 @@ const f2 = (n: number | null) => (n == null ? "–" : n.toFixed(2));
 export default async function RatingsPage({ params }: Props) {
   const id = decode((await params).id);
   if (id.includes(":")) redirect(`/book/${encodeURIComponent(id)}`);
-  const book = getBookDetail(id);
+  const book = await getBookDetail(id);
   if (!book) notFound();
   const user = await getCurrentUser();
-  const viewer = getViewerState(user?.id, id);
-  const stats = getRatingStats(id);
-  const years = getRatingsByYear(id);
-  const C = getCatalogMean();
+  const viewer = await getViewerState(user?.id, id);
+  const stats = await getRatingStats(id);
+  const years = await getRatingsByYear(id);
+  const C = await getCatalogMean();
   const v = stats.total, m = TOP_MIN_VOTES, R = stats.mean;
   const wr = v && R != null ? (v / (v + m)) * R + (m / (v + m)) * C : null;
-  const topRank = getTopRank(id);
+  const topRank = await getTopRank(id);
   const maxYear = Math.max(1, ...years.map((y) => y.count));
 
   return (

@@ -29,13 +29,13 @@ export default async function NewPage({ searchParams }: { searchParams: SP }) {
   const pageRaw = Number(str("page"));
   const page = Number.isInteger(pageRaw) && pageRaw >= 1 ? Math.min(pageRaw, 200) : 1;
 
-  maybeRefreshRankings();
-  const total = countNewAndNotable({ year });
+  await maybeRefreshRankings();
+  const total = await countNewAndNotable({ year });
   const offset = (page - 1) * NEW_PAGE_SIZE;
-  const books = getNewAndNotable({ year, offset, limit: NEW_PAGE_SIZE });
+  const books = await getNewAndNotable({ year, offset, limit: NEW_PAGE_SIZE });
   const user = await getCurrentUser();
-  const states = getUserStates(user?.id, books.map((b) => b.id));
-  const genres = getGenres();
+  const states = await getUserStates(user?.id, books.map((b) => b.id));
+  const genres = await getGenres();
 
   const yearSegments: Segment[] = [
     { label: "All years", active: !year, href: buildHref("/chart/new") },

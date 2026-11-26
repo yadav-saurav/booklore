@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { sqlite } from "@/db";
+import { db } from "@/db";
 import { getCurrentUser } from "@/lib/auth";
 import { recomputeBook } from "@/lib/aggregates";
 import { rateBook, type ActionResult } from "@/app/actions/engagement";
@@ -29,17 +29,14 @@ export async function saveReview(input: z.input<typeof ReviewSchema>): Promise<R
   const parsed = ReviewSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: "invalid", message: parsed.error.issues[0].message };
   const { bookId, headline, body, spoiler, rating } = parsed.data;
-  if (!sqlite.prepare(`SELECT 1 FROM books WHERE id = ?`).get(bookId)) return { ok: false, error: "invalid", message: "Book not found" };
+  if (!await db.get(`SELECT 1 FROM books WHERE id = ?`, bookId)) return { ok: false, error: "invalid", message: "Book not found" };
   const rated = await rateBook(bookId, rating);
   if (!rated.ok) return rated;
-  sqlite
-    .prepare(
+  await db.run(
       `INSERT INTO reviews (user_id, book_id, headline, body, spoiler) VALUES (?,?,?,?,?)
        ON CONFLICT(user_id, book_id) DO UPDATE SET headline = excluded.headline, body = excluded.body,
-         spoiler = excluded.spoiler, updated_at = unixepoch()`,
-    )
-    .run(user.id, bookId, headline, body, spoiler ? 1 : 0);
-  recomputeBook(bookId);
+         spoiler = excluded.spoiler, updated_at = unixepoch()`, user.id, bookId, headline, body, spoiler ? 1 : 0);
+  await recomputeBook(bookId);
   refresh(bookId);
   return { ok: true };
 }
@@ -50,10 +47,10 @@ export async function deleteReview(reviewId: number): Promise<ReviewResult> {
   const user = await getCurrentUser();
   if (!user) return { ok: false, error: "auth" };
   if (!Id.safeParse(reviewId).success) return { ok: false, error: "invalid" };
-  const r = sqlite.prepare(`SELECT book_id, user_id FROM reviews WHERE id = ?`).get(reviewId) as { book_id: string; user_id: number } | undefined;
+  const r = await db.get(`SELECT book_id, user_id FROM reviews WHERE id = ?`, reviewId) as { book_id: string; user_id: number } | undefined;
   if (!r || r.user_id !== user.id) return { ok: false, error: "invalid", message: "You can only delete your own review" };
-  sqlite.prepare(`DELETE FROM reviews WHERE id = ?`).run(reviewId);
-  recomputeBook(r.book_id);
+  await db.run(`DELETE FROM reviews WHERE id = ?`, reviewId);
+  await recomputeBook(r.book_id);
   refresh(r.book_id);
   return { ok: true };
 }
@@ -67,22 +64,21 @@ export async function voteReview(reviewId: number, helpful: boolean): Promise<Re
   if (!user) return { ok: false, error: "auth" };
   const p = z.object({ reviewId: Id, helpful: z.boolean() }).safeParse({ reviewId, helpful });
   if (!p.success) return { ok: false, error: "invalid" };
-  const r = sqlite.prepare(`SELECT book_id, user_id FROM reviews WHERE id = ?`).get(reviewId) as { book_id: string; user_id: number } | undefined;
+  const r = await db.get(`SELECT book_id, user_id FROM reviews WHERE id = ?`, reviewId) as { book_id: string; user_id: number } | undefined;
   if (!r) return { ok: false, error: "invalid", message: "Review not found" };
   if (r.user_id === user.id) return { ok: false, error: "invalid", message: "You can't vote on your own review" };
-  const tx = sqlite.transaction(() => {
-    const prev = sqlite.prepare(`SELECT helpful FROM review_votes WHERE review_id = ? AND user_id = ?`).get(reviewId, user.id) as { helpful: number } | undefined;
+  await db.tx(async (t) => {
+    const prev = await t.get(`SELECT helpful FROM review_votes WHERE review_id = ? AND user_id = ?`, reviewId, user.id) as { helpful: number } | undefined;
     const bump = (h: boolean, d: number) =>
-      sqlite.prepare(`UPDATE reviews SET ${h ? "helpful_count" : "unhelpful_count"} = max(0, ${h ? "helpful_count" : "unhelpful_count"} + ?) WHERE id = ?`).run(d, reviewId);
+      t.run(`UPDATE reviews SET ${h ? "helpful_count" : "unhelpful_count"} = greatest(0, ${h ? "helpful_count" : "unhelpful_count"} + ?) WHERE id = ?`, d, reviewId);
     if (prev) {
-      sqlite.prepare(`DELETE FROM review_votes WHERE review_id = ? AND user_id = ?`).run(reviewId, user.id);
-      bump(!!prev.helpful, -1);
+      await t.run(`DELETE FROM review_votes WHERE review_id = ? AND user_id = ?`, reviewId, user.id);
+      await bump(!!prev.helpful, -1);
       if (!!prev.helpful === helpful) return; // toggled off
     }
-    sqlite.prepare(`INSERT INTO review_votes (review_id, user_id, helpful) VALUES (?,?,?)`).run(reviewId, user.id, helpful ? 1 : 0);
-    bump(helpful, 1);
+    await t.run(`INSERT INTO review_votes (review_id, user_id, helpful) VALUES (?,?,?)`, reviewId, user.id, helpful ? 1 : 0);
+    await bump(helpful, 1);
   });
-  tx();
   refresh(r.book_id);
   return { ok: true };
 }
@@ -94,10 +90,10 @@ export async function reportReview(reviewId: number, reason: string): Promise<Re
   if (!user) return { ok: false, error: "auth" };
   const p = ReportSchema.safeParse({ reviewId, reason });
   if (!p.success) return { ok: false, error: "invalid", message: "Choose a reason" };
-  const r = sqlite.prepare(`SELECT book_id FROM reviews WHERE id = ?`).get(reviewId) as { book_id: string } | undefined;
+  const r = await db.get(`SELECT book_id FROM reviews WHERE id = ?`, reviewId) as { book_id: string } | undefined;
   if (!r) return { ok: false, error: "invalid", message: "Review not found" };
-  if (!sqlite.prepare(`SELECT 1 FROM review_reports WHERE review_id = ? AND user_id = ?`).get(reviewId, user.id))
-    sqlite.prepare(`INSERT INTO review_reports (review_id, user_id, reason) VALUES (?,?,?)`).run(reviewId, user.id, p.data.reason);
+  if (!await db.get(`SELECT 1 FROM review_reports WHERE review_id = ? AND user_id = ?`, reviewId, user.id))
+    await db.run(`INSERT INTO review_reports (review_id, user_id, reason) VALUES (?,?,?)`, reviewId, user.id, p.data.reason);
   refresh(r.book_id);
   return { ok: true };
 }

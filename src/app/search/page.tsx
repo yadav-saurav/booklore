@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { getCurrentUser } from "@/lib/auth";
-import { getUserStates } from "@/lib/queries/books";
+import { getUserStates, type BookCard } from "@/lib/queries/books";
 import { SearchBox } from "@/components/layout/SearchBox";
 import { SegmentLinks, type Segment } from "@/components/chart/SegmentLinks";
 import { buildHref } from "@/components/chart/url";
@@ -71,14 +71,17 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   const wantExternal = type === "all" || type === "books" || type === "isbn";
 
   const titleOffset = type === "books" ? (page - 1) * PAGE : 0;
-  const titles = wantTitles ? localTitles(q, type === "books" ? PAGE : 6, titleOffset) : { books: [] as ReturnType<typeof localTitles>["books"], total: 0 };
-  const authors = wantAuthors ? localAuthors(q, type === "authors" ? 40 : 5) : [];
+  const empty = { books: [] as BookCard[], total: 0 };
+  const [titles, authors] = await Promise.all([
+    wantTitles ? localTitles(q, type === "books" ? PAGE : 6, titleOffset) : empty,
+    wantAuthors ? localAuthors(q, type === "authors" ? 40 : 5) : [],
+  ]);
   const listOffset = type === "lists" ? (page - 1) * PAGE : 0;
-  const lists = wantLists ? localLists(q, type === "lists" ? PAGE : 5, listOffset) : { lists: [], total: 0 };
-  const isbnBooks = type === "isbn" || (type === "all" && isbn) ? (isbn ? localByIsbn(isbn) : []) : [];
+  const lists = wantLists ? await localLists(q, type === "lists" ? PAGE : 5, listOffset) : { lists: [], total: 0 };
+  const isbnBooks = type === "isbn" || (type === "all" && isbn) ? (isbn ? await localByIsbn(isbn) : []) : [];
 
   const shownTitles = type === "isbn" ? isbnBooks : titles.books;
-  const states = getUserStates(user?.id, shownTitles.map((b) => b.id));
+  const states = await getUserStates(user?.id, shownTitles.map((b) => b.id));
   const exact = shownTitles.find((b) => norm(b.title) === norm(q)) ?? null;
   const exactAuthor = authors.find((a) => norm(a.name) === norm(q)) ?? null;
   const anyLocal = titles.total + authors.length + lists.total + isbnBooks.length > 0;

@@ -30,10 +30,10 @@ export default async function YourRatingsPage({ searchParams }: { searchParams: 
   }
 
   const sort: RatingSort = sp.sort && sp.sort in RATING_SORTS ? (sp.sort as RatingSort) : "date";
-  const genres = getGenres();
+  const genres = await getGenres();
   const genre = genres.some((g) => g.slug === sp.genre) ? sp.genre! : "";
-  const rows = getUserRatings(me.id, { sort, genre: genre || null });
-  const hist = ratingHistogram(me.id, genre || null);
+  const rows = await getUserRatings(me.id, { sort, genre: genre || null });
+  const hist = await ratingHistogram(me.id, genre || null);
   const total = hist.reduce((s, h) => s + h.count, 0);
   const mean = total ? hist.reduce((s, h) => s + h.score * h.count, 0) / total : null;
 

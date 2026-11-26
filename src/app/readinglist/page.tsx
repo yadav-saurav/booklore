@@ -38,12 +38,12 @@ export default async function ReadingListPage({ searchParams }: { searchParams: 
 
   const status: ShelfStatus = TABS.some((t) => t.key === sp.status) ? (sp.status as ShelfStatus) : "want";
   const sort: ShelfSort = sp.sort && sp.sort in SHELF_SORTS ? (sp.sort as ShelfSort) : "added";
-  const genres = getGenres();
+  const genres = await getGenres();
   const genre = genres.some((g) => g.slug === sp.genre) ? sp.genre! : "";
   const view = sp.view === "grid" ? "grid" : "list";
 
-  const counts = getShelfCounts(me.id);
-  const items = getShelf(me.id, status, { sort, genre: genre || null });
+  const counts = await getShelfCounts(me.id);
+  const items = await getShelf(me.id, status, { sort, genre: genre || null });
   const totalPages = items.reduce((s, i) => s + (i.pages ?? 0), 0);
 
   return (

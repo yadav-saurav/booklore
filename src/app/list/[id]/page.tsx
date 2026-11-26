@@ -15,7 +15,7 @@ type Params = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const lid = Number((await params).id);
-  const list = Number.isInteger(lid) ? getListDetail(lid) : null;
+  const list = Number.isInteger(lid) ? await getListDetail(lid) : null;
   return { title: list ? list.title : "List" };
 }
 
@@ -23,13 +23,13 @@ export default async function ListPage({ params }: Params) {
   const lid = Number((await params).id);
   if (!Number.isInteger(lid) || lid < 1) notFound();
   const me = await getCurrentUser();
-  const list = getListDetail(lid);
+  const list = await getListDetail(lid);
   if (!list) notFound();
   const isOwner = me?.id === list.ownerId;
   if (!list.isPublic && !isOwner) notFound();
 
-  const items = getListItems(lid, me?.id ?? null);
-  const like = getListLikeState(lid, me?.id ?? null);
+  const items = await getListItems(lid, me?.id ?? null);
+  const like = await getListLikeState(lid, me?.id ?? null);
 
   return (
     <div className="page py-10 md:py-14">

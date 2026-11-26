@@ -19,10 +19,10 @@ function MemberLink({ m }: { m: { username: string; displayName: string; avatarH
   );
 }
 
-export default function CommunityPage() {
-  const reviewers = topReviewers(10);
-  const followed = mostFollowed(10);
-  const active = recentlyActive(12);
+export default async function CommunityPage() {
+  const reviewers = await topReviewers(10);
+  const followed = await mostFollowed(10);
+  const active = await recentlyActive(12);
 
   return (
     <div className="page py-10 md:py-14">

@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   description: "Every genre in the BOOKLORE archive, with book counts and a sample of covers.",
 };
 
-export default function GenresPage() {
-  const tiles = getGenreTiles();
+export default async function GenresPage() {
+  const tiles = await getGenreTiles();
   return (
     <div className="page pb-16 pt-8 md:pt-12">
       <SectionHeader as="h1" title="Genres" kanji="ジャンル" count={tiles.length}

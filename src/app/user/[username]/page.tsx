@@ -22,25 +22,25 @@ import { plural } from "@/lib/util";
 type Params = { params: Promise<{ username: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const m = getMemberByUsername((await params).username);
+  const m = await getMemberByUsername((await params).username);
   return { title: m ? `${m.displayName} (@${m.username})` : "Member" };
 }
 
 export default async function ProfilePage({ params }: Params) {
   const { username } = await params;
-  const member = getMemberByUsername(username);
+  const member = await getMemberByUsername(username);
   if (!member) notFound();
   const me = await getCurrentUser();
   const isSelf = me?.id === member.id;
 
-  const stats = getProfileStats(member.id, isSelf);
-  const counts = getFollowCounts(member.id);
-  const following = me && !isSelf ? isFollowing(me.id, member.id) : false;
-  const hist = ratingHistogram(member.id);
-  const recentRatings = getUserRatings(member.id, { sort: "date", limit: 14 });
-  const recentReviews = getReviews({ userId: member.id, limit: 4 });
-  const genres = favoriteGenres(member.id, 6);
-  const lists: ListSummary[] = getUserLists(member.id, isSelf).slice(0, 4);
+  const stats = await getProfileStats(member.id, isSelf);
+  const counts = await getFollowCounts(member.id);
+  const following = me && !isSelf ? await isFollowing(me.id, member.id) : false;
+  const hist = await ratingHistogram(member.id);
+  const recentRatings = await getUserRatings(member.id, { sort: "date", limit: 14 });
+  const recentReviews = await getReviews({ userId: member.id, limit: 4 });
+  const genres = await favoriteGenres(member.id, 6);
+  const lists: ListSummary[] = (await getUserLists(member.id, isSelf)).slice(0, 4);
   const joined = new Date(member.createdAt * 1000).toLocaleDateString("en-US", { month: "long", year: "numeric" });
 
   return (

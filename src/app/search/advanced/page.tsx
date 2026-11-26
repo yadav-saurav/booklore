@@ -19,7 +19,6 @@ import { Pagination } from "@/components/search/Pagination";
 import { EmptyState } from "@/components/search/EmptyState";
 import { FilterSheet } from "@/components/search/FilterSheet";
 import { AdvancedForm, FORM_ID } from "@/components/search/AdvancedForm";
-import { buildHref } from "@/components/chart/url";
 import { plural } from "@/lib/util";
 
 export const metadata: Metadata = {

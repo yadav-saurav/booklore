@@ -16,12 +16,12 @@ const SORT_OPTIONS: [string, string][] = [["latest", "Latest"], ["helpful", "Mos
 export default async function ReviewsPage({ searchParams }: { searchParams: Promise<{ sort?: string; genre?: string; page?: string }> }) {
   const sp = await searchParams;
   const sort: ReviewSort = sp.sort === "helpful" ? "helpful" : "latest";
-  const genres = getGenres();
+  const genres = await getGenres();
   const genre = genres.some((g) => g.slug === sp.genre) ? sp.genre! : "";
-  const total = countReviews({ genre: genre || null, sort });
+  const total = await countReviews({ genre: genre || null, sort });
   const pages = Math.max(1, Math.ceil(total / PER_PAGE));
   const page = Math.min(pages, Math.max(1, Number.parseInt(sp.page ?? "1", 10) || 1));
-  const reviews = getReviews({ genre: genre || null, sort, limit: PER_PAGE, offset: (page - 1) * PER_PAGE });
+  const reviews = await getReviews({ genre: genre || null, sort, limit: PER_PAGE, offset: (page - 1) * PER_PAGE });
   const base = { sort: sort === "latest" ? undefined : sort, genre: genre || undefined };
 
   return (

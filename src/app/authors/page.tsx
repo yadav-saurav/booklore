@@ -22,16 +22,16 @@ export default async function AuthorsPage({ searchParams }: { searchParams: Prom
   const nat = sp.nat || undefined;
   const bornToday = sp.born === "today";
   const today = todayMonthDay();
-  const nationalities = getNationalities(12);
+  const nationalities = await getNationalities(12);
 
   let rows: AuthorListItem[];
   let total: number;
   if (bornToday) {
-    const all = listBornOn(today.month, today.day, nat);
+    const all = await listBornOn(today.month, today.day, nat);
     total = all.length;
     rows = all.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
   } else {
-    ({ rows, total } = listAuthors({ nat, page, pageSize: PAGE_SIZE }));
+    ({ rows, total } = await listAuthors({ nat, page, pageSize: PAGE_SIZE }));
   }
   const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const current = { nat, born: bornToday ? "today" : undefined, page: undefined };

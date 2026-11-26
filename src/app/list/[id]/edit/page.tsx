@@ -16,11 +16,11 @@ export default async function EditListPage({ params }: { params: Promise<{ id: s
   if (!Number.isInteger(lid) || lid < 1) notFound();
   const me = await getCurrentUser();
   if (!me) redirect(`/signin?next=/list/${lid}/edit`);
-  const list = getListDetail(lid);
+  const list = await getListDetail(lid);
   if (!list) notFound();
   if (list.ownerId !== me.id) redirect(`/list/${lid}`);
 
-  const items = getListItems(lid, me.id).map((i) => ({
+  const items = (await getListItems(lid, me.id)).map((i) => ({
     id: i.id, title: i.title, authorName: i.authorName, year: i.year, coverId: i.coverId, coverUrl: i.coverUrl, pages: i.pages, note: i.note,
   }));
 

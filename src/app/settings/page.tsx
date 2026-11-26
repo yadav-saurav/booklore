@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Account settings" };
 export default async function SettingsPage() {
   const me = await getCurrentUser();
   if (!me) redirect("/signin?next=/settings");
-  const acct = getAccount(me.id);
+  const acct = await getAccount(me.id);
   if (!acct) redirect("/signin?next=/settings");
 
   return (

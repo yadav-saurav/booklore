@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { activeChips, buildAdvancedQuery, chipRemoveNames, ftsTerms, escapeLike, filtersToEntries, parseAdvanced } from "./advanced";
+import { activeChips, buildAdvancedQuery as build, chipRemoveNames, escapeLike, filtersToEntries, parseAdvanced, type AdvancedFilters } from "./advanced";
+
+/** Same contract as tsQuery() in src/lib/search.ts (that module is server-only, so it is mirrored here). */
+const tsQuery = (q: string) => {
+  const terms = q.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").match(/[\p{L}\p{N}]+/gu);
+  return terms?.length ? terms.slice(0, 8).map((t) => `${t}:*`).join(" & ") : null;
+};
+const buildAdvancedQuery = (f: AdvancedFilters, userId?: number | null) => build(f, userId, tsQuery);
 
 /** Mirrors Next.js searchParams: repeated keys become arrays. */
 const parse = (qs: string) => {
@@ -101,11 +108,11 @@ describe("buildAdvancedQuery", () => {
     expect(q.where.match(/EXISTS \(SELECT 1 FROM book_genres/g)?.length).toBe(2);
   });
 
-  it("uses FTS for keywords and ignores keywords that tokenise to nothing", () => {
-    expect(ftsTerms("Dune herb")).toBe(`"dune"* "herb"*`);
-    expect(ftsTerms("!!!")).toBeNull();
+  it("uses the tsvector index for keywords and ignores keywords that tokenise to nothing", () => {
     expect(buildAdvancedQuery(parse("kw=%21%21%21")).where).toBe("1 = 1");
-    expect(buildAdvancedQuery(parse("kw=dune")).where).toContain("books_fts MATCH ?");
+    const q = buildAdvancedQuery(parse("kw=Dune%20herb"));
+    expect(q.where).toContain("s.doc @@ to_tsquery('simple', ?)");
+    expect(q.params).toEqual(["dune:* & herb:*"]);
   });
 
   it("applies personal filters only when a user is known", () => {
@@ -118,9 +125,18 @@ describe("buildAdvancedQuery", () => {
   });
 
   it("orders by whitelisted expressions with nulls last", () => {
-    expect(buildAdvancedQuery(parse("sort=pages&dir=desc")).orderBy).toBe("(b.pages) IS NULL, b.pages DESC, b.id ASC");
-    expect(buildAdvancedQuery(parse("sort=year")).orderBy).toContain("b.first_publish_year DESC");
-    expect(buildAdvancedQuery(parse("sort=bogus; DROP")).orderBy).toContain("b.popularity_rank ASC");
+    expect(buildAdvancedQuery(parse("sort=pages&dir=desc")).orderBy).toBe("b.pages DESC NULLS LAST, b.id ASC");
+    expect(buildAdvancedQuery(parse("sort=year")).orderBy).toBe("b.first_publish_year DESC NULLS LAST, b.id ASC");
+    expect(buildAdvancedQuery(parse("sort=title")).orderBy).toBe("lower(b.title) ASC NULLS LAST, b.id ASC");
+    expect(buildAdvancedQuery(parse("sort=bogus; DROP")).orderBy).toContain("b.popularity_rank ASC NULLS LAST");
+  });
+
+  it("matches text case-insensitively with ILIKE", () => {
+    const q = buildAdvancedQuery(parse("title=dune&author=herbert&subject=desert"));
+    expect(q.where).toContain("b.title ILIKE ? ESCAPE");
+    expect(q.where).toContain("a.name ILIKE ? ESCAPE");
+    expect(q.where).toContain("b.subjects ILIKE ? ESCAPE");
+    expect(q.where).not.toMatch(/[^I]LIKE/);
   });
 });
 

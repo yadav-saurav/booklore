@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { sqlite } from "@/db";
+import { db } from "@/db";
 import { destroySession, getCurrentUser, hashPassword, verifyPassword } from "@/lib/auth";
 import { recomputeBook } from "@/lib/aggregates";
 import { touchedBookIds } from "@/lib/queries/users";
@@ -28,9 +28,8 @@ export async function updateProfile(_: AccountFormState, form: FormData): Promis
   };
   const parsed = ProfileSchema.safeParse(raw);
   if (!parsed.success) return { error: parsed.error.issues[0].message, fields: raw };
-  sqlite
-    .prepare(`UPDATE users SET display_name = ?, bio = ?, location = ? WHERE id = ?`)
-    .run(parsed.data.displayName, parsed.data.bio, parsed.data.location || null, user.id);
+  await db.run(`UPDATE users SET display_name = ?, bio = ?, location = ? WHERE id = ?`,
+    parsed.data.displayName, parsed.data.bio, parsed.data.location || null, user.id);
   revalidatePath("/user", "layout");
   revalidatePath("/settings");
   return { saved: true };
@@ -51,10 +50,10 @@ export async function changePassword(_: AccountFormState, form: FormData): Promi
   });
   if (!parsed.success) return { error: parsed.error.issues[0].message };
   if (String(form.get("confirmPassword") ?? "") !== parsed.data.newPassword) return { error: "The new passwords don't match" };
-  const row = sqlite.prepare(`SELECT password_hash FROM users WHERE id = ?`).get(user.id) as { password_hash: string | null } | undefined;
+  const row = await db.get<{ password_hash: string | null }>(`SELECT password_hash FROM users WHERE id = ?`, user.id);
   if (!verifyPassword(parsed.data.currentPassword, row?.password_hash ?? null)) return { error: "Your current password is incorrect" };
   if (parsed.data.currentPassword === parsed.data.newPassword) return { error: "Choose a password you haven't used here before" };
-  sqlite.prepare(`UPDATE users SET password_hash = ? WHERE id = ?`).run(hashPassword(parsed.data.newPassword), user.id);
+  await db.run(`UPDATE users SET password_hash = ? WHERE id = ?`, hashPassword(parsed.data.newPassword), user.id);
   return { saved: true };
 }
 
@@ -65,10 +64,10 @@ export async function deleteAccount(_: AccountFormState, form: FormData): Promis
   if (user.username === "demo") return { error: "The demo account can't be deleted, so it stays available for everyone to try." };
   const typed = String(form.get("confirm") ?? "").trim().toLowerCase();
   if (typed !== user.username) return { error: `Type “${user.username}” exactly to confirm.` };
-  const books = touchedBookIds(user.id);
+  const books = await touchedBookIds(user.id);
   // Deleting the user cascades to ratings, shelf, reviews, lists, follows and sessions.
-  sqlite.prepare(`DELETE FROM users WHERE id = ?`).run(user.id);
-  for (const b of books) recomputeBook(b);
+  await db.run(`DELETE FROM users WHERE id = ?`, user.id);
+  for (const b of books) await recomputeBook(b);
   await destroySession();
   revalidatePath("/", "layout");
   redirect("/");
@@ -80,10 +79,10 @@ export async function toggleFollow(targetId: number): Promise<AccountResult> {
   if (!user) return { ok: false, error: "auth" };
   const target = z.coerce.number().int().positive().parse(targetId);
   if (target === user.id) return { ok: false, error: "You can't follow yourself" };
-  if (!sqlite.prepare(`SELECT 1 FROM users WHERE id = ?`).get(target)) return { ok: false, error: "Member not found" };
-  const exists = sqlite.prepare(`SELECT 1 FROM follows WHERE follower_id = ? AND followee_id = ?`).get(user.id, target);
-  if (exists) sqlite.prepare(`DELETE FROM follows WHERE follower_id = ? AND followee_id = ?`).run(user.id, target);
-  else sqlite.prepare(`INSERT INTO follows (follower_id, followee_id) VALUES (?,?)`).run(user.id, target);
+  if (!(await db.get(`SELECT 1 FROM users WHERE id = ?`, target))) return { ok: false, error: "Member not found" };
+  const exists = await db.get(`SELECT 1 FROM follows WHERE follower_id = ? AND followee_id = ?`, user.id, target);
+  if (exists) await db.run(`DELETE FROM follows WHERE follower_id = ? AND followee_id = ?`, user.id, target);
+  else await db.run(`INSERT INTO follows (follower_id, followee_id) VALUES (?,?) ON CONFLICT DO NOTHING`, user.id, target);
   revalidatePath("/user", "layout");
   revalidatePath("/community");
   return { ok: true, following: !exists };

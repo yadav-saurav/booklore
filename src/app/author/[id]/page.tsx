@@ -20,7 +20,7 @@ type Props = { params: Promise<{ id: string }>; searchParams: Promise<Record<str
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const a = getAuthor(id);
+  const a = await getAuthor(id);
   if (!a) return { title: "Author not found" };
   const desc = a.bio ? a.bio.slice(0, 155).trim() + "…" : `Books by ${a.name} on BOOKLORE: ratings, reviews and bibliography.`;
   return { title: a.name, description: desc, openGraph: { title: a.name, description: desc } };
@@ -31,7 +31,7 @@ export default async function AuthorPage({ params, searchParams }: Props) {
   const sp = flatParams(await searchParams);
 
   await hydrateAuthor(id);
-  const author = getAuthor(id);
+  const author = await getAuthor(id);
   if (!author) notFound();
 
   const sort: BibSort = isBibSort(sp.sort) ? sp.sort : "year";
@@ -39,13 +39,11 @@ export default async function AuthorPage({ params, searchParams }: Props) {
   const genre = sp.genre || undefined;
   const path = `/author/${author.id}`;
 
-  const user = await getCurrentUser();
-  const stats = getAuthorStats(id);
-  const knownFor = getKnownFor(id, 4);
-  const books = getBibliography(id, sort, dir, genre);
-  const genres = getAuthorGenres(id);
-  const readers = getReadersAlsoLike(id, 6);
-  const states = getUserStates(user?.id, [...new Set([...knownFor, ...books].map((b) => b.id))]);
+  const [user, stats, knownFor, books, genres, readers] = await Promise.all([
+    getCurrentUser(), getAuthorStats(id), getKnownFor(id, 4), getBibliography(id, sort, dir, genre),
+    getAuthorGenres(id), getReadersAlsoLike(id, 6),
+  ]);
+  const states = await getUserStates(user?.id, [...new Set([...knownFor, ...books].map((b) => b.id))]);
 
   const born = author.birthDate;
   const died = author.deathDate;

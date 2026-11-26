@@ -3,10 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { sqlite } from "@/db";
+import { db } from "@/db";
 import { getCurrentUser } from "@/lib/auth";
 import { resolveExternalRef } from "@/lib/catalog";
-import { getMyListsWithBook } from "@/lib/queries/lists";
+import { getMyListsWithBook, type MyListRow } from "@/lib/queries/lists";
 
 export type ListFormState = { error?: string; saved?: boolean; fields?: Record<string, string> } | undefined;
 export type ListResult = { ok: true } | { ok: false; error: string };
@@ -29,12 +29,12 @@ function readFields(form: FormData) {
 }
 
 /** Owner-only: returns the list row when the signed-in user owns it. */
-function ownedList(listId: number, userId: number) {
-  const row = sqlite.prepare(`SELECT id, user_id AS userId FROM lists WHERE id = ?`).get(listId) as { id: number; userId: number } | undefined;
+async function ownedList(listId: number, userId: number) {
+  const row = await db.get<{ id: number; userId: number }>(`SELECT id, user_id AS userId FROM lists WHERE id = ?`, listId);
   return row && row.userId === userId ? row : null;
 }
 
-const touch = (listId: number) => sqlite.prepare(`UPDATE lists SET updated_at = unixepoch() WHERE id = ?`).run(listId);
+const touch = (listId: number) => db.run(`UPDATE lists SET updated_at = unixepoch() WHERE id = ?`, listId);
 
 function revalidateList(listId: number) {
   revalidatePath(`/list/${listId}`);
@@ -43,8 +43,8 @@ function revalidateList(listId: number) {
   revalidatePath("/user", "layout");
 }
 
-function nextPosition(listId: number): number {
-  return ((sqlite.prepare(`SELECT max(position) m FROM list_items WHERE list_id = ?`).get(listId) as { m: number | null }).m ?? -1) + 1;
+async function nextPosition(listId: number): Promise<number> {
+  return ((await db.get<{ m: number | null }>(`SELECT max(position) AS m FROM list_items WHERE list_id = ?`, listId))?.m ?? -1) + 1;
 }
 
 /* ───────────── List metadata ───────────── */
@@ -55,23 +55,21 @@ export async function createList(_: ListFormState, form: FormData): Promise<List
   const raw = readFields(form);
   const parsed = ListFields.safeParse(raw);
   if (!parsed.success) return { error: parsed.error.issues[0].message, fields: { title: raw.title, description: raw.description } };
-  const r = sqlite
-    .prepare(`INSERT INTO lists (user_id, title, description, is_public) VALUES (?,?,?,?)`)
-    .run(user.id, parsed.data.title, parsed.data.description, parsed.data.isPublic ? 1 : 0);
+  const r = await db.get<{ id: number }>(`INSERT INTO lists (user_id, title, description, is_public) VALUES (?,?,?,?) RETURNING id`,
+    user.id, parsed.data.title, parsed.data.description, parsed.data.isPublic ? 1 : 0);
   revalidatePath("/lists");
-  redirect(`/list/${Number(r.lastInsertRowid)}/edit`);
+  redirect(`/list/${r!.id}/edit`);
 }
 
 export async function updateList(listId: number, _: ListFormState, form: FormData): Promise<ListFormState> {
   const user = await getCurrentUser();
   if (!user) return { error: "Sign in to edit lists" };
-  if (!ownedList(id.parse(listId), user.id)) return { error: "You can only edit your own lists" };
+  if (!(await ownedList(id.parse(listId), user.id))) return { error: "You can only edit your own lists" };
   const raw = readFields(form);
   const parsed = ListFields.safeParse(raw);
   if (!parsed.success) return { error: parsed.error.issues[0].message, fields: { title: raw.title, description: raw.description } };
-  sqlite
-    .prepare(`UPDATE lists SET title = ?, description = ?, is_public = ?, updated_at = unixepoch() WHERE id = ?`)
-    .run(parsed.data.title, parsed.data.description, parsed.data.isPublic ? 1 : 0, listId);
+  await db.run(`UPDATE lists SET title = ?, description = ?, is_public = ?, updated_at = unixepoch() WHERE id = ?`,
+    parsed.data.title, parsed.data.description, parsed.data.isPublic ? 1 : 0, Number(listId));
   revalidateList(listId);
   return { saved: true };
 }
@@ -79,8 +77,8 @@ export async function updateList(listId: number, _: ListFormState, form: FormDat
 export async function deleteList(listId: number): Promise<ListResult> {
   const user = await getCurrentUser();
   if (!user) return { ok: false, error: "auth" };
-  if (!ownedList(id.parse(listId), user.id)) return { ok: false, error: "You can only delete your own lists" };
-  sqlite.prepare(`DELETE FROM lists WHERE id = ?`).run(listId);
+  if (!(await ownedList(id.parse(listId), user.id))) return { ok: false, error: "You can only delete your own lists" };
+  await db.run(`DELETE FROM lists WHERE id = ?`, Number(listId));
   revalidatePath("/lists");
   revalidatePath("/user", "layout");
   redirect(`/user/${user.username}/lists`);
@@ -92,13 +90,13 @@ export async function createListQuick(input: { title: string; bookId?: string })
   if (!user) return { ok: false, error: "auth" };
   const title = z.string().trim().min(2).max(120).safeParse(input.title);
   if (!title.success) return { ok: false, error: "Give the list a title of at least 2 characters" };
-  const r = sqlite.prepare(`INSERT INTO lists (user_id, title, description, is_public) VALUES (?,?,'',1)`).run(user.id, title.data);
-  const listId = Number(r.lastInsertRowid);
+  const r = await db.get<{ id: number }>(`INSERT INTO lists (user_id, title, description, is_public) VALUES (?,?,'',1) RETURNING id`, user.id, title.data);
+  const listId = r!.id;
   let included = false;
   if (input.bookId) {
     const bid = bookId.safeParse(input.bookId);
-    if (bid.success && sqlite.prepare(`SELECT 1 FROM books WHERE id = ?`).get(bid.data)) {
-      sqlite.prepare(`INSERT INTO list_items (list_id, book_id, position) VALUES (?,?,0)`).run(listId, bid.data);
+    if (bid.success && (await db.get(`SELECT 1 FROM books WHERE id = ?`, bid.data))) {
+      await db.run(`INSERT INTO list_items (list_id, book_id, position) VALUES (?,?,0)`, listId, bid.data);
       included = true;
     }
   }
@@ -115,15 +113,15 @@ export async function toggleBookInList(listId: number, bookIdValue: string): Pro
   if (!user) return { ok: false, error: "auth" };
   const lid = id.parse(listId);
   const bid = bookId.parse(bookIdValue);
-  if (!ownedList(lid, user.id)) return { ok: false, error: "You can only edit your own lists" };
-  const exists = sqlite.prepare(`SELECT 1 FROM list_items WHERE list_id = ? AND book_id = ?`).get(lid, bid);
+  if (!(await ownedList(lid, user.id))) return { ok: false, error: "You can only edit your own lists" };
+  const exists = await db.get(`SELECT 1 FROM list_items WHERE list_id = ? AND book_id = ?`, lid, bid);
   if (exists) {
-    sqlite.prepare(`DELETE FROM list_items WHERE list_id = ? AND book_id = ?`).run(lid, bid);
+    await db.run(`DELETE FROM list_items WHERE list_id = ? AND book_id = ?`, lid, bid);
   } else {
-    if (!sqlite.prepare(`SELECT 1 FROM books WHERE id = ?`).get(bid)) return { ok: false, error: "Book not found" };
-    sqlite.prepare(`INSERT INTO list_items (list_id, book_id, position) VALUES (?,?,?)`).run(lid, bid, nextPosition(lid));
+    if (!(await db.get(`SELECT 1 FROM books WHERE id = ?`, bid))) return { ok: false, error: "Book not found" };
+    await db.run(`INSERT INTO list_items (list_id, book_id, position) VALUES (?,?,?)`, lid, bid, await nextPosition(lid));
   }
-  touch(lid);
+  await touch(lid);
   revalidateList(lid);
   return { ok: true, included: !exists };
 }
@@ -134,10 +132,10 @@ export async function addBookToList(listId: number, bookIdValue: string): Promis
   if (!user) return { ok: false, error: "auth" };
   const lid = id.parse(listId);
   const bid = bookId.parse(bookIdValue);
-  if (!ownedList(lid, user.id)) return { ok: false, error: "You can only edit your own lists" };
-  if (!sqlite.prepare(`SELECT 1 FROM books WHERE id = ?`).get(bid)) return { ok: false, error: "Book not found" };
-  sqlite.prepare(`INSERT OR IGNORE INTO list_items (list_id, book_id, position) VALUES (?,?,?)`).run(lid, bid, nextPosition(lid));
-  touch(lid);
+  if (!(await ownedList(lid, user.id))) return { ok: false, error: "You can only edit your own lists" };
+  if (!(await db.get(`SELECT 1 FROM books WHERE id = ?`, bid))) return { ok: false, error: "Book not found" };
+  await db.run(`INSERT INTO list_items (list_id, book_id, position) VALUES (?,?,?) ON CONFLICT DO NOTHING`, lid, bid, await nextPosition(lid));
+  await touch(lid);
   revalidateList(lid);
   return { ok: true };
 }
@@ -149,11 +147,11 @@ export async function addBookByRef(listId: number, ref: string): Promise<({ ok: 
   const lid = id.parse(listId);
   const parsedRef = z.string().min(3).max(300).regex(/^[a-z]+:[^\s]+$/, "Unrecognised book reference").safeParse(ref);
   if (!parsedRef.success) return { ok: false, error: parsedRef.error.issues[0].message };
-  if (!ownedList(lid, user.id)) return { ok: false, error: "You can only edit your own lists" };
+  if (!(await ownedList(lid, user.id))) return { ok: false, error: "You can only edit your own lists" };
   const slug = await resolveExternalRef(parsedRef.data);
   if (!slug) return { ok: false, error: "Could not find that book" };
-  sqlite.prepare(`INSERT OR IGNORE INTO list_items (list_id, book_id, position) VALUES (?,?,?)`).run(lid, slug, nextPosition(lid));
-  touch(lid);
+  await db.run(`INSERT INTO list_items (list_id, book_id, position) VALUES (?,?,?) ON CONFLICT DO NOTHING`, lid, slug, await nextPosition(lid));
+  await touch(lid);
   revalidateList(lid);
   return { ok: true, bookId: slug };
 }
@@ -162,9 +160,9 @@ export async function removeBookFromList(listId: number, bookIdValue: string): P
   const user = await getCurrentUser();
   if (!user) return { ok: false, error: "auth" };
   const lid = id.parse(listId);
-  if (!ownedList(lid, user.id)) return { ok: false, error: "You can only edit your own lists" };
-  sqlite.prepare(`DELETE FROM list_items WHERE list_id = ? AND book_id = ?`).run(lid, bookId.parse(bookIdValue));
-  touch(lid);
+  if (!(await ownedList(lid, user.id))) return { ok: false, error: "You can only edit your own lists" };
+  await db.run(`DELETE FROM list_items WHERE list_id = ? AND book_id = ?`, lid, bookId.parse(bookIdValue));
+  await touch(lid);
   revalidateList(lid);
   return { ok: true };
 }
@@ -175,13 +173,14 @@ export async function saveListOrder(listId: number, orderedBookIds: string[]): P
   if (!user) return { ok: false, error: "auth" };
   const lid = id.parse(listId);
   const ids = z.array(bookId).max(500).parse(orderedBookIds);
-  if (!ownedList(lid, user.id)) return { ok: false, error: "You can only edit your own lists" };
-  const current = new Set((sqlite.prepare(`SELECT book_id id FROM list_items WHERE list_id = ?`).all(lid) as { id: string }[]).map((r) => r.id));
+  if (!(await ownedList(lid, user.id))) return { ok: false, error: "You can only edit your own lists" };
+  const current = new Set((await db.all<{ id: string }>(`SELECT book_id AS id FROM list_items WHERE list_id = ?`, lid)).map((r) => r.id));
   if (current.size !== ids.length || new Set(ids).size !== ids.length || ids.some((i) => !current.has(i)))
     return { ok: false, error: "The list changed in another tab. Refresh and try again." };
-  const upd = sqlite.prepare(`UPDATE list_items SET position = ? WHERE list_id = ? AND book_id = ?`);
-  sqlite.transaction(() => ids.forEach((bid, i) => upd.run(i, lid, bid)))();
-  touch(lid);
+  await db.tx(async (t) => {
+    for (const [i, bid] of ids.entries()) await t.run(`UPDATE list_items SET position = ? WHERE list_id = ? AND book_id = ?`, i, lid, bid);
+  });
+  await touch(lid);
   revalidateList(lid);
   return { ok: true };
 }
@@ -192,9 +191,9 @@ export async function setListItemNote(listId: number, bookIdValue: string, note:
   const lid = id.parse(listId);
   const parsed = z.string().trim().max(280, "Keep notes under 280 characters").safeParse(note);
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0].message };
-  if (!ownedList(lid, user.id)) return { ok: false, error: "You can only edit your own lists" };
-  sqlite.prepare(`UPDATE list_items SET note = ? WHERE list_id = ? AND book_id = ?`).run(parsed.data || null, lid, bookId.parse(bookIdValue));
-  touch(lid);
+  if (!(await ownedList(lid, user.id))) return { ok: false, error: "You can only edit your own lists" };
+  await db.run(`UPDATE list_items SET note = ? WHERE list_id = ? AND book_id = ?`, parsed.data || null, lid, bookId.parse(bookIdValue));
+  await touch(lid);
   revalidateList(lid);
   return { ok: true };
 }
@@ -205,15 +204,15 @@ export async function toggleListLike(listId: number): Promise<({ ok: true; liked
   const user = await getCurrentUser();
   if (!user) return { ok: false, error: "auth" };
   const lid = id.parse(listId);
-  const list = sqlite.prepare(`SELECT user_id AS userId, is_public AS isPublic FROM lists WHERE id = ?`).get(lid) as { userId: number; isPublic: number } | undefined;
+  const list = await db.get<{ userId: number; isPublic: number }>(`SELECT user_id AS userId, is_public AS isPublic FROM lists WHERE id = ?`, lid);
   if (!list || (!list.isPublic && list.userId !== user.id)) return { ok: false, error: "List not found" };
-  const liked = !!sqlite.prepare(`SELECT 1 FROM list_likes WHERE list_id = ? AND user_id = ?`).get(lid, user.id);
-  sqlite.transaction(() => {
-    if (liked) sqlite.prepare(`DELETE FROM list_likes WHERE list_id = ? AND user_id = ?`).run(lid, user.id);
-    else sqlite.prepare(`INSERT INTO list_likes (list_id, user_id) VALUES (?,?)`).run(lid, user.id);
-    sqlite.prepare(`UPDATE lists SET like_count = (SELECT count(*) FROM list_likes WHERE list_id = ?) WHERE id = ?`).run(lid, lid);
-  })();
-  const likeCount = (sqlite.prepare(`SELECT like_count n FROM lists WHERE id = ?`).get(lid) as { n: number }).n;
+  const liked = !!(await db.get(`SELECT 1 FROM list_likes WHERE list_id = ? AND user_id = ?`, lid, user.id));
+  const likeCount = await db.tx(async (t) => {
+    if (liked) await t.run(`DELETE FROM list_likes WHERE list_id = ? AND user_id = ?`, lid, user.id);
+    else await t.run(`INSERT INTO list_likes (list_id, user_id) VALUES (?,?) ON CONFLICT DO NOTHING`, lid, user.id);
+    const r = await t.get<{ n: number }>(`UPDATE lists SET like_count = (SELECT count(*) FROM list_likes WHERE list_id = ?) WHERE id = ? RETURNING like_count AS n`, lid, lid);
+    return r!.n;
+  });
   revalidatePath(`/list/${lid}`);
   revalidatePath("/lists");
   return { ok: true, liked: !liked, likeCount };
@@ -221,8 +220,8 @@ export async function toggleListLike(listId: number): Promise<({ ok: true; liked
 
 /* ───────────── AddToListButton data ───────────── */
 
-export async function getMyListsForBook(bookIdValue: string): Promise<{ signedIn: false } | { signedIn: true; lists: ReturnType<typeof getMyListsWithBook> }> {
+export async function getMyListsForBook(bookIdValue: string): Promise<{ signedIn: false } | { signedIn: true; lists: MyListRow[] }> {
   const user = await getCurrentUser();
   if (!user) return { signedIn: false };
-  return { signedIn: true, lists: getMyListsWithBook(user.id, bookId.parse(bookIdValue)) };
+  return { signedIn: true, lists: await getMyListsWithBook(user.id, bookId.parse(bookIdValue)) };
 }

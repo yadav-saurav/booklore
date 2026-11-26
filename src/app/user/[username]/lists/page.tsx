@@ -10,17 +10,17 @@ import { ListCard } from "@/components/lists/ListCard";
 type Params = { params: Promise<{ username: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const m = getMemberByUsername((await params).username);
+  const m = await getMemberByUsername((await params).username);
   return { title: m ? `Lists by ${m.displayName}` : "Lists" };
 }
 
 export default async function UserListsPage({ params }: Params) {
   const { username } = await params;
-  const member = getMemberByUsername(username);
+  const member = await getMemberByUsername(username);
   if (!member) notFound();
   const me = await getCurrentUser();
   const isSelf = me?.id === member.id;
-  const lists = getUserLists(member.id, isSelf);
+  const lists = await getUserLists(member.id, isSelf);
 
   return (
     <div className="page py-10 md:py-14">

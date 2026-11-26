@@ -20,7 +20,7 @@ const PAGE_SIZE = 24;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const g = getGenre(slug);
+  const g = await getGenre(slug);
   if (!g) return { title: "Genre not found" };
   return { title: g.name, description: g.description || `Browse ${g.name} books on BOOKLORE.` };
 }
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function GenrePage({ params, searchParams }: Props) {
   const { slug } = await params;
   const sp = flatParams(await searchParams);
-  const genre = getGenre(slug);
+  const genre = await getGenre(slug);
   if (!genre) notFound();
 
   const sort = isGenreSort(sp.sort) ? sp.sort : "popularity";
@@ -44,12 +44,10 @@ export default async function GenrePage({ params, searchParams }: Props) {
   const view = sp.view === "list" ? "list" : "grid";
   const path = `/genre/${genre.slug}`;
 
-  const user = await getCurrentUser();
-  const top = getTopRatedInGenre(slug, 12);
-  const decades = getGenreDecades(slug);
-  const { rows, total } = getGenreBooks(slug, filters);
-  const related = getRelatedGenres(slug, 8);
-  const states = getUserStates(user?.id, [...new Set([...top, ...rows].map((b) => b.id))]);
+  const [user, top, decades, { rows, total }, related] = await Promise.all([
+    getCurrentUser(), getTopRatedInGenre(slug, 12), getGenreDecades(slug), getGenreBooks(slug, filters), getRelatedGenres(slug, 8),
+  ]);
+  const states = await getUserStates(user?.id, [...new Set([...top, ...rows].map((b) => b.id))]);
 
   return (
     <div className="pb-16">

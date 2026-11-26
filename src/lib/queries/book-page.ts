@@ -22,7 +22,7 @@ export type BookDetail = {
 
 export const getBookDetail = cache(async (id: string): Promise<BookDetail | null> => {
   const b = await db.get(
-      `SELECT id, title, subtitle, first_publish_year year, cover_id coverId, cover_url coverUrl, isbn13, pages, publisher, language,
+      `SELECT id, title, subtitle, first_publish_year AS year, cover_id coverId, cover_url coverUrl, isbn13, pages, publisher, language,
         synopsis, subjects, source, ol_work_key olWorkKey, google_id googleId, rating_avg ratingAvg, rating_count ratingCount,
         weighted_score weightedScore, review_count reviewCount, shelf_count shelfCount, popularity_rank popularityRank,
         prev_popularity_rank prevPopularityRank, ol_rating_avg olRatingAvg, ol_rating_count olRatingCount

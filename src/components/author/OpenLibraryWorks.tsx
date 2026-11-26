@@ -12,8 +12,8 @@ const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "");
 export async function OpenLibraryWorks({ authorId, olKey }: { authorId: string; olKey: string }) {
   const provider = getProvider("openlibrary");
   const works = provider?.getAuthorWorks ? await provider.getAuthorWorks(olKey, { limit: 40 }) : [];
-  const have = existingOlWorkKeys(works.map((w) => w.externalId));
-  const titles = new Set(authorBookTitles(authorId).map(norm));
+  const [have, ownTitles] = await Promise.all([existingOlWorkKeys(works.map((w) => w.externalId)), authorBookTitles(authorId)]);
+  const titles = new Set(ownTitles.map(norm));
   const seen = new Set<string>();
   const fresh = works.filter((w) => {
     const t = norm(w.title);

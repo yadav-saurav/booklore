@@ -24,10 +24,10 @@ function Shelf({ title, lists, id }: { title: string; lists: ListSummary[]; id: 
 export default async function ListsPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const sp = await searchParams;
   const page = Math.max(1, Number.parseInt(sp.page ?? "1", 10) || 1);
-  const featured = getFeaturedLists(6);
-  const popular = getPopularLists(8);
-  const recent = getRecentLists(PER_PAGE, (page - 1) * PER_PAGE);
-  const total = countPublicLists();
+  const featured = await getFeaturedLists(6);
+  const popular = await getPopularLists(8);
+  const recent = await getRecentLists(PER_PAGE, (page - 1) * PER_PAGE);
+  const total = await countPublicLists();
   const pages = Math.max(1, Math.ceil(total / PER_PAGE));
 
   return (

@@ -53,7 +53,10 @@ async function getJson(url, cache) {
     if (wait > 0) await sleep(wait);
     lastRequestAt = Date.now();
     try {
-      const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT, Accept: 'application/json' } });
+      const res = await fetch(url, {
+        headers: { 'User-Agent': USER_AGENT, Accept: 'application/json' },
+        signal: AbortSignal.timeout(20_000),
+      });
       if (res.status === 404) {
         cache[url] = null; // definitive miss, cache it
         return null;
@@ -61,6 +64,7 @@ async function getJson(url, cache) {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const body = await res.json();
       cache[url] = body;
+      if (Object.keys(cache).length % 25 === 0) await writeFile(CACHE_PATH, JSON.stringify(cache) + '\n');
       return body;
     } catch (err) {
       lastError = err;
@@ -102,7 +106,7 @@ function pickBest(input, docs) {
   let best = null;
   let bestScore = -1;
   for (const doc of docs ?? []) {
-    const ts = titleScore(input.title, doc.title);
+    const ts = titleScore(input.searchTitle ?? input.title, doc.title);
     if (ts === 0) continue; // never accept an unrelated title
     const score = ts * 10 + authorScore(input.author, doc.author_name) * 5 + (doc.cover_i ? 4 : 0);
     if (score > bestScore) {
@@ -113,15 +117,25 @@ function pickBest(input, docs) {
   return best;
 }
 
+// Keeps only the author keys whose name matches the input author (translators,
+// editors and illustrators are dropped). Falls back to the first key.
+function primaryAuthorKeys(input, doc) {
+  const keys = doc.author_key ?? [];
+  const names = doc.author_name ?? [];
+  const last = normalize(input.author).split(' ').filter(Boolean).pop() ?? '';
+  const matched = keys.filter((_, i) => last && normalize(names[i] ?? '').includes(last));
+  return (matched.length ? matched : keys.slice(0, 1)).slice(0, 3);
+}
+
 function toRawBook(input, doc) {
   return {
     inputTitle: input.title,
     inputAuthor: input.author,
     genres: input.genres,
     olWorkKey: String(doc.key).replace(/^\/works\//, ''),
-    title: doc.title ?? input.title,
+    title: input.title,
     subtitle: doc.subtitle ?? null,
-    authorKeys: (doc.author_key ?? []).slice(0, 3),
+    authorKeys: primaryAuthorKeys(input, doc),
     authorNames: doc.author_name ?? [],
     firstPublishYear: doc.first_publish_year ?? null,
     coverId: doc.cover_i ?? null,
@@ -150,7 +164,7 @@ async function main() {
 
   for (const [i, input] of inputs.entries()) {
     const params = new URLSearchParams({
-      title: input.title,
+      title: input.searchTitle ?? input.title,
       author: input.author,
       limit: '3',
       fields: SEARCH_FIELDS,

@@ -1,355 +1,1752 @@
 [
-  { "title": "Pride and Prejudice", "author": "Jane Austen", "genres": ["classics", "romance"] },
-  { "title": "Emma", "author": "Jane Austen", "genres": ["classics", "romance"] },
-  { "title": "Jane Eyre", "author": "Charlotte Brontë", "genres": ["classics", "romance"] },
-  { "title": "Wuthering Heights", "author": "Emily Brontë", "genres": ["classics", "romance"] },
-  { "title": "Frankenstein", "author": "Mary Shelley", "genres": ["horror", "science-fiction"] },
-  { "title": "Dracula", "author": "Bram Stoker", "genres": ["horror", "classics"] },
-  { "title": "Moby-Dick", "author": "Herman Melville", "genres": ["classics", "literary-fiction"] },
-  { "title": "The Great Gatsby", "author": "F. Scott Fitzgerald", "genres": ["classics", "literary-fiction"] },
-  { "title": "To Kill a Mockingbird", "author": "Harper Lee", "genres": ["literary-fiction", "classics"] },
-  { "title": "1984", "author": "George Orwell", "genres": ["science-fiction", "classics"] },
-  { "title": "Brave New World", "author": "Aldous Huxley", "genres": ["science-fiction", "classics"] },
-  { "title": "The Catcher in the Rye", "author": "J.D. Salinger", "genres": ["literary-fiction", "classics"] },
-  { "title": "Crime and Punishment", "author": "Fyodor Dostoevsky", "genres": ["classics", "literary-fiction"] },
-  { "title": "Anna Karenina", "author": "Leo Tolstoy", "genres": ["classics", "romance"] },
-  { "title": "The Brothers Karamazov", "author": "Fyodor Dostoevsky", "genres": ["classics", "philosophy"] },
-  { "title": "Madame Bovary", "author": "Gustave Flaubert", "genres": ["classics", "literary-fiction"] },
-  { "title": "The Count of Monte Cristo", "author": "Alexandre Dumas", "genres": ["classics", "historical-fiction"] },
-  { "title": "Les Misérables", "author": "Victor Hugo", "genres": ["classics", "historical-fiction"] },
-  { "title": "A Tale of Two Cities", "author": "Charles Dickens", "genres": ["historical-fiction", "classics"] },
-  { "title": "Great Expectations", "author": "Charles Dickens", "genres": ["classics", "literary-fiction"] },
-  { "title": "The Picture of Dorian Gray", "author": "Oscar Wilde", "genres": ["horror", "classics"] },
-  { "title": "Strange Case of Dr Jekyll and Mr Hyde", "author": "Robert Louis Stevenson", "genres": ["horror", "classics"] },
-  { "title": "Treasure Island", "author": "Robert Louis Stevenson", "genres": ["childrens", "classics"] },
-  { "title": "The Adventures of Sherlock Holmes", "author": "Arthur Conan Doyle", "genres": ["mystery", "classics"] },
-  { "title": "The Hound of the Baskervilles", "author": "Arthur Conan Doyle", "genres": ["mystery"] },
-  { "title": "Alice's Adventures in Wonderland", "author": "Lewis Carroll", "genres": ["childrens", "fantasy"] },
-  { "title": "Peter Pan", "author": "J.M. Barrie", "genres": ["childrens", "fantasy"] },
-  { "title": "The Wind in the Willows", "author": "Kenneth Grahame", "genres": ["childrens", "classics"] },
-  { "title": "The Secret Garden", "author": "Frances Hodgson Burnett", "genres": ["childrens", "classics"] },
-  { "title": "Little Women", "author": "Louisa May Alcott", "genres": ["classics", "romance"] },
-  { "title": "The Time Machine", "author": "H.G. Wells", "genres": ["science-fiction", "classics"] },
-  { "title": "The War of the Worlds", "author": "H.G. Wells", "genres": ["science-fiction", "classics"] },
-  { "title": "Heart of Darkness", "author": "Joseph Conrad", "genres": ["classics", "literary-fiction"] },
-  { "title": "The Metamorphosis", "author": "Franz Kafka", "genres": ["classics", "literary-fiction"] },
-  { "title": "The Old Man and the Sea", "author": "Ernest Hemingway", "genres": ["literary-fiction", "classics"] },
-  { "title": "Mrs Dalloway", "author": "Virginia Woolf", "genres": ["literary-fiction", "classics"] },
-  { "title": "To the Lighthouse", "author": "Virginia Woolf", "genres": ["literary-fiction", "classics"] },
-  { "title": "Ulysses", "author": "James Joyce", "genres": ["classics", "literary-fiction"] },
-  { "title": "Lord of the Flies", "author": "William Golding", "genres": ["literary-fiction", "young-adult"] },
-  { "title": "The Grapes of Wrath", "author": "John Steinbeck", "genres": ["literary-fiction", "historical-fiction"] },
-  { "title": "Of Mice and Men", "author": "John Steinbeck", "genres": ["literary-fiction", "classics"] },
-  { "title": "East of Eden", "author": "John Steinbeck", "genres": ["literary-fiction", "historical-fiction"] },
-  { "title": "Rebecca", "author": "Daphne du Maurier", "genres": ["mystery", "romance"] },
-  { "title": "Gone with the Wind", "author": "Margaret Mitchell", "genres": ["historical-fiction", "romance"] },
-  { "title": "Invisible Man", "author": "Ralph Ellison", "genres": ["literary-fiction", "classics"] },
-  { "title": "Their Eyes Were Watching God", "author": "Zora Neale Hurston", "genres": ["literary-fiction", "classics"] },
-  { "title": "Beloved", "author": "Toni Morrison", "genres": ["literary-fiction", "historical-fiction"] },
-  { "title": "Things Fall Apart", "author": "Chinua Achebe", "genres": ["literary-fiction", "historical-fiction"] },
-  { "title": "The Stranger", "author": "Albert Camus", "genres": ["philosophy", "literary-fiction"] },
-  { "title": "Fahrenheit 451", "author": "Ray Bradbury", "genres": ["science-fiction"] },
-  { "title": "Catch-22", "author": "Joseph Heller", "genres": ["humor", "literary-fiction"] },
-  { "title": "Lolita", "author": "Vladimir Nabokov", "genres": ["literary-fiction"] },
-  { "title": "Pale Fire", "author": "Vladimir Nabokov", "genres": ["literary-fiction", "mystery"] },
-  { "title": "The Name of the Rose", "author": "Umberto Eco", "genres": ["mystery", "historical-fiction"] },
-  { "title": "Don Quixote", "author": "Miguel de Cervantes", "genres": ["classics", "humor"] },
-  { "title": "The Iliad", "author": "Homer", "genres": ["classics", "poetry"] },
-  { "title": "The Divine Comedy", "author": "Dante Alighieri", "genres": ["poetry", "classics"] },
-  { "title": "Paradise Lost", "author": "John Milton", "genres": ["poetry", "classics"] },
-  { "title": "Leaves of Grass", "author": "Walt Whitman", "genres": ["poetry"] },
-  { "title": "The Waste Land", "author": "T.S. Eliot", "genres": ["poetry"] },
-  { "title": "Dune", "author": "Frank Herbert", "genres": ["science-fiction"] },
-  { "title": "Foundation", "author": "Isaac Asimov", "genres": ["science-fiction"] },
-  { "title": "I, Robot", "author": "Isaac Asimov", "genres": ["science-fiction"] },
-  { "title": "Neuromancer", "author": "William Gibson", "genres": ["science-fiction"] },
-  { "title": "Snow Crash", "author": "Neal Stephenson", "genres": ["science-fiction"] },
-  { "title": "Hyperion", "author": "Dan Simmons", "genres": ["science-fiction"] },
-  { "title": "The Left Hand of Darkness", "author": "Ursula K. Le Guin", "genres": ["science-fiction", "literary-fiction"] },
-  { "title": "A Wizard of Earthsea", "author": "Ursula K. Le Guin", "genres": ["fantasy", "young-adult"] },
-  { "title": "The Dispossessed", "author": "Ursula K. Le Guin", "genres": ["science-fiction"] },
-  { "title": "Ender's Game", "author": "Orson Scott Card", "genres": ["science-fiction", "young-adult"] },
-  { "title": "Solaris", "author": "Stanisław Lem", "genres": ["science-fiction"] },
-  { "title": "Do Androids Dream of Electric Sheep?", "author": "Philip K. Dick", "genres": ["science-fiction"] },
-  { "title": "The Man in the High Castle", "author": "Philip K. Dick", "genres": ["science-fiction", "historical-fiction"] },
-  { "title": "Flowers for Algernon", "author": "Daniel Keyes", "genres": ["science-fiction", "literary-fiction"] },
-  { "title": "The Handmaid's Tale", "author": "Margaret Atwood", "genres": ["science-fiction", "literary-fiction"] },
-  { "title": "Never Let Me Go", "author": "Kazuo Ishiguro", "genres": ["science-fiction", "literary-fiction"] },
-  { "title": "The Remains of the Day", "author": "Kazuo Ishiguro", "genres": ["literary-fiction"] },
-  { "title": "Klara and the Sun", "author": "Kazuo Ishiguro", "genres": ["science-fiction", "literary-fiction"] },
-  { "title": "The Road", "author": "Cormac McCarthy", "genres": ["literary-fiction"] },
-  { "title": "Blood Meridian", "author": "Cormac McCarthy", "genres": ["literary-fiction", "historical-fiction"] },
-  { "title": "The Hitchhiker's Guide to the Galaxy", "author": "Douglas Adams", "genres": ["science-fiction", "humor"] },
-  { "title": "Good Omens", "author": "Terry Pratchett", "genres": ["fantasy", "humor"] },
-  { "title": "The Colour of Magic", "author": "Terry Pratchett", "genres": ["fantasy", "humor"] },
-  { "title": "The Hobbit", "author": "J.R.R. Tolkien", "genres": ["fantasy", "childrens"] },
-  { "title": "The Fellowship of the Ring", "author": "J.R.R. Tolkien", "genres": ["fantasy"] },
-  { "title": "A Game of Thrones", "author": "George R.R. Martin", "genres": ["fantasy"] },
-  { "title": "The Name of the Wind", "author": "Patrick Rothfuss", "genres": ["fantasy"] },
-  { "title": "The Way of Kings", "author": "Brandon Sanderson", "genres": ["fantasy"] },
-  { "title": "Mistborn: The Final Empire", "author": "Brandon Sanderson", "genres": ["fantasy"] },
-  { "title": "The Lies of Locke Lamora", "author": "Scott Lynch", "genres": ["fantasy"] },
-  { "title": "The Blade Itself", "author": "Joe Abercrombie", "genres": ["fantasy"] },
-  { "title": "The Once and Future King", "author": "T.H. White", "genres": ["fantasy", "classics"] },
-  { "title": "The Lion, the Witch and the Wardrobe", "author": "C.S. Lewis", "genres": ["childrens", "fantasy"] },
-  { "title": "Gormenghast", "author": "Mervyn Peake", "genres": ["fantasy", "literary-fiction"] },
-  { "title": "American Gods", "author": "Neil Gaiman", "genres": ["fantasy"] },
-  { "title": "The Ocean at the End of the Lane", "author": "Neil Gaiman", "genres": ["fantasy", "horror"] },
-  { "title": "Coraline", "author": "Neil Gaiman", "genres": ["childrens", "horror"] },
-  { "title": "Piranesi", "author": "Susanna Clarke", "genres": ["fantasy", "literary-fiction"] },
-  { "title": "Jonathan Strange & Mr Norrell", "author": "Susanna Clarke", "genres": ["fantasy", "historical-fiction"] },
-  { "title": "The Priory of the Orange Tree", "author": "Samantha Shannon", "genres": ["fantasy"] },
-  { "title": "Six of Crows", "author": "Leigh Bardugo", "genres": ["fantasy", "young-adult"] },
-  { "title": "Ninth House", "author": "Leigh Bardugo", "genres": ["fantasy", "mystery"] },
-  { "title": "Hell Bent", "author": "Leigh Bardugo", "genres": ["fantasy", "mystery"] },
-  { "title": "The Poppy War", "author": "R.F. Kuang", "genres": ["fantasy"] },
-  { "title": "Babel", "author": "R.F. Kuang", "genres": ["fantasy", "historical-fiction"] },
-  { "title": "The House in the Cerulean Sea", "author": "TJ Klune", "genres": ["fantasy", "romance"] },
-  { "title": "Legends & Lattes", "author": "Travis Baldree", "genres": ["fantasy", "humor"] },
-  { "title": "A Court of Thorns and Roses", "author": "Sarah J. Maas", "genres": ["fantasy", "romance"] },
-  { "title": "Fourth Wing", "author": "Rebecca Yarros", "genres": ["fantasy", "romance"] },
-  { "title": "Iron Flame", "author": "Rebecca Yarros", "genres": ["fantasy", "romance"] },
-  { "title": "The Night Circus", "author": "Erin Morgenstern", "genres": ["fantasy", "romance"] },
-  { "title": "Circe", "author": "Madeline Miller", "genres": ["fantasy", "classics"] },
-  { "title": "The Song of Achilles", "author": "Madeline Miller", "genres": ["historical-fiction", "romance"] },
-  { "title": "The Shadow of the Wind", "author": "Carlos Ruiz Zafón", "genres": ["mystery", "literary-fiction"] },
-  { "title": "The Secret History", "author": "Donna Tartt", "genres": ["literary-fiction", "mystery"] },
-  { "title": "The Goldfinch", "author": "Donna Tartt", "genres": ["literary-fiction"] },
-  { "title": "The Da Vinci Code", "author": "Dan Brown", "genres": ["thriller", "mystery"] },
-  { "title": "Gone Girl", "author": "Gillian Flynn", "genres": ["thriller", "mystery"] },
-  { "title": "Sharp Objects", "author": "Gillian Flynn", "genres": ["thriller"] },
-  { "title": "The Girl with the Dragon Tattoo", "author": "Stieg Larsson", "genres": ["mystery", "thriller"] },
-  { "title": "The Silence of the Lambs", "author": "Thomas Harris", "genres": ["thriller", "horror"] },
-  { "title": "The Talented Mr. Ripley", "author": "Patricia Highsmith", "genres": ["thriller"] },
-  { "title": "Strangers on a Train", "author": "Patricia Highsmith", "genres": ["thriller"] },
-  { "title": "The Girl on the Train", "author": "Paula Hawkins", "genres": ["thriller", "mystery"] },
-  { "title": "The Woman in White", "author": "Wilkie Collins", "genres": ["mystery", "classics"] },
-  { "title": "The Maltese Falcon", "author": "Dashiell Hammett", "genres": ["mystery"] },
-  { "title": "The Big Sleep", "author": "Raymond Chandler", "genres": ["mystery"] },
-  { "title": "And Then There Were None", "author": "Agatha Christie", "genres": ["mystery"] },
-  { "title": "Murder on the Orient Express", "author": "Agatha Christie", "genres": ["mystery"] },
-  { "title": "The Murder of Roger Ackroyd", "author": "Agatha Christie", "genres": ["mystery"] },
-  { "title": "The Thursday Murder Club", "author": "Richard Osman", "genres": ["mystery", "humor"] },
-  { "title": "The Silent Patient", "author": "Alex Michaelides", "genres": ["thriller", "mystery"] },
-  { "title": "Shutter Island", "author": "Dennis Lehane", "genres": ["thriller", "mystery"] },
-  { "title": "In the Woods", "author": "Tana French", "genres": ["mystery"] },
-  { "title": "The Hunger Games", "author": "Suzanne Collins", "genres": ["young-adult", "science-fiction"] },
-  { "title": "The Haunting of Hill House", "author": "Shirley Jackson", "genres": ["horror"] },
-  { "title": "We Have Always Lived in the Castle", "author": "Shirley Jackson", "genres": ["horror", "mystery"] },
-  { "title": "It", "author": "Stephen King", "genres": ["horror"] },
-  { "title": "The Shining", "author": "Stephen King", "genres": ["horror"] },
-  { "title": "Carrie", "author": "Stephen King", "genres": ["horror"] },
-  { "title": "Holly", "author": "Stephen King", "genres": ["mystery", "horror"] },
-  { "title": "Mexican Gothic", "author": "Silvia Moreno-Garcia", "genres": ["horror", "historical-fiction"] },
-  { "title": "Bird Box", "author": "Josh Malerman", "genres": ["horror"] },
-  { "title": "Rosemary's Baby", "author": "Ira Levin", "genres": ["horror"] },
-  { "title": "The Exorcist", "author": "William Peter Blatty", "genres": ["horror"] },
-  { "title": "The Turn of the Screw", "author": "Henry James", "genres": ["horror", "classics"] },
-  { "title": "The Only Good Indians", "author": "Stephen Graham Jones", "genres": ["horror"] },
-  { "title": "Me Before You", "author": "Jojo Moyes", "genres": ["romance"] },
-  { "title": "Outlander", "author": "Diana Gabaldon", "genres": ["historical-fiction", "romance"] },
-  { "title": "The Notebook", "author": "Nicholas Sparks", "genres": ["romance"] },
-  { "title": "Normal People", "author": "Sally Rooney", "genres": ["literary-fiction", "romance"] },
-  { "title": "Intermezzo", "author": "Sally Rooney", "genres": ["literary-fiction"] },
-  { "title": "The Time Traveler's Wife", "author": "Audrey Niffenegger", "genres": ["romance", "science-fiction"] },
-  { "title": "Beach Read", "author": "Emily Henry", "genres": ["romance", "humor"] },
-  { "title": "People We Meet on Vacation", "author": "Emily Henry", "genres": ["romance"] },
-  { "title": "Happy Place", "author": "Emily Henry", "genres": ["romance"] },
-  { "title": "It Ends with Us", "author": "Colleen Hoover", "genres": ["romance"] },
-  { "title": "Red, White & Royal Blue", "author": "Casey McQuiston", "genres": ["romance", "humor"] },
-  { "title": "Lessons in Chemistry", "author": "Bonnie Garmus", "genres": ["historical-fiction", "literary-fiction"] },
-  { "title": "Eleanor Oliphant Is Completely Fine", "author": "Gail Honeyman", "genres": ["literary-fiction", "humor"] },
-  { "title": "Where the Crawdads Sing", "author": "Delia Owens", "genres": ["literary-fiction", "mystery"] },
-  { "title": "The Midnight Library", "author": "Matt Haig", "genres": ["literary-fiction", "fantasy"] },
-  { "title": "A Little Life", "author": "Hanya Yanagihara", "genres": ["literary-fiction"] },
-  { "title": "The Vanishing Half", "author": "Brit Bennett", "genres": ["literary-fiction"] },
-  { "title": "Demon Copperhead", "author": "Barbara Kingsolver", "genres": ["literary-fiction"] },
-  { "title": "The Poisonwood Bible", "author": "Barbara Kingsolver", "genres": ["literary-fiction", "historical-fiction"] },
-  { "title": "Tomorrow, and Tomorrow, and Tomorrow", "author": "Gabrielle Zevin", "genres": ["literary-fiction"] },
-  { "title": "The Book Thief", "author": "Markus Zusak", "genres": ["historical-fiction", "young-adult"] },
-  { "title": "The Kite Runner", "author": "Khaled Hosseini", "genres": ["historical-fiction", "literary-fiction"] },
-  { "title": "A Thousand Splendid Suns", "author": "Khaled Hosseini", "genres": ["historical-fiction"] },
-  { "title": "Pachinko", "author": "Min Jin Lee", "genres": ["historical-fiction", "literary-fiction"] },
-  { "title": "Wolf Hall", "author": "Hilary Mantel", "genres": ["historical-fiction"] },
-  { "title": "The Covenant of Water", "author": "Abraham Verghese", "genres": ["literary-fiction", "historical-fiction"] },
-  { "title": "Tom Lake", "author": "Ann Patchett", "genres": ["literary-fiction"] },
-  { "title": "Prophet Song", "author": "Paul Lynch", "genres": ["literary-fiction"] },
-  { "title": "Orbital", "author": "Samantha Harvey", "genres": ["literary-fiction", "science-fiction"] },
-  { "title": "James", "author": "Percival Everett", "genres": ["literary-fiction", "historical-fiction"] },
-  { "title": "The Heaven & Earth Grocery Store", "author": "James McBride", "genres": ["literary-fiction"] },
-  { "title": "Chain-Gang All-Stars", "author": "Nana Kwame Adjei-Brenyah", "genres": ["literary-fiction", "science-fiction"] },
-  { "title": "Creation Lake", "author": "Rachel Kushner", "genres": ["literary-fiction", "thriller"] },
-  { "title": "Yellowface", "author": "R.F. Kuang", "genres": ["literary-fiction", "thriller"] },
-  { "title": "The Ministry of Time", "author": "Kaliane Bradley", "genres": ["science-fiction", "literary-fiction"] },
-  { "title": "Sea of Tranquility", "author": "Emily St. John Mandel", "genres": ["science-fiction", "literary-fiction"] },
-  { "title": "The Kaiju Preservation Society", "author": "John Scalzi", "genres": ["science-fiction", "humor"] },
-  { "title": "Hello Beautiful", "author": "Ann Napolitano", "genres": ["literary-fiction"] },
-  { "title": "Remarkably Bright Creatures", "author": "Shelby Van Pelt", "genres": ["literary-fiction", "mystery"] },
-  { "title": "Pineapple Street", "author": "Jenny Jackson", "genres": ["literary-fiction", "romance"] },
-  { "title": "Trust", "author": "Hernan Diaz", "genres": ["historical-fiction", "literary-fiction"] },
-  { "title": "The Seven Moons of Maali Almeida", "author": "Shehan Karunatilaka", "genres": ["literary-fiction", "mystery"] },
-  { "title": "The Women", "author": "Kristin Hannah", "genres": ["historical-fiction"] },
-  { "title": "The Nightingale", "author": "Kristin Hannah", "genres": ["historical-fiction"] },
-  { "title": "All the Light We Cannot See", "author": "Anthony Doerr", "genres": ["historical-fiction"] },
-  { "title": "Shogun", "author": "James Clavell", "genres": ["historical-fiction"] },
-  { "title": "The Bee Sting", "author": "Paul Murray", "genres": ["literary-fiction"] },
-  { "title": "Americanah", "author": "Chimamanda Ngozi Adichie", "genres": ["literary-fiction"] },
-  { "title": "Half of a Yellow Sun", "author": "Chimamanda Ngozi Adichie", "genres": ["historical-fiction"] },
-  { "title": "White Teeth", "author": "Zadie Smith", "genres": ["literary-fiction"] },
-  { "title": "The Overstory", "author": "Richard Powers", "genres": ["literary-fiction"] },
-  { "title": "Olive Kitteridge", "author": "Elizabeth Strout", "genres": ["literary-fiction"] },
-  { "title": "Stoner", "author": "John Williams", "genres": ["literary-fiction", "classics"] },
-  { "title": "Less", "author": "Andrew Sean Greer", "genres": ["literary-fiction", "humor"] },
-  { "title": "Eileen", "author": "Ottessa Moshfegh", "genres": ["literary-fiction", "thriller"] },
-  { "title": "A Confederacy of Dunces", "author": "John Kennedy Toole", "genres": ["humor", "literary-fiction"] },
-  { "title": "The Hate U Give", "author": "Angie Thomas", "genres": ["young-adult", "literary-fiction"] },
-  { "title": "The Giver", "author": "Lois Lowry", "genres": ["young-adult", "science-fiction"] },
-  { "title": "The Outsiders", "author": "S.E. Hinton", "genres": ["young-adult"] },
-  { "title": "Speak", "author": "Laurie Halse Anderson", "genres": ["young-adult"] },
-  { "title": "Looking for Alaska", "author": "John Green", "genres": ["young-adult", "romance"] },
-  { "title": "The Fault in Our Stars", "author": "John Green", "genres": ["young-adult", "romance"] },
-  { "title": "Eleanor & Park", "author": "Rainbow Rowell", "genres": ["young-adult", "romance"] },
-  { "title": "Ready Player One", "author": "Ernest Cline", "genres": ["science-fiction", "young-adult"] },
-  { "title": "Twilight", "author": "Stephenie Meyer", "genres": ["young-adult", "romance"] },
-  { "title": "The Maze Runner", "author": "James Dashner", "genres": ["young-adult", "science-fiction"] },
-  { "title": "Divergent", "author": "Veronica Roth", "genres": ["young-adult", "science-fiction"] },
-  { "title": "Harry Potter and the Philosopher's Stone", "author": "J.K. Rowling", "genres": ["fantasy", "young-adult"] },
-  { "title": "The Lightning Thief", "author": "Rick Riordan", "genres": ["childrens", "fantasy"] },
-  { "title": "A Wrinkle in Time", "author": "Madeleine L'Engle", "genres": ["childrens", "science-fiction"] },
-  { "title": "Holes", "author": "Louis Sachar", "genres": ["childrens", "young-adult"] },
-  { "title": "Wonder", "author": "R.J. Palacio", "genres": ["childrens", "young-adult"] },
-  { "title": "Number the Stars", "author": "Lois Lowry", "genres": ["historical-fiction", "young-adult"] },
-  { "title": "Anne of Green Gables", "author": "L.M. Montgomery", "genres": ["childrens", "classics"] },
-  { "title": "The Jungle Book", "author": "Rudyard Kipling", "genres": ["childrens", "classics"] },
-  { "title": "Black Beauty", "author": "Anna Sewell", "genres": ["childrens", "classics"] },
-  { "title": "Little House on the Prairie", "author": "Laura Ingalls Wilder", "genres": ["childrens", "historical-fiction"] },
-  { "title": "Charlotte's Web", "author": "E.B. White", "genres": ["childrens"] },
-  { "title": "Where the Wild Things Are", "author": "Maurice Sendak", "genres": ["childrens"] },
-  { "title": "The Very Hungry Caterpillar", "author": "Eric Carle", "genres": ["childrens"] },
-  { "title": "Goodnight Moon", "author": "Margaret Wise Brown", "genres": ["childrens"] },
-  { "title": "Green Eggs and Ham", "author": "Dr. Seuss", "genres": ["childrens", "humor"] },
-  { "title": "The Cat in the Hat", "author": "Dr. Seuss", "genres": ["childrens", "humor"] },
-  { "title": "Matilda", "author": "Roald Dahl", "genres": ["childrens", "humor"] },
-  { "title": "Charlie and the Chocolate Factory", "author": "Roald Dahl", "genres": ["childrens", "humor"] },
-  { "title": "Smile", "author": "Raina Telgemeier", "genres": ["graphic-novels", "childrens"] },
-  { "title": "Bone", "author": "Jeff Smith", "genres": ["graphic-novels", "fantasy"] },
-  { "title": "Maus", "author": "Art Spiegelman", "genres": ["graphic-novels", "history"] },
-  { "title": "Persepolis", "author": "Marjane Satrapi", "genres": ["graphic-novels", "biography-memoir"] },
-  { "title": "Watchmen", "author": "Alan Moore", "genres": ["graphic-novels", "science-fiction"] },
-  { "title": "The Sandman", "author": "Neil Gaiman", "genres": ["graphic-novels", "fantasy"] },
-  { "title": "Saga", "author": "Brian K. Vaughan", "genres": ["graphic-novels", "science-fiction"] },
-  { "title": "Fun Home", "author": "Alison Bechdel", "genres": ["graphic-novels", "biography-memoir"] },
-  { "title": "Blankets", "author": "Craig Thompson", "genres": ["graphic-novels", "romance"] },
-  { "title": "Nimona", "author": "N.D. Stevenson", "genres": ["graphic-novels", "young-adult"] },
-  { "title": "Jimmy Corrigan", "author": "Chris Ware", "genres": ["graphic-novels", "literary-fiction"] },
-  { "title": "Ghost World", "author": "Daniel Clowes", "genres": ["graphic-novels", "humor"] },
-  { "title": "The Arrival", "author": "Shaun Tan", "genres": ["graphic-novels", "childrens"] },
-  { "title": "Akira", "author": "Katsuhiro Otomo", "genres": ["graphic-novels", "science-fiction"] },
-  { "title": "The Dark Knight Returns", "author": "Frank Miller", "genres": ["graphic-novels"] },
-  { "title": "The Complete Calvin and Hobbes", "author": "Bill Watterson", "genres": ["graphic-novels", "humor"] },
-  { "title": "Milk and Honey", "author": "Rupi Kaur", "genres": ["poetry"] },
-  { "title": "Ariel", "author": "Sylvia Plath", "genres": ["poetry"] },
-  { "title": "The Hill We Climb", "author": "Amanda Gorman", "genres": ["poetry"] },
-  { "title": "Night Sky with Exit Wounds", "author": "Ocean Vuong", "genres": ["poetry"] },
-  { "title": "Devotions", "author": "Mary Oliver", "genres": ["poetry"] },
-  { "title": "Twenty Love Poems and a Song of Despair", "author": "Pablo Neruda", "genres": ["poetry"] },
-  { "title": "The Essential Rumi", "author": "Rumi", "genres": ["poetry", "philosophy"] },
-  { "title": "The Weary Blues", "author": "Langston Hughes", "genres": ["poetry"] },
-  { "title": "The Complete Poems of Emily Dickinson", "author": "Emily Dickinson", "genres": ["poetry"] },
-  { "title": "I Know Why the Caged Bird Sings", "author": "Maya Angelou", "genres": ["biography-memoir"] },
-  { "title": "Meditations", "author": "Marcus Aurelius", "genres": ["philosophy"] },
-  { "title": "The Republic", "author": "Plato", "genres": ["philosophy", "classics"] },
-  { "title": "Nicomachean Ethics", "author": "Aristotle", "genres": ["philosophy"] },
-  { "title": "Sophie's World", "author": "Jostein Gaarder", "genres": ["philosophy"] },
-  { "title": "Thus Spoke Zarathustra", "author": "Friedrich Nietzsche", "genres": ["philosophy"] },
-  { "title": "Tao Te Ching", "author": "Laozi", "genres": ["philosophy"] },
-  { "title": "The Art of War", "author": "Sun Tzu", "genres": ["philosophy", "business"] },
-  { "title": "Sapiens", "author": "Yuval Noah Harari", "genres": ["history"] },
-  { "title": "Guns, Germs, and Steel", "author": "Jared Diamond", "genres": ["history", "science"] },
-  { "title": "A Brief History of Time", "author": "Stephen Hawking", "genres": ["science"] },
-  { "title": "The Selfish Gene", "author": "Richard Dawkins", "genres": ["science"] },
-  { "title": "Cosmos", "author": "Carl Sagan", "genres": ["science"] },
-  { "title": "The Demon-Haunted World", "author": "Carl Sagan", "genres": ["science"] },
-  { "title": "On the Origin of Species", "author": "Charles Darwin", "genres": ["science"] },
-  { "title": "Silent Spring", "author": "Rachel Carson", "genres": ["science"] },
-  { "title": "The Immortal Life of Henrietta Lacks", "author": "Rebecca Skloot", "genres": ["science", "biography-memoir"] },
-  { "title": "The Gene", "author": "Siddhartha Mukherjee", "genres": ["science", "history"] },
-  { "title": "The Emperor of All Maladies", "author": "Siddhartha Mukherjee", "genres": ["science", "history"] },
-  { "title": "The Structure of Scientific Revolutions", "author": "Thomas S. Kuhn", "genres": ["science", "philosophy"] },
-  { "title": "Why We Sleep", "author": "Matthew Walker", "genres": ["science", "psychology"] },
-  { "title": "Thinking, Fast and Slow", "author": "Daniel Kahneman", "genres": ["psychology"] },
-  { "title": "Man's Search for Meaning", "author": "Viktor E. Frankl", "genres": ["psychology", "philosophy"] },
-  { "title": "Influence", "author": "Robert B. Cialdini", "genres": ["psychology", "business"] },
-  { "title": "The Power of Habit", "author": "Charles Duhigg", "genres": ["psychology", "business"] },
-  { "title": "Mindset", "author": "Carol S. Dweck", "genres": ["psychology", "self-help"] },
-  { "title": "Grit", "author": "Angela Duckworth", "genres": ["psychology", "self-help"] },
-  { "title": "Flow", "author": "Mihaly Csikszentmihalyi", "genres": ["psychology"] },
-  { "title": "Quiet", "author": "Susan Cain", "genres": ["psychology"] },
-  { "title": "The Body Keeps the Score", "author": "Bessel van der Kolk", "genres": ["psychology"] },
-  { "title": "Stolen Focus", "author": "Johann Hari", "genres": ["psychology"] },
-  { "title": "The Anxious Generation", "author": "Jonathan Haidt", "genres": ["psychology"] },
-  { "title": "Atomic Habits", "author": "James Clear", "genres": ["self-help"] },
-  { "title": "How to Win Friends and Influence People", "author": "Dale Carnegie", "genres": ["self-help", "business"] },
-  { "title": "The 7 Habits of Highly Effective People", "author": "Stephen R. Covey", "genres": ["self-help", "business"] },
-  { "title": "The Subtle Art of Not Giving a F*ck", "author": "Mark Manson", "genres": ["self-help", "philosophy"] },
-  { "title": "The Let Them Theory", "author": "Mel Robbins", "genres": ["self-help"] },
-  { "title": "Deep Work", "author": "Cal Newport", "genres": ["self-help", "business"] },
-  { "title": "Range", "author": "David Epstein", "genres": ["self-help", "science"] },
-  { "title": "Ikigai", "author": "Héctor García", "genres": ["self-help", "philosophy"] },
-  { "title": "The Creative Act", "author": "Rick Rubin", "genres": ["self-help", "philosophy"] },
-  { "title": "The Lean Startup", "author": "Eric Ries", "genres": ["business"] },
-  { "title": "Good to Great", "author": "Jim Collins", "genres": ["business"] },
-  { "title": "Zero to One", "author": "Peter Thiel", "genres": ["business"] },
-  { "title": "The Hard Thing About Hard Things", "author": "Ben Horowitz", "genres": ["business"] },
-  { "title": "Lean In", "author": "Sheryl Sandberg", "genres": ["business", "biography-memoir"] },
-  { "title": "Creativity, Inc.", "author": "Ed Catmull", "genres": ["business"] },
-  { "title": "Start with Why", "author": "Simon Sinek", "genres": ["business"] },
-  { "title": "The Innovator's Dilemma", "author": "Clayton M. Christensen", "genres": ["business"] },
-  { "title": "Principles", "author": "Ray Dalio", "genres": ["business"] },
-  { "title": "Shoe Dog", "author": "Phil Knight", "genres": ["biography-memoir", "business"] },
-  { "title": "Steve Jobs", "author": "Walter Isaacson", "genres": ["biography-memoir", "business"] },
-  { "title": "Freakonomics", "author": "Steven D. Levitt", "genres": ["business", "science"] },
-  { "title": "Bad Blood", "author": "John Carreyrou", "genres": ["business", "true-crime"] },
-  { "title": "Careless People", "author": "Sarah Wynn-Williams", "genres": ["business", "biography-memoir"] },
-  { "title": "Empire of AI", "author": "Karen Hao", "genres": ["business", "science"] },
-  { "title": "Fire Weather", "author": "John Vaillant", "genres": ["history", "science"] },
-  { "title": "Team of Rivals", "author": "Doris Kearns Goodwin", "genres": ["history", "biography-memoir"] },
-  { "title": "1776", "author": "David McCullough", "genres": ["history"] },
-  { "title": "John Adams", "author": "David McCullough", "genres": ["biography-memoir", "history"] },
-  { "title": "The Devil in the White City", "author": "Erik Larson", "genres": ["history", "true-crime"] },
-  { "title": "Between the World and Me", "author": "Ta-Nehisi Coates", "genres": ["biography-memoir", "history"] },
-  { "title": "The Autobiography of Malcolm X", "author": "Malcolm X", "genres": ["biography-memoir", "history"] },
-  { "title": "A People's History of the United States", "author": "Howard Zinn", "genres": ["history"] },
-  { "title": "The Guns of August", "author": "Barbara W. Tuchman", "genres": ["history"] },
-  { "title": "SPQR", "author": "Mary Beard", "genres": ["history"] },
-  { "title": "The Wright Brothers", "author": "David McCullough", "genres": ["history"] },
-  { "title": "Educated", "author": "Tara Westover", "genres": ["biography-memoir"] },
-  { "title": "Becoming", "author": "Michelle Obama", "genres": ["biography-memoir"] },
-  { "title": "The Glass Castle", "author": "Jeannette Walls", "genres": ["biography-memoir"] },
-  { "title": "Crying in H Mart", "author": "Michelle Zauner", "genres": ["biography-memoir"] },
-  { "title": "Heavy", "author": "Kiese Laymon", "genres": ["biography-memoir"] },
-  { "title": "Born a Crime", "author": "Trevor Noah", "genres": ["biography-memoir", "humor"] },
-  { "title": "Yes Please", "author": "Amy Poehler", "genres": ["humor", "biography-memoir"] },
-  { "title": "Bossypants", "author": "Tina Fey", "genres": ["humor", "biography-memoir"] },
-  { "title": "Me Talk Pretty One Day", "author": "David Sedaris", "genres": ["humor", "biography-memoir"] },
-  { "title": "Wild", "author": "Cheryl Strayed", "genres": ["biography-memoir", "travel"] },
-  { "title": "Eat, Pray, Love", "author": "Elizabeth Gilbert", "genres": ["biography-memoir", "travel"] },
-  { "title": "Into the Wild", "author": "Jon Krakauer", "genres": ["travel", "biography-memoir"] },
-  { "title": "Into Thin Air", "author": "Jon Krakauer", "genres": ["travel", "biography-memoir"] },
-  { "title": "In Cold Blood", "author": "Truman Capote", "genres": ["true-crime"] },
-  { "title": "Helter Skelter", "author": "Vincent Bugliosi", "genres": ["true-crime"] },
-  { "title": "Killers of the Flower Moon", "author": "David Grann", "genres": ["true-crime", "history"] },
-  { "title": "Under the Banner of Heaven", "author": "Jon Krakauer", "genres": ["true-crime", "history"] },
-  { "title": "The Psychopath Test", "author": "Jon Ronson", "genres": ["true-crime", "psychology"] },
-  { "title": "Furious Hours", "author": "Casey Cep", "genres": ["true-crime"] },
-  { "title": "The Stranger Beside Me", "author": "Ann Rule", "genres": ["true-crime"] },
-  { "title": "Mindhunter", "author": "John E. Douglas", "genres": ["true-crime", "psychology"] },
-  { "title": "Zodiac", "author": "Robert Graysmith", "genres": ["true-crime"] },
-  { "title": "A Walk in the Woods", "author": "Bill Bryson", "genres": ["travel", "humor"] },
-  { "title": "Notes from a Small Island", "author": "Bill Bryson", "genres": ["travel", "humor"] },
-  { "title": "In a Sunburned Country", "author": "Bill Bryson", "genres": ["travel", "humor"] },
-  { "title": "Three Men in a Boat", "author": "Jerome K. Jerome", "genres": ["humor", "travel"] },
-  { "title": "The Snow Leopard", "author": "Peter Matthiessen", "genres": ["travel"] },
-  { "title": "The Old Patagonian Express", "author": "Paul Theroux", "genres": ["travel"] },
-  { "title": "Under the Tuscan Sun", "author": "Frances Mayes", "genres": ["travel", "biography-memoir"] }
+  {
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "genres": [
+      "classics",
+      "romance"
+    ]
+  },
+  {
+    "title": "Jane Eyre",
+    "author": "Charlotte Brontë",
+    "genres": [
+      "classics",
+      "romance"
+    ]
+  },
+  {
+    "title": "Wuthering Heights",
+    "author": "Emily Brontë",
+    "genres": [
+      "classics",
+      "romance"
+    ]
+  },
+  {
+    "title": "Frankenstein",
+    "author": "Mary Shelley",
+    "genres": [
+      "horror",
+      "science-fiction"
+    ]
+  },
+  {
+    "title": "Dracula",
+    "author": "Bram Stoker",
+    "genres": [
+      "horror",
+      "classics"
+    ]
+  },
+  {
+    "title": "Moby-Dick",
+    "author": "Herman Melville",
+    "genres": [
+      "classics",
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "genres": [
+      "classics",
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "genres": [
+      "literary-fiction",
+      "classics"
+    ]
+  },
+  {
+    "title": "1984",
+    "author": "George Orwell",
+    "genres": [
+      "science-fiction",
+      "classics"
+    ]
+  },
+  {
+    "title": "Brave New World",
+    "author": "Aldous Huxley",
+    "genres": [
+      "science-fiction",
+      "classics"
+    ]
+  },
+  {
+    "title": "The Catcher in the Rye",
+    "author": "J.D. Salinger",
+    "genres": [
+      "literary-fiction",
+      "classics"
+    ]
+  },
+  {
+    "title": "Crime and Punishment",
+    "author": "Fyodor Dostoevsky",
+    "genres": [
+      "classics",
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "Anna Karenina",
+    "author": "Leo Tolstoy",
+    "genres": [
+      "classics",
+      "romance"
+    ]
+  },
+  {
+    "title": "The Brothers Karamazov",
+    "author": "Fyodor Dostoevsky",
+    "genres": [
+      "classics",
+      "philosophy"
+    ]
+  },
+  {
+    "title": "The Count of Monte Cristo",
+    "author": "Alexandre Dumas",
+    "genres": [
+      "classics",
+      "historical-fiction"
+    ]
+  },
+  {
+    "title": "Les Misérables",
+    "author": "Victor Hugo",
+    "genres": [
+      "classics",
+      "historical-fiction"
+    ]
+  },
+  {
+    "title": "A Tale of Two Cities",
+    "author": "Charles Dickens",
+    "genres": [
+      "historical-fiction",
+      "classics"
+    ]
+  },
+  {
+    "title": "The Picture of Dorian Gray",
+    "author": "Oscar Wilde",
+    "genres": [
+      "horror",
+      "classics"
+    ]
+  },
+  {
+    "title": "Strange Case of Dr Jekyll and Mr Hyde",
+    "author": "Robert Louis Stevenson",
+    "genres": [
+      "horror",
+      "classics"
+    ]
+  },
+  {
+    "title": "Treasure Island",
+    "author": "Robert Louis Stevenson",
+    "genres": [
+      "childrens",
+      "classics"
+    ]
+  },
+  {
+    "title": "The Adventures of Sherlock Holmes",
+    "author": "Arthur Conan Doyle",
+    "genres": [
+      "mystery",
+      "classics"
+    ]
+  },
+  {
+    "title": "The Hound of the Baskervilles",
+    "author": "Arthur Conan Doyle",
+    "genres": [
+      "mystery"
+    ]
+  },
+  {
+    "title": "Alice's Adventures in Wonderland",
+    "author": "Lewis Carroll",
+    "genres": [
+      "childrens",
+      "fantasy"
+    ]
+  },
+  {
+    "title": "Peter Pan",
+    "author": "J.M. Barrie",
+    "genres": [
+      "childrens",
+      "fantasy"
+    ]
+  },
+  {
+    "title": "The Wind in the Willows",
+    "author": "Kenneth Grahame",
+    "genres": [
+      "childrens",
+      "classics"
+    ]
+  },
+  {
+    "title": "The Secret Garden",
+    "author": "Frances Hodgson Burnett",
+    "genres": [
+      "childrens",
+      "classics"
+    ]
+  },
+  {
+    "title": "Little Women",
+    "author": "Louisa May Alcott",
+    "genres": [
+      "classics",
+      "romance"
+    ]
+  },
+  {
+    "title": "The Time Machine",
+    "author": "H.G. Wells",
+    "genres": [
+      "science-fiction",
+      "classics"
+    ]
+  },
+  {
+    "title": "The War of the Worlds",
+    "author": "H.G. Wells",
+    "genres": [
+      "science-fiction",
+      "classics"
+    ]
+  },
+  {
+    "title": "The Old Man and the Sea",
+    "author": "Ernest Hemingway",
+    "genres": [
+      "literary-fiction",
+      "classics"
+    ]
+  },
+  {
+    "title": "To the Lighthouse",
+    "author": "Virginia Woolf",
+    "genres": [
+      "literary-fiction",
+      "classics"
+    ]
+  },
+  {
+    "title": "Lord of the Flies",
+    "author": "William Golding",
+    "genres": [
+      "literary-fiction",
+      "young-adult"
+    ]
+  },
+  {
+    "title": "The Grapes of Wrath",
+    "author": "John Steinbeck",
+    "genres": [
+      "literary-fiction",
+      "historical-fiction"
+    ]
+  },
+  {
+    "title": "Rebecca",
+    "author": "Daphne du Maurier",
+    "genres": [
+      "mystery",
+      "romance"
+    ]
+  },
+  {
+    "title": "Gone with the Wind",
+    "author": "Margaret Mitchell",
+    "genres": [
+      "historical-fiction",
+      "romance"
+    ]
+  },
+  {
+    "title": "Their Eyes Were Watching God",
+    "author": "Zora Neale Hurston",
+    "genres": [
+      "literary-fiction",
+      "classics"
+    ]
+  },
+  {
+    "title": "Beloved",
+    "author": "Toni Morrison",
+    "genres": [
+      "literary-fiction",
+      "historical-fiction"
+    ]
+  },
+  {
+    "title": "Fahrenheit 451",
+    "author": "Ray Bradbury",
+    "genres": [
+      "science-fiction"
+    ]
+  },
+  {
+    "title": "Catch-22",
+    "author": "Joseph Heller",
+    "genres": [
+      "humor",
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "Lolita",
+    "author": "Vladimir Nabokov",
+    "genres": [
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "Don Quixote",
+    "author": "Miguel de Cervantes",
+    "genres": [
+      "classics",
+      "humor"
+    ]
+  },
+  {
+    "title": "The Iliad",
+    "author": "Homer",
+    "genres": [
+      "classics",
+      "poetry"
+    ]
+  },
+  {
+    "title": "Leaves of Grass",
+    "author": "Walt Whitman",
+    "genres": [
+      "poetry"
+    ]
+  },
+  {
+    "title": "Dune",
+    "author": "Frank Herbert",
+    "genres": [
+      "science-fiction"
+    ]
+  },
+  {
+    "title": "The Left Hand of Darkness",
+    "author": "Ursula K. Le Guin",
+    "genres": [
+      "science-fiction",
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "A Wizard of Earthsea",
+    "author": "Ursula K. Le Guin",
+    "genres": [
+      "fantasy",
+      "young-adult"
+    ]
+  },
+  {
+    "title": "Do Androids Dream of Electric Sheep?",
+    "author": "Philip K. Dick",
+    "genres": [
+      "science-fiction"
+    ]
+  },
+  {
+    "title": "The Handmaid's Tale",
+    "author": "Margaret Atwood",
+    "genres": [
+      "science-fiction",
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "Never Let Me Go",
+    "author": "Kazuo Ishiguro",
+    "genres": [
+      "science-fiction",
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "The Hitchhiker's Guide to the Galaxy",
+    "author": "Douglas Adams",
+    "genres": [
+      "science-fiction",
+      "humor"
+    ]
+  },
+  {
+    "title": "Good Omens",
+    "author": "Terry Pratchett",
+    "genres": [
+      "fantasy",
+      "humor"
+    ]
+  },
+  {
+    "title": "The Hobbit",
+    "author": "J.R.R. Tolkien",
+    "genres": [
+      "fantasy",
+      "childrens"
+    ]
+  },
+  {
+    "title": "A Game of Thrones",
+    "author": "George R.R. Martin",
+    "genres": [
+      "fantasy"
+    ]
+  },
+  {
+    "title": "The Name of the Wind",
+    "author": "Patrick Rothfuss",
+    "genres": [
+      "fantasy"
+    ]
+  },
+  {
+    "title": "Mistborn: The Final Empire",
+    "author": "Brandon Sanderson",
+    "genres": [
+      "fantasy"
+    ],
+    "searchTitle": "Mistborn"
+  },
+  {
+    "title": "The Lion, the Witch and the Wardrobe",
+    "author": "C.S. Lewis",
+    "genres": [
+      "childrens",
+      "fantasy"
+    ]
+  },
+  {
+    "title": "Piranesi",
+    "author": "Susanna Clarke",
+    "genres": [
+      "fantasy",
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "Six of Crows",
+    "author": "Leigh Bardugo",
+    "genres": [
+      "fantasy",
+      "young-adult"
+    ]
+  },
+  {
+    "title": "Ninth House",
+    "author": "Leigh Bardugo",
+    "genres": [
+      "fantasy",
+      "mystery"
+    ]
+  },
+  {
+    "title": "Hell Bent",
+    "author": "Leigh Bardugo",
+    "genres": [
+      "fantasy",
+      "mystery"
+    ]
+  },
+  {
+    "title": "The Poppy War",
+    "author": "R.F. Kuang",
+    "genres": [
+      "fantasy"
+    ]
+  },
+  {
+    "title": "Babel",
+    "author": "R.F. Kuang",
+    "genres": [
+      "fantasy",
+      "historical-fiction"
+    ]
+  },
+  {
+    "title": "The House in the Cerulean Sea",
+    "author": "TJ Klune",
+    "genres": [
+      "fantasy",
+      "romance"
+    ]
+  },
+  {
+    "title": "Legends & Lattes",
+    "author": "Travis Baldree",
+    "genres": [
+      "fantasy",
+      "humor"
+    ]
+  },
+  {
+    "title": "A Court of Thorns and Roses",
+    "author": "Sarah J. Maas",
+    "genres": [
+      "fantasy",
+      "romance"
+    ]
+  },
+  {
+    "title": "Fourth Wing",
+    "author": "Rebecca Yarros",
+    "genres": [
+      "fantasy",
+      "romance"
+    ]
+  },
+  {
+    "title": "Iron Flame",
+    "author": "Rebecca Yarros",
+    "genres": [
+      "fantasy",
+      "romance"
+    ]
+  },
+  {
+    "title": "Circe",
+    "author": "Madeline Miller",
+    "genres": [
+      "fantasy",
+      "classics"
+    ]
+  },
+  {
+    "title": "The Song of Achilles",
+    "author": "Madeline Miller",
+    "genres": [
+      "historical-fiction",
+      "romance"
+    ]
+  },
+  {
+    "title": "Gone Girl",
+    "author": "Gillian Flynn",
+    "genres": [
+      "thriller",
+      "mystery"
+    ]
+  },
+  {
+    "title": "The Girl Who Played with Fire",
+    "author": "Stieg Larsson",
+    "genres": [
+      "mystery",
+      "thriller"
+    ],
+    "searchTitle": "The Girl Who Played with Fire"
+  },
+  {
+    "title": "The Silence of the Lambs",
+    "author": "Thomas Harris",
+    "genres": [
+      "thriller",
+      "horror"
+    ]
+  },
+  {
+    "title": "The Talented Mr. Ripley",
+    "author": "Patricia Highsmith",
+    "genres": [
+      "thriller"
+    ]
+  },
+  {
+    "title": "And Then There Were None",
+    "author": "Agatha Christie",
+    "genres": [
+      "mystery"
+    ]
+  },
+  {
+    "title": "The Thursday Murder Club",
+    "author": "Richard Osman",
+    "genres": [
+      "mystery",
+      "humor"
+    ]
+  },
+  {
+    "title": "The Hunger Games",
+    "author": "Suzanne Collins",
+    "genres": [
+      "young-adult",
+      "science-fiction"
+    ]
+  },
+  {
+    "title": "The Haunting of Hill House",
+    "author": "Shirley Jackson",
+    "genres": [
+      "horror"
+    ]
+  },
+  {
+    "title": "It",
+    "author": "Stephen King",
+    "genres": [
+      "horror"
+    ]
+  },
+  {
+    "title": "The Shining",
+    "author": "Stephen King",
+    "genres": [
+      "horror"
+    ]
+  },
+  {
+    "title": "Holly",
+    "author": "Stephen King",
+    "genres": [
+      "mystery",
+      "horror"
+    ]
+  },
+  {
+    "title": "Mexican Gothic",
+    "author": "Silvia Moreno-Garcia",
+    "genres": [
+      "horror",
+      "historical-fiction"
+    ]
+  },
+  {
+    "title": "The Exorcist",
+    "author": "William Peter Blatty",
+    "genres": [
+      "horror"
+    ]
+  },
+  {
+    "title": "Me Before You",
+    "author": "Jojo Moyes",
+    "genres": [
+      "romance"
+    ]
+  },
+  {
+    "title": "Outlander",
+    "author": "Diana Gabaldon",
+    "genres": [
+      "historical-fiction",
+      "romance"
+    ]
+  },
+  {
+    "title": "Normal People",
+    "author": "Sally Rooney",
+    "genres": [
+      "literary-fiction",
+      "romance"
+    ]
+  },
+  {
+    "title": "Intermezzo",
+    "author": "Sally Rooney",
+    "genres": [
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "The Time Traveler's Wife",
+    "author": "Audrey Niffenegger",
+    "genres": [
+      "romance",
+      "science-fiction"
+    ]
+  },
+  {
+    "title": "Happy Place",
+    "author": "Emily Henry",
+    "genres": [
+      "romance"
+    ]
+  },
+  {
+    "title": "It Ends with Us",
+    "author": "Colleen Hoover",
+    "genres": [
+      "romance"
+    ]
+  },
+  {
+    "title": "Lessons in Chemistry",
+    "author": "Bonnie Garmus",
+    "genres": [
+      "historical-fiction",
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "Demon Copperhead",
+    "author": "Barbara Kingsolver",
+    "genres": [
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "Tomorrow, and Tomorrow, and Tomorrow",
+    "author": "Gabrielle Zevin",
+    "genres": [
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "The Book Thief",
+    "author": "Markus Zusak",
+    "genres": [
+      "historical-fiction",
+      "young-adult"
+    ]
+  },
+  {
+    "title": "The Covenant of Water",
+    "author": "Abraham Verghese",
+    "genres": [
+      "literary-fiction",
+      "historical-fiction"
+    ]
+  },
+  {
+    "title": "Tom Lake",
+    "author": "Ann Patchett",
+    "genres": [
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "Prophet Song",
+    "author": "Paul Lynch",
+    "genres": [
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "Orbital",
+    "author": "Samantha Harvey",
+    "genres": [
+      "literary-fiction",
+      "science-fiction"
+    ]
+  },
+  {
+    "title": "James",
+    "author": "Percival Everett",
+    "genres": [
+      "literary-fiction",
+      "historical-fiction"
+    ]
+  },
+  {
+    "title": "Chain-Gang All-Stars",
+    "author": "Nana Kwame Adjei-Brenyah",
+    "genres": [
+      "literary-fiction",
+      "science-fiction"
+    ]
+  },
+  {
+    "title": "Creation Lake",
+    "author": "Rachel Kushner",
+    "genres": [
+      "literary-fiction",
+      "thriller"
+    ]
+  },
+  {
+    "title": "Yellowface",
+    "author": "R.F. Kuang",
+    "genres": [
+      "literary-fiction",
+      "thriller"
+    ]
+  },
+  {
+    "title": "The Ministry of Time",
+    "author": "Kaliane Bradley",
+    "genres": [
+      "science-fiction",
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "Sea of Tranquility",
+    "author": "Emily St. John Mandel",
+    "genres": [
+      "science-fiction",
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "The Kaiju Preservation Society",
+    "author": "John Scalzi",
+    "genres": [
+      "science-fiction",
+      "humor"
+    ]
+  },
+  {
+    "title": "Hello Beautiful",
+    "author": "Ann Napolitano",
+    "genres": [
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "Remarkably Bright Creatures",
+    "author": "Shelby Van Pelt",
+    "genres": [
+      "literary-fiction",
+      "mystery"
+    ]
+  },
+  {
+    "title": "Pineapple Street",
+    "author": "Jenny Jackson",
+    "genres": [
+      "literary-fiction",
+      "romance"
+    ]
+  },
+  {
+    "title": "Trust",
+    "author": "Hernan Diaz",
+    "genres": [
+      "historical-fiction",
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "The Seven Moons of Maali Almeida",
+    "author": "Shehan Karunatilaka",
+    "genres": [
+      "literary-fiction",
+      "mystery"
+    ]
+  },
+  {
+    "title": "The Women",
+    "author": "Kristin Hannah",
+    "genres": [
+      "historical-fiction"
+    ]
+  },
+  {
+    "title": "The Nightingale",
+    "author": "Kristin Hannah",
+    "genres": [
+      "historical-fiction"
+    ]
+  },
+  {
+    "title": "All the Light We Cannot See",
+    "author": "Anthony Doerr",
+    "genres": [
+      "historical-fiction"
+    ]
+  },
+  {
+    "title": "Shogun",
+    "author": "James Clavell",
+    "genres": [
+      "historical-fiction"
+    ]
+  },
+  {
+    "title": "A Confederacy of Dunces",
+    "author": "John Kennedy Toole",
+    "genres": [
+      "humor",
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "The Hate U Give",
+    "author": "Angie Thomas",
+    "genres": [
+      "young-adult",
+      "literary-fiction"
+    ]
+  },
+  {
+    "title": "The Giver",
+    "author": "Lois Lowry",
+    "genres": [
+      "young-adult",
+      "science-fiction"
+    ]
+  },
+  {
+    "title": "The Outsiders",
+    "author": "S.E. Hinton",
+    "genres": [
+      "young-adult"
+    ]
+  },
+  {
+    "title": "The Fault in Our Stars",
+    "author": "John Green",
+    "genres": [
+      "young-adult",
+      "romance"
+    ]
+  },
+  {
+    "title": "Ready Player One",
+    "author": "Ernest Cline",
+    "genres": [
+      "science-fiction",
+      "young-adult"
+    ]
+  },
+  {
+    "title": "Harry Potter and the Philosopher's Stone",
+    "author": "J.K. Rowling",
+    "genres": [
+      "fantasy",
+      "young-adult"
+    ]
+  },
+  {
+    "title": "The Lightning Thief",
+    "author": "Rick Riordan",
+    "genres": [
+      "childrens",
+      "fantasy"
+    ]
+  },
+  {
+    "title": "A Wrinkle in Time",
+    "author": "Madeleine L'Engle",
+    "genres": [
+      "childrens",
+      "science-fiction"
+    ]
+  },
+  {
+    "title": "Anne of Green Gables",
+    "author": "L.M. Montgomery",
+    "genres": [
+      "childrens",
+      "classics"
+    ]
+  },
+  {
+    "title": "The Jungle Book",
+    "author": "Rudyard Kipling",
+    "genres": [
+      "childrens",
+      "classics"
+    ]
+  },
+  {
+    "title": "Black Beauty",
+    "author": "Anna Sewell",
+    "genres": [
+      "childrens",
+      "classics"
+    ]
+  },
+  {
+    "title": "Little House on the Prairie",
+    "author": "Laura Ingalls Wilder",
+    "genres": [
+      "childrens",
+      "historical-fiction"
+    ]
+  },
+  {
+    "title": "Charlotte's Web",
+    "author": "E.B. White",
+    "genres": [
+      "childrens"
+    ]
+  },
+  {
+    "title": "Where the Wild Things Are",
+    "author": "Maurice Sendak",
+    "genres": [
+      "childrens"
+    ]
+  },
+  {
+    "title": "The Very Hungry Caterpillar",
+    "author": "Eric Carle",
+    "genres": [
+      "childrens"
+    ]
+  },
+  {
+    "title": "Goodnight Moon",
+    "author": "Margaret Wise Brown",
+    "genres": [
+      "childrens"
+    ]
+  },
+  {
+    "title": "Green Eggs and Ham",
+    "author": "Dr. Seuss",
+    "genres": [
+      "childrens",
+      "humor"
+    ]
+  },
+  {
+    "title": "The Cat in the Hat",
+    "author": "Dr. Seuss",
+    "genres": [
+      "childrens",
+      "humor"
+    ]
+  },
+  {
+    "title": "Matilda",
+    "author": "Roald Dahl",
+    "genres": [
+      "childrens",
+      "humor"
+    ]
+  },
+  {
+    "title": "Charlie and the Chocolate Factory",
+    "author": "Roald Dahl",
+    "genres": [
+      "childrens",
+      "humor"
+    ]
+  },
+  {
+    "title": "Smile",
+    "author": "Raina Telgemeier",
+    "genres": [
+      "graphic-novels",
+      "childrens"
+    ]
+  },
+  {
+    "title": "Maus",
+    "author": "Art Spiegelman",
+    "genres": [
+      "graphic-novels",
+      "history"
+    ]
+  },
+  {
+    "title": "Persepolis",
+    "author": "Marjane Satrapi",
+    "genres": [
+      "graphic-novels",
+      "biography-memoir"
+    ]
+  },
+  {
+    "title": "Watchmen",
+    "author": "Alan Moore",
+    "genres": [
+      "graphic-novels",
+      "science-fiction"
+    ]
+  },
+  {
+    "title": "The Sandman",
+    "author": "Neil Gaiman",
+    "genres": [
+      "graphic-novels",
+      "fantasy"
+    ]
+  },
+  {
+    "title": "Saga",
+    "author": "Brian K. Vaughan",
+    "genres": [
+      "graphic-novels",
+      "science-fiction"
+    ]
+  },
+  {
+    "title": "Fun Home",
+    "author": "Alison Bechdel",
+    "genres": [
+      "graphic-novels",
+      "biography-memoir"
+    ]
+  },
+  {
+    "title": "Nimona",
+    "author": "N.D. Stevenson",
+    "genres": [
+      "graphic-novels",
+      "young-adult"
+    ]
+  },
+  {
+    "title": "Ghost World",
+    "author": "Daniel Clowes",
+    "genres": [
+      "graphic-novels",
+      "humor"
+    ]
+  },
+  {
+    "title": "The Arrival",
+    "author": "Shaun Tan",
+    "genres": [
+      "graphic-novels",
+      "childrens"
+    ]
+  },
+  {
+    "title": "Akira",
+    "author": "Katsuhiro Otomo",
+    "genres": [
+      "graphic-novels",
+      "science-fiction"
+    ]
+  },
+  {
+    "title": "The Complete Calvin and Hobbes",
+    "author": "Bill Watterson",
+    "genres": [
+      "graphic-novels",
+      "humor"
+    ]
+  },
+  {
+    "title": "Milk and Honey",
+    "author": "Rupi Kaur",
+    "genres": [
+      "poetry"
+    ]
+  },
+  {
+    "title": "Ariel",
+    "author": "Sylvia Plath",
+    "genres": [
+      "poetry"
+    ]
+  },
+  {
+    "title": "The Hill We Climb",
+    "author": "Amanda Gorman",
+    "genres": [
+      "poetry"
+    ]
+  },
+  {
+    "title": "Night Sky with Exit Wounds",
+    "author": "Ocean Vuong",
+    "genres": [
+      "poetry"
+    ]
+  },
+  {
+    "title": "Devotions",
+    "author": "Mary Oliver",
+    "genres": [
+      "poetry"
+    ]
+  },
+  {
+    "title": "Twenty Love Poems and a Song of Despair",
+    "author": "Pablo Neruda",
+    "genres": [
+      "poetry"
+    ]
+  },
+  {
+    "title": "The Essential Rumi",
+    "author": "Rumi",
+    "genres": [
+      "poetry",
+      "philosophy"
+    ]
+  },
+  {
+    "title": "The Complete Poems of Emily Dickinson",
+    "author": "Emily Dickinson",
+    "genres": [
+      "poetry"
+    ]
+  },
+  {
+    "title": "I Know Why the Caged Bird Sings",
+    "author": "Maya Angelou",
+    "genres": [
+      "biography-memoir"
+    ]
+  },
+  {
+    "title": "Meditations",
+    "author": "Marcus Aurelius",
+    "genres": [
+      "philosophy"
+    ]
+  },
+  {
+    "title": "The Republic",
+    "author": "Plato",
+    "genres": [
+      "philosophy",
+      "classics"
+    ]
+  },
+  {
+    "title": "Nicomachean Ethics",
+    "author": "Aristotle",
+    "genres": [
+      "philosophy"
+    ]
+  },
+  {
+    "title": "Tao Te Ching",
+    "author": "Laozi",
+    "genres": [
+      "philosophy"
+    ]
+  },
+  {
+    "title": "The Art of War",
+    "author": "Sun Tzu",
+    "genres": [
+      "philosophy",
+      "business"
+    ]
+  },
+  {
+    "title": "Sapiens",
+    "author": "Yuval Noah Harari",
+    "genres": [
+      "history"
+    ]
+  },
+  {
+    "title": "Guns, Germs, and Steel",
+    "author": "Jared Diamond",
+    "genres": [
+      "history",
+      "science"
+    ]
+  },
+  {
+    "title": "A Brief History of Time",
+    "author": "Stephen Hawking",
+    "genres": [
+      "science"
+    ]
+  },
+  {
+    "title": "The Selfish Gene",
+    "author": "Richard Dawkins",
+    "genres": [
+      "science"
+    ]
+  },
+  {
+    "title": "Cosmos",
+    "author": "Carl Sagan",
+    "genres": [
+      "science"
+    ]
+  },
+  {
+    "title": "On the Origin of Species",
+    "author": "Charles Darwin",
+    "genres": [
+      "science"
+    ]
+  },
+  {
+    "title": "Silent Spring",
+    "author": "Rachel Carson",
+    "genres": [
+      "science"
+    ]
+  },
+  {
+    "title": "The Immortal Life of Henrietta Lacks",
+    "author": "Rebecca Skloot",
+    "genres": [
+      "science",
+      "biography-memoir"
+    ]
+  },
+  {
+    "title": "The Emperor of All Maladies",
+    "author": "Siddhartha Mukherjee",
+    "genres": [
+      "science",
+      "history"
+    ]
+  },
+  {
+    "title": "The Structure of Scientific Revolutions",
+    "author": "Thomas S. Kuhn",
+    "genres": [
+      "science",
+      "philosophy"
+    ]
+  },
+  {
+    "title": "Why We Sleep",
+    "author": "Matthew Walker",
+    "genres": [
+      "science",
+      "psychology"
+    ]
+  },
+  {
+    "title": "Thinking, Fast and Slow",
+    "author": "Daniel Kahneman",
+    "genres": [
+      "psychology"
+    ]
+  },
+  {
+    "title": "Man's Search for Meaning",
+    "author": "Viktor E. Frankl",
+    "genres": [
+      "psychology",
+      "philosophy"
+    ]
+  },
+  {
+    "title": "Influence",
+    "author": "Robert B. Cialdini",
+    "genres": [
+      "psychology",
+      "business"
+    ]
+  },
+  {
+    "title": "The Power of Habit",
+    "author": "Charles Duhigg",
+    "genres": [
+      "psychology",
+      "business"
+    ]
+  },
+  {
+    "title": "Mindset",
+    "author": "Carol S. Dweck",
+    "genres": [
+      "psychology",
+      "self-help"
+    ]
+  },
+  {
+    "title": "The Body Keeps the Score",
+    "author": "Bessel van der Kolk",
+    "genres": [
+      "psychology"
+    ]
+  },
+  {
+    "title": "Stolen Focus",
+    "author": "Johann Hari",
+    "genres": [
+      "psychology"
+    ]
+  },
+  {
+    "title": "The Anxious Generation",
+    "author": "Jonathan Haidt",
+    "genres": [
+      "psychology"
+    ]
+  },
+  {
+    "title": "Atomic Habits",
+    "author": "James Clear",
+    "genres": [
+      "self-help"
+    ]
+  },
+  {
+    "title": "How to Win Friends and Influence People",
+    "author": "Dale Carnegie",
+    "genres": [
+      "self-help",
+      "business"
+    ]
+  },
+  {
+    "title": "The 7 Habits of Highly Effective People",
+    "author": "Stephen R. Covey",
+    "genres": [
+      "self-help",
+      "business"
+    ]
+  },
+  {
+    "title": "The Subtle Art of Not Giving a F*ck",
+    "author": "Mark Manson",
+    "genres": [
+      "self-help",
+      "philosophy"
+    ]
+  },
+  {
+    "title": "The Let Them Theory",
+    "author": "Mel Robbins",
+    "genres": [
+      "self-help"
+    ]
+  },
+  {
+    "title": "Deep Work",
+    "author": "Cal Newport",
+    "genres": [
+      "self-help",
+      "business"
+    ]
+  },
+  {
+    "title": "Range",
+    "author": "David Epstein",
+    "genres": [
+      "self-help",
+      "science"
+    ]
+  },
+  {
+    "title": "Ikigai",
+    "author": "Héctor García",
+    "genres": [
+      "self-help",
+      "philosophy"
+    ]
+  },
+  {
+    "title": "The Creative Act",
+    "author": "Rick Rubin",
+    "genres": [
+      "self-help",
+      "philosophy"
+    ]
+  },
+  {
+    "title": "Good to Great",
+    "author": "Jim Collins",
+    "genres": [
+      "business"
+    ]
+  },
+  {
+    "title": "Zero to One",
+    "author": "Peter Thiel",
+    "genres": [
+      "business"
+    ]
+  },
+  {
+    "title": "The Hard Thing About Hard Things",
+    "author": "Ben Horowitz",
+    "genres": [
+      "business"
+    ]
+  },
+  {
+    "title": "Lean In",
+    "author": "Sheryl Sandberg",
+    "genres": [
+      "business",
+      "biography-memoir"
+    ]
+  },
+  {
+    "title": "Start with Why",
+    "author": "Simon Sinek",
+    "genres": [
+      "business"
+    ]
+  },
+  {
+    "title": "Shoe Dog",
+    "author": "Phil Knight",
+    "genres": [
+      "biography-memoir",
+      "business"
+    ]
+  },
+  {
+    "title": "Steve Jobs",
+    "author": "Walter Isaacson",
+    "genres": [
+      "biography-memoir",
+      "business"
+    ]
+  },
+  {
+    "title": "Freakonomics",
+    "author": "Steven D. Levitt",
+    "genres": [
+      "business",
+      "science"
+    ]
+  },
+  {
+    "title": "Bad Blood",
+    "author": "John Carreyrou",
+    "genres": [
+      "business",
+      "true-crime"
+    ]
+  },
+  {
+    "title": "Careless People",
+    "author": "Sarah Wynn-Williams",
+    "genres": [
+      "business",
+      "biography-memoir"
+    ]
+  },
+  {
+    "title": "Empire of AI",
+    "author": "Karen Hao",
+    "genres": [
+      "business",
+      "science"
+    ]
+  },
+  {
+    "title": "Fire Weather",
+    "author": "John Vaillant",
+    "genres": [
+      "history",
+      "science"
+    ]
+  },
+  {
+    "title": "Team of Rivals",
+    "author": "Doris Kearns Goodwin",
+    "genres": [
+      "history",
+      "biography-memoir"
+    ]
+  },
+  {
+    "title": "1776",
+    "author": "David McCullough",
+    "genres": [
+      "history"
+    ]
+  },
+  {
+    "title": "John Adams",
+    "author": "David McCullough",
+    "genres": [
+      "biography-memoir",
+      "history"
+    ]
+  },
+  {
+    "title": "The Devil in the White City",
+    "author": "Erik Larson",
+    "genres": [
+      "history",
+      "true-crime"
+    ]
+  },
+  {
+    "title": "Between the World and Me",
+    "author": "Ta-Nehisi Coates",
+    "genres": [
+      "biography-memoir",
+      "history"
+    ]
+  },
+  {
+    "title": "The Autobiography of Malcolm X",
+    "author": "Malcolm X",
+    "genres": [
+      "biography-memoir",
+      "history"
+    ]
+  },
+  {
+    "title": "A People's History of the United States",
+    "author": "Howard Zinn",
+    "genres": [
+      "history"
+    ]
+  },
+  {
+    "title": "SPQR",
+    "author": "Mary Beard",
+    "genres": [
+      "history"
+    ]
+  },
+  {
+    "title": "Educated",
+    "author": "Tara Westover",
+    "genres": [
+      "biography-memoir"
+    ]
+  },
+  {
+    "title": "Becoming",
+    "author": "Michelle Obama",
+    "genres": [
+      "biography-memoir"
+    ]
+  },
+  {
+    "title": "Born a Crime",
+    "author": "Trevor Noah",
+    "genres": [
+      "biography-memoir",
+      "humor"
+    ]
+  },
+  {
+    "title": "Yes Please",
+    "author": "Amy Poehler",
+    "genres": [
+      "humor",
+      "biography-memoir"
+    ]
+  },
+  {
+    "title": "Bossypants",
+    "author": "Tina Fey",
+    "genres": [
+      "humor",
+      "biography-memoir"
+    ]
+  },
+  {
+    "title": "Wild",
+    "author": "Cheryl Strayed",
+    "genres": [
+      "biography-memoir",
+      "travel"
+    ]
+  },
+  {
+    "title": "Eat, Pray, Love",
+    "author": "Elizabeth Gilbert",
+    "genres": [
+      "biography-memoir",
+      "travel"
+    ]
+  },
+  {
+    "title": "Into the Wild",
+    "author": "Jon Krakauer",
+    "genres": [
+      "travel",
+      "biography-memoir"
+    ]
+  },
+  {
+    "title": "Into Thin Air",
+    "author": "Jon Krakauer",
+    "genres": [
+      "travel",
+      "biography-memoir"
+    ]
+  },
+  {
+    "title": "In Cold Blood",
+    "author": "Truman Capote",
+    "genres": [
+      "true-crime"
+    ]
+  },
+  {
+    "title": "Helter Skelter",
+    "author": "Vincent Bugliosi",
+    "genres": [
+      "true-crime"
+    ]
+  },
+  {
+    "title": "Killers of the Flower Moon",
+    "author": "David Grann",
+    "genres": [
+      "true-crime",
+      "history"
+    ]
+  },
+  {
+    "title": "Under the Banner of Heaven",
+    "author": "Jon Krakauer",
+    "genres": [
+      "true-crime",
+      "history"
+    ]
+  },
+  {
+    "title": "The Psychopath Test",
+    "author": "Jon Ronson",
+    "genres": [
+      "true-crime",
+      "psychology"
+    ]
+  },
+  {
+    "title": "The Stranger Beside Me",
+    "author": "Ann Rule",
+    "genres": [
+      "true-crime"
+    ]
+  },
+  {
+    "title": "A Walk in the Woods",
+    "author": "Bill Bryson",
+    "genres": [
+      "travel",
+      "humor"
+    ]
+  },
+  {
+    "title": "In a Sunburned Country",
+    "author": "Bill Bryson",
+    "genres": [
+      "travel",
+      "humor"
+    ]
+  },
+  {
+    "title": "Three Men in a Boat",
+    "author": "Jerome K. Jerome",
+    "genres": [
+      "humor",
+      "travel"
+    ],
+    "searchTitle": "Three Men in a Boat (to say nothing of the dog)"
+  },
+  {
+    "title": "Under the Tuscan Sun",
+    "author": "Frances Mayes",
+    "genres": [
+      "travel",
+      "biography-memoir"
+    ]
+  }
 ]

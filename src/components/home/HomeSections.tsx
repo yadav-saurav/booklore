@@ -100,12 +100,15 @@ export function GenreTiles({ genres }: { genres: GenreTile[] }) {
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
       {genres.map((g) => (
         <Link key={g.slug} href={`/genre/${g.slug}`}
-          className="group relative flex h-[132px] flex-col justify-between overflow-hidden border border-hair bg-card p-4 transition-colors hover:border-cobalt">
-          <span aria-hidden className="home-ht pointer-events-none absolute -right-2 -top-3 text-[86px] transition-transform duration-700 ease-[cubic-bezier(.2,.8,.2,1)] [writing-mode:vertical-rl] group-hover:-translate-y-2">
+          className="group relative flex h-[132px] flex-col overflow-hidden border border-hair bg-card p-4 transition-colors hover:border-cobalt">
+          <span aria-hidden className="home-ht pointer-events-none absolute right-3 top-2.5 whitespace-nowrap transition-transform duration-700 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:-translate-y-1.5"
+            style={{ fontSize: `min(${Math.round(128 / Math.max(2, (g.kanji ?? "").length))}px, ${Math.round(40 / Math.max(2, (g.kanji ?? "").length))}vw)` }}>
             {g.kanji}
           </span>
-          <span className="lbl relative text-cobalt">{g.count} books</span>
-          <span className="relative text-[19px] font-semibold leading-tight tracking-[-0.01em] group-hover:text-cobalt">{g.name}</span>
+          <span className="relative mt-auto flex flex-col gap-1.5">
+            <span className="text-[19px] font-semibold leading-tight tracking-[-0.01em] group-hover:text-cobalt">{g.name}</span>
+            <span className="lbl text-cobalt">{g.count} books</span>
+          </span>
         </Link>
       ))}
     </div>
@@ -148,14 +151,14 @@ export function AuthorRail({ authors }: { authors: AuthorTile[] }) {
 
 export function ListTiles({ lists }: { lists: FeaturedList[] }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {lists.map((l) => (
         <Link key={l.id} href={`/list/${l.id}`} className="group flex gap-4 border border-hair bg-card p-4 transition-colors hover:border-cobalt">
           <div className="relative h-[108px] w-[104px] shrink-0">
             {l.covers.slice(0, 3).map((c, i) => (
               <div key={c.id} className="absolute top-0 w-[68px] shadow-card transition-transform duration-500 group-hover:-translate-y-1"
                 style={{ left: i * 18, zIndex: 3 - i, transform: `rotate(${(i - 1) * 4}deg)` }}>
-                <BookCover book={c} size="S" />
+                <BookCover book={c} size="M" />
               </div>
             ))}
           </div>
@@ -173,7 +176,7 @@ export function ListTiles({ lists }: { lists: FeaturedList[] }) {
 
 export function ReviewCards({ reviews }: { reviews: LatestReview[] }) {
   return (
-    <div className="grid gap-4 md:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
       {reviews.map((r) => (
         <article key={r.id} className="flex flex-col border border-hair bg-card p-5">
           <div className="flex gap-3">
@@ -205,7 +208,7 @@ export function ReviewCards({ reviews }: { reviews: LatestReview[] }) {
 /** Compact Top 250 preview (first 10 rows, two columns on desktop). */
 export function TopTable({ books, states }: { books: Card[]; states: Record<string, UserBookState> }) {
   return (
-    <ol className="grid gap-x-10 md:grid-cols-2">
+    <ol className="grid grid-cols-1 gap-x-10 md:grid-cols-2">
       {books.map((b, i) => (
         <li key={b.id} className="flex items-center gap-4 border-b border-hair py-3">
           <span className="w-7 shrink-0 text-right text-[22px] font-semibold tracking-tight text-cobalt">{i + 1}</span>

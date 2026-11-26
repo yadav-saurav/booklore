@@ -29,7 +29,7 @@ export function ArchiveCard({ book, className = "" }: { book: BookDetail; classN
     <div className={`relative flex overflow-hidden border border-hair bg-card shadow-card ${className}`}>
       {/* Spine */}
       <div className={`relative flex w-[92px] shrink-0 flex-col items-center justify-between py-5 ${s.bg} ${s.fg}`} aria-hidden>
-        <span className="font-jp text-[26px] font-extrabold leading-none">{kanji}</span>
+        <span className="font-jp text-[22px] font-extrabold leading-[1.05] [writing-mode:vertical-rl]">{kanji}</span>
         <span className="flex flex-1 items-center overflow-hidden py-4">
           <span className="line-clamp-1 max-h-full font-serif text-[22px] font-bold leading-none tracking-tight [writing-mode:vertical-rl]">{book.title}</span>
         </span>

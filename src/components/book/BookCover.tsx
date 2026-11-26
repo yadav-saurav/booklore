@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { coverSrc, type CoverSize } from "@/lib/covers";
 import { GeneratedCover } from "./GeneratedCover";
 
@@ -15,11 +15,18 @@ type Props = {
 export function BookCover({ book, size = "M", className = "", priority }: Props) {
   const src = coverSrc(book, size);
   const [failed, setFailed] = useState(false);
+  const img = useRef<HTMLImageElement>(null);
+  // An image can fail before hydration, when onError isn't attached yet: check its state on mount.
+  useEffect(() => {
+    const el = img.current;
+    if (el && el.complete && el.naturalWidth < 5) setFailed(true);
+  }, [src]);
   return (
     <div className={`relative aspect-[2/3] overflow-hidden bg-hair-2 ${className}`}>
       {src && !failed ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
+          ref={img}
           src={src}
           alt={`${book.title} cover`}
           loading={priority ? "eager" : "lazy"}

@@ -114,7 +114,7 @@ export default async function BookPage({ params }: Props) {
             <div id="sec-similar"><SectionHeader title="More like this" /></div>
             {similar.length ? (
               <Rail label="More like this">
-                {similar.map((b) => <div key={b.id} role="listitem"><BookCard book={b} state={states[b.id]} width={164} /></div>)}
+                {similar.map((b) => <div key={b.id} role="listitem" className="relative"><BookCard book={b} state={states[b.id]} width={164} /></div>)}
               </Rail>
             ) : <EmptyBox title="Nothing similar yet" body="As the archive grows we'll find books that share this one's genres." />}
           </section>

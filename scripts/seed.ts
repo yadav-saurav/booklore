@@ -128,6 +128,7 @@ const insS = sqlite.prepare(`INSERT OR REPLACE INTO shelf (user_id, book_id, sta
 const thisYear = new Date().getFullYear();
 
 let nR = 0, nRev = 0;
+const used = new Map<Rev, number>();
 sqlite.transaction(() => {
   for (const u of users) {
     const weights = bookMeta.map((b) => {
@@ -156,9 +157,11 @@ sqlite.transaction(() => {
         const corpus = community.reviews[b.genres[0]] ?? community.reviews[Object.keys(community.reviews)[0]];
         const band = score >= 8 ? corpus.high : score >= 5 ? corpus.mid : corpus.low;
         if (band?.length) {
-          const rv = pick(band);
+          // Rotate through the corpus (least-used first) so repeated texts are spread thin.
+          const rv = [...band].sort((x, y) => (used.get(x) ?? 0) - (used.get(y) ?? 0) || rand() - 0.5)[0];
+          used.set(rv, (used.get(rv) ?? 0) + 1);
           const helpful = Math.floor(Math.pow(rand(), 2.5) * 180 * (b.pop / maxPop));
-          insRev.run(u.id, b.id, rv.headline, rv.body.replaceAll("{title}", b.title), rand() < 0.06 ? 1 : 0, helpful, Math.floor(helpful * rand() * 0.25), ts + randInt(0, 3) * DAY, ts);
+          insRev.run(u.id, b.id, rv.headline.replaceAll("{title}", b.title), rv.body.replaceAll("{title}", b.title), rand() < 0.06 ? 1 : 0, helpful, Math.floor(helpful * rand() * 0.25), ts + randInt(0, 3) * DAY, ts);
           nRev++;
         }
       }

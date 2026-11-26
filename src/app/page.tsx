@@ -18,18 +18,7 @@ export default async function Home() {
   maybeRefreshRankings();
   const user = await getCurrentUser();
 
-  let shelf = getShelfBooks(12);
-  // TEMP-MOCK-START
-  if (shelf.length < 3) shelf = [
-    ["pride","Pride and Prejudice","Jane Austen",1813,"Classics","古典"],["frank","Frankenstein","Mary Shelley",1818,"Horror","恐怖"],
-    ["moby","Moby-Dick","Herman Melville",1851,"Classics","古典"],["karen","Anna Karenina","Leo Tolstoy",1878,"Literary Fiction","文学"],
-    ["gatsby","The Great Gatsby","F. Scott Fitzgerald",1925,"Classics","古典"],["hobbit","The Hobbit","J. R. R. Tolkien",1937,"Fantasy","幻想"],
-    ["1984","Nineteen Eighty-Four","George Orwell",1949,"Science Fiction","空想科学"],["dune","Dune","Frank Herbert",1965,"Science Fiction","空想科学"],
-    ["beloved","Beloved","Toni Morrison",1987,"Literary Fiction","文学"],["hp","Harry Potter and the Philosopher's Stone","J. K. Rowling",1997,"Fantasy","幻想"],
-    ["road","The Road","Cormac McCarthy",2006,"Literary Fiction","文学"],["tomorrow","Tomorrow, and Tomorrow, and Tomorrow","Gabrielle Zevin",2022,"Literary Fiction","文学"],
-  ].map(([id,title,a,y,g,k]) => ({ id: String(id), title: String(title), authorName: String(a), year: Number(y), genre: String(g), genreKanji: String(k),
-    coverId: null, coverUrl: null, synopsis: "Sample synopsis placeholder used while the archive is being catalogued. Replace with seeded data.", pages: 320, ratingAvg: 8.4, ratingCount: 1200 }));
-  // TEMP-MOCK-END
+  const shelf = getShelfBooks(12);
   const picks = await getRecommendationsForUser(user?.id ?? null, 18);
   const readingList = user ? getReadingList(user.id) : [];
   const favorites = getFanFavorites();
@@ -58,13 +47,12 @@ export default async function Home() {
       <div id="home-content" className="page scroll-mt-4 pb-6 pt-14">
         <GroupHeading title="What to read" kanji="何を読む" />
 
-        <section className="py-8" aria-labelledby="h-picks">
-          <span id="h-picks" className="sr-only">Top picks for you</span>
+        <section className="py-8">
           <HomeHeading title="Top picks for you" href="/recommendations" subtitle={user ? "Books picked from your ratings and reading list" : "Popular, highly rated books to start with"} />
           {user ? (
             <BookRail label="Top picks for you" books={picks} states={states} />
           ) : (
-            <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
               <BookRail label="Popular picks" books={picks.slice(0, 12)} states={states} />
               <PromptCard title="Sign in to get personalised picks" body="Rate a few books you've read and BOOKLORE will learn what you like." href="/signin?next=/recommendations" cta="Sign in" />
             </div>

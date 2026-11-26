@@ -113,11 +113,11 @@ export default async function RatingsPage({ params }: Props) {
           {years.length ? (
             <>
               <div className="overflow-x-auto border border-hair bg-card px-4 pb-3 pt-6">
-                <ol className="flex h-56 min-w-max items-end gap-3" aria-hidden>
+                <ol className="flex h-56 min-w-max items-end justify-around gap-3 sm:min-w-0" aria-hidden>
                   {years.map((y) => (
-                    <li key={y.year} className="group flex h-full w-14 flex-col items-center justify-end" title={`${y.year}: ${y.count} ratings, average ${y.avg.toFixed(1)}`}>
+                    <li key={y.year} className="group flex h-full min-w-12 max-w-[120px] flex-1 flex-col items-center justify-end" title={`${y.year}: ${y.count} ratings, average ${y.avg.toFixed(1)}`}>
                       <span className="mb-1 text-[12px] font-semibold tabular-nums text-ink opacity-80 group-hover:opacity-100">{y.count}</span>
-                      <span className="w-6 rounded-t-[4px] bg-cobalt transition-[filter] group-hover:brightness-110" style={{ height: `${Math.max(2, (y.count / maxYear) * 78)}%` }} />
+                      <span className="w-full max-w-10 rounded-t-[4px] bg-cobalt transition-[filter] group-hover:brightness-110" style={{ height: `${Math.max(2, (y.count / maxYear) * 78)}%` }} />
                       <span className="mt-2 border-t border-hair pt-1.5 text-[12px] tabular-nums text-muted">{y.year}</span>
                       <span className="text-[11px] tabular-nums text-ink-2">★ {y.avg.toFixed(1)}</span>
                     </li>

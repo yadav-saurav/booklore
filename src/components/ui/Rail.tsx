@@ -21,7 +21,7 @@ export function Rail({ children, label }: { children: React.ReactNode; label: st
 
   return (
     <div className="group/rail relative">
-      <div ref={ref} className="rail pb-2" role="list" aria-label={label}>{children}</div>
+      <div ref={ref} className="rail relative pb-2" role="list" aria-label={label}>{children}</div>
       {(["prev", "next"] as const).map((k) => {
         const hidden = k === "prev" ? edge.start : edge.end;
         return (

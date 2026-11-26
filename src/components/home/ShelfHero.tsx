@@ -120,7 +120,11 @@ export function ShelfHero({ books, statuses }: { books: ShelfBook[]; statuses: R
     for (let y = y0; y <= y1; y += minor) ticks.push({ y, major: (y - y0) % major === 0 || y === y1 });
     const labels: number[] = [];
     for (let y = y0; y <= y1; y += major) labels.push(y);
-    if (labels[labels.length - 1] !== y1) labels.push(y1);
+    if (labels[labels.length - 1] !== y1) {
+      // keep the end label right-aligned; drop a crowded major just before it
+      if (y1 - labels[labels.length - 1] < major * 0.6) labels.pop();
+      labels.push(y1);
+    }
     return { y0, y1, span, ticks, labels };
   }, [books]);
 
@@ -194,6 +198,8 @@ export function ShelfHero({ books, statuses }: { books: ShelfBook[]; statuses: R
     let mx = -9999, my = -9999, cx = W / 2, cy = 0;
     let tiltX = 0, tiltY = 0;
     const lifts = new Float32Array(TOTAL);
+    const zs = new Float32Array(TOTAL);
+    let needPick = false;
     const hidden = new Uint8Array(TOTAL);
     let dotYear = years[startIdx];
     let detailOpen = false, closing = false, openAt = 0, inkDone = true;
@@ -350,6 +356,7 @@ export function ShelfHero({ books, statuses }: { books: ShelfBook[]; statuses: R
         const rx = tiltX * o;
         el.style.transform = `translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,${z.toFixed(2)}px) rotateX(${rx.toFixed(3)}deg) rotateY(${ry.toFixed(3)}deg)`;
         el.style.zIndex = String(Math.round(3000 + z));
+        zs[v] = z;
         faces[v][0].style.setProperty("--shade", Math.min(0.6, o * 0.55 + (1 - sc) * 0.32).toFixed(3));
         faces[v][1].style.setProperty("--shade", ((1 - o) * 0.82).toFixed(3));
       }
@@ -365,6 +372,8 @@ export function ShelfHero({ books, statuses }: { books: ShelfBook[]; statuses: R
       if (reduced || Math.abs(target - dotYear) > tl.span * 0.17) dotYear = target;
       else dotYear += (target - dotYear) * (1 - Math.exp(-14 * dt));
       dot.style.left = `${(((dotYear - tl.y0) / tl.span) * 100).toFixed(3)}%`;
+
+      if (needPick) { needPick = false; hoverV = pointerIn && !detailOpen && !overBtn ? pickTape(mx, my) : -1; }
 
       // cursor
       if (fine) {
@@ -408,21 +417,32 @@ export function ShelfHero({ books, statuses }: { books: ShelfBook[]; statuses: R
     stage.dataset.ready = "1";
 
     // ── inputs ──
-    const tapeFrom = (t: EventTarget | null) => {
-      const el = (t as Element | null)?.closest?.(".sh-tape") as HTMLElement | null;
-      return el ? Number(el.dataset.v) : -1;
+    // Chrome's hit-testing does not reach 3D children of a zero-size preserve-3d stage, so tapes are
+    // picked geometrically from their projected face rectangles (front-most wins).
+    const pickTape = (x: number, y: number) => {
+      const sr = shelf.getBoundingClientRect();
+      if (y < sr.top || y > sr.bottom) return -1;
+      let best = -1, bestZ = -Infinity;
+      for (let v = 0; v < TOTAL; v++) {
+        if (hidden[v] || zs[v] <= bestZ) continue;
+        for (const f of faces[v]) {
+          const r = f.getBoundingClientRect();
+          if (r.width > 2 && x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) { best = v; bestZ = zs[v]; break; }
+        }
+      }
+      return best;
     };
     const onPointerDown = (e: PointerEvent) => {
       if (e.button !== 0 || detailOpen) return;
       down = true; dragging = false; dragged = false;
       dragX = e.clientX; T0 = T;
-      downV = tapeFrom(e.target);
+      downV = pickTape(e.clientX, e.clientY);
     };
     const onPointerMove = (e: PointerEvent) => {
       mx = e.clientX; my = e.clientY;
       const t = e.target as Element | null;
       overBtn = !!t?.closest?.("a,button,[data-cursor='btn']");
-      hoverV = shelf.contains(t as Node) ? tapeFrom(t) : -1;
+      needPick = true;
       if (down) {
         const dx = e.clientX - dragX;
         if (!dragging && Math.abs(dx) > 5) {

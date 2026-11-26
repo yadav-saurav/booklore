@@ -71,7 +71,7 @@ export function BookHero({
   return (
     <section className="relative isolate overflow-hidden border-b border-hair bg-sheet" aria-labelledby="book-title">
       {/* Blurred, darkened cover backdrop */}
-      <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
+      <div className="pointer-events-none absolute inset-0 -z-10 [mask-image:linear-gradient(to_bottom,black_35%,transparent_85%)]" aria-hidden>
         <div className="absolute -inset-20 opacity-45 blur-[70px] saturate-150 brightness-75">
           <BookCover book={book} size="M" className="!aspect-auto h-full w-full" />
         </div>
@@ -151,9 +151,9 @@ export function BookHero({
           </div>
 
           {/* CTA stack */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 max-md:order-first">
             <ShelfButton bookId={book.id} title={book.title} status={viewer.status} addedBy={book.shelfCount} />
-            <AddToListButton bookId={book.id} title={book.title} className="h-11 w-full" />
+            <AddToListButton bookId={book.id} title={book.title} className="block w-full [&>button]:h-11 [&>button]:w-full" />
             <div className="border border-hair bg-card/70 p-4">
               <p className="lbl text-muted">Where to find it</p>
               <ul className="mt-2.5 flex flex-col divide-y divide-hair text-[14px]">

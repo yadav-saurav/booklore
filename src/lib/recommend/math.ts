@@ -51,7 +51,7 @@ export function jaccard<T>(a: Iterable<T>, b: Iterable<T>): number {
  */
 export function itemItemCF(
   ratings: RatingTriple[], nUsers: number, nItems: number,
-  { lambda = 10, k = 40, minCo = 2 }: { lambda?: number; k?: number; minCo?: number } = {},
+  { lambda = 10, k = 40, minCo = 2, minSim = 0 }: { lambda?: number; k?: number; minCo?: number; minSim?: number } = {},
 ): Neighbour[][] {
   const mu = userMeans(ratings, nUsers);
   // user → list of (item, centred rating)
@@ -91,7 +91,7 @@ export function itemItemCF(
       if (n < minCo || !itemNorm[j]) continue;
       const raw = dot[row + j] / (itemNorm[i] * itemNorm[j]);
       const s = shrink(raw, n, lambda);
-      if (s <= 0) continue;
+      if (s <= minSim) continue;
       out[i].push({ j, s, n });
       out[j].push({ j: i, s, n });
     }

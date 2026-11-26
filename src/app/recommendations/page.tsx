@@ -131,7 +131,7 @@ function PickGrid({ picks, states }: { picks: Recommendation[]; states: Record<s
 
 function ReasonChip({ reason }: { reason: string }) {
   return (
-    <p title={reason} className="flex min-h-[2.6em] items-start gap-1.5 border-l-2 border-cobalt bg-cobalt-soft px-2 py-1 text-[11.5px] font-medium leading-snug text-cobalt">
+    <p title={reason} className="flex h-[42px] items-center gap-1.5 border-l-2 border-cobalt bg-cobalt-soft px-2 py-1 text-[11.5px] font-medium leading-snug text-cobalt">
       <span className="line-clamp-2">{reason}</span>
     </p>
   );

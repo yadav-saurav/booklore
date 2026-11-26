@@ -37,7 +37,7 @@ export type CFModel = {
 const g = globalThis as unknown as { __blRec?: { content?: ContentModel; cf?: CFModel } };
 const cache = (g.__blRec ??= {});
 
-export const CF_PARAMS = { lambda: 12, k: 50, minCo: 3 };
+export const CF_PARAMS = { lambda: 12, k: 50, minCo: 3, minSim: 0.06 };
 
 function contentSig(): string {
   const r = sqlite.prepare(`SELECT (SELECT count(*) FROM books) a, (SELECT max(created_at) FROM books) b,

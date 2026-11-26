@@ -13,7 +13,7 @@ export type Scored = { id: string; score: number; reason: string | null };
 
 const COLD_START_MIN_RATINGS = 3;
 const MMR_LAMBDA = 0.75;
-const SHELF_WEIGHT = 0.6; // 'want' / 'reading' as weak positives
+const SHELF_WEIGHT = 0.2; // 'want' / 'reading' as weak positives
 const GLOBAL_PRIOR_K = 4; // shrink the user mean towards the global mean
 
 type UserData = {
@@ -40,7 +40,7 @@ function seenSet(c: ContentModel, u: UserData): Set<number> {
 function diversitySim(c: ContentModel, a: number, b: number): number {
   const A = c.books[a], B = c.books[b];
   if (A.authors.some((x) => B.authors.includes(x))) return 1;
-  return 0.8 * jaccard(A.genres, B.genres);
+  return 0.6 * jaccard(A.genres, B.genres);
 }
 
 /* ───────── Similar books ───────── */
@@ -90,7 +90,9 @@ function buildProfile(c: ContentModel, cf: CFModel, u: UserData): Profile {
     const i = c.index.get(r.bookId);
     if (i === undefined) continue;
     rated.add(r.bookId);
-    prof.push({ i, w: (r.score - mu) / 2.5, score: r.score, status: null });
+    // (score − userMean), but a 7+ on a 1–10 scale is never treated as a dislike (site mean runs ~8).
+    const centred = (r.score - mu) / 2;
+    prof.push({ i, w: r.score >= 7 ? Math.max(centred, 0.2) : centred, score: r.score, status: null });
   }
   for (const s of u.shelf) {
     if (rated.has(s.bookId) || (s.status !== "want" && s.status !== "reading")) continue;
@@ -171,23 +173,34 @@ export function recommendIds(userId: number | null, limit = 24): Scored[] {
   for (let j = 0; j < c.books.length; j++) {
     if (seen.has(j)) continue;
     const cfv = cfScore.get(j);
-    const cfN = cfv && cfMax ? cfv.v / cfMax : 0;
     const coN = contentMax ? content[j] / contentMax : 0;
-    const rel = 0.55 * cfN + 0.33 * coN + 0.12 * c.quality[j];
+    // With ~20 ratings per book CF is noisy: let content affinity gate it so stray neighbours
+    // (a self-help title loosely co-rated with Dune) don't outrank on-taste books.
+    const cfN = cfv && cfMax ? (cfv.v / cfMax) * (0.35 + 0.65 * Math.min(1, coN / 0.5)) : 0;
+    const rel = 0.45 * cfN + 0.45 * coN + 0.1 * c.quality[j];
     if (rel <= 0.05) continue;
-    cands.push({ j, rel, cfPart: 0.55 * cfN, top: cfv?.top ?? -1 });
+    cands.push({ j, rel, cfPart: 0.45 * cfN, top: cfv?.top ?? -1 });
   }
   cands.sort((a, b) => b.rel - a.rel);
-  const pool = cands.slice(0, Math.max(limit * 5, 120));
+  // Relevance floor keeps MMR from reaching for off-taste filler.
+  const floor = (cands[0]?.rel ?? 0) * 0.4;
+  const pool = cands.slice(0, Math.max(limit * 4, 80)).filter((x, n) => n < limit * 1.5 || x.rel >= floor);
   const picked = mmr(pool, (x) => x.rel, (a, b) => diversitySim(c, a.j, b.j), limit, MMR_LAMBDA);
 
   const favGenre = [...genre].filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]);
-  return picked.map((p) => ({ id: c.books[p.j].id, score: p.rel, reason: reasonFor(c, p, prof, favGenre) }));
+  const used = new Map<string, number>();
+  return picked.map((p) => {
+    // Vary the chips: after a "Because you rated X" line has been used 3 times, explain by genre instead.
+    let reason = reasonFor(c, p, prof, favGenre, false);
+    if ((used.get(reason) ?? 0) >= 3) reason = reasonFor(c, p, prof, favGenre, true);
+    used.set(reason, (used.get(reason) ?? 0) + 1);
+    return { id: c.books[p.j].id, score: p.rel, reason };
+  });
 }
 
-function reasonFor(c: ContentModel, p: { j: number; rel: number; cfPart: number; top: number }, prof: Profile, favGenre: [string, number][]): string {
+function reasonFor(c: ContentModel, p: { j: number; rel: number; cfPart: number; top: number }, prof: Profile, favGenre: [string, number][], genreOnly: boolean): string {
   const b = c.books[p.j];
-  if (p.top >= 0 && p.cfPart >= p.rel * 0.4) {
+  if (!genreOnly && p.top >= 0 && p.cfPart >= p.rel * 0.45) {
     const pr = prof.find((x) => x.i === p.top);
     const t = c.books[p.top].title;
     if (pr?.score != null) return `Because you rated ${t} ${pr.score}/10`;

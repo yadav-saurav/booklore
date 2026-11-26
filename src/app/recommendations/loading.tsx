@@ -12,7 +12,7 @@ export default function Loading() {
         <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {Array.from({ length: 12 }, (_, i) => (
             <div key={i}>
-              <div className="skeleton h-8 w-full" />
+              <div className="skeleton h-[42px] w-full" />
               <div className="skeleton mt-2 aspect-[2/3] w-full" />
               <div className="skeleton mt-2 h-4 w-3/4" />
               <div className="skeleton mt-1.5 h-3 w-1/2" />

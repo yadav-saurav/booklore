@@ -40,7 +40,7 @@ export function GeneratedCover({ id, title, author, className }: { id: string; t
       {motif === 2 && <rect x="30" y="140" width="140" height="120" fill={`url(#${pat})`} />}
       {motif === 3 && <path d="M100 120 L170 270 L30 270Z" fill={`url(#${pat})`} />}
       <circle cx={60 + h * 80} cy="200" r="16" fill={p.b} />
-      <text x="14" y="24" fontFamily="var(--font-inter-tight), sans-serif" fontSize="8" letterSpacing="1.6" fill={p.ink} fontWeight="600">
+      <text x="186" y="24" textAnchor="end" fontFamily="var(--font-inter-tight), sans-serif" fontSize="8" letterSpacing="1.6" fill={p.ink} fontWeight="600">
         BOOKLORE ARCHIVE
       </text>
       {shown.map((l, i) => (

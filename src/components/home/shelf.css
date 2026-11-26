@@ -169,7 +169,7 @@
 .sh-d-credit span { font-family: var(--font-noto-jp), sans-serif; font-style: normal; font-size: 12px; margin-left: 6px; }
 .sh-d-rating { display: flex; align-items: center; gap: 10px; color: var(--ink); }
 .sh-d-rating svg { width: 16px; height: 16px; color: var(--star); }
-.sh-d-btns { display: flex; flex-wrap: wrap; gap: 10px; }
+.sh-d-btns { display: flex; flex-wrap: wrap; gap: 10px; padding: 1px 1px 2px; }
 .sh-d-btn { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border: 1px solid var(--cobalt); color: var(--cobalt); transition: background-color 0.3s var(--ease), color 0.3s var(--ease); }
 .sh-d-btn:hover, .sh-d-btn[data-on="1"] { background: var(--cobalt); color: var(--cobalt-ink); }
 .sh-d-btn span:last-child { font-family: var(--font-noto-jp), sans-serif; letter-spacing: 0.08em; }

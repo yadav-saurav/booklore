@@ -6,3 +6,4 @@ scripts/seed-data/.cache.json
 next-env.d.ts
 .env*.local
 data/.seeded
+data/seed/*-raw.json

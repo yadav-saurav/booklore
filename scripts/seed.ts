@@ -78,6 +78,19 @@ GENRES.forEach(([slug, name, kanji, desc], i) => insGenre.run(slug, name, kanji,
 
 /* ───────── catalog ───────── */
 const books = read<SeedBook[]>("books.json");
+// Open Library lists languages/publishers across all editions in arbitrary order; prefer English
+// (and a Latin-script publisher) when an English edition exists.
+try {
+  const editions = read<Record<string, { language: string[]; publisher: string[] }>>("editions.json");
+  for (const b of books) {
+    const r = editions[b.olWorkKey];
+    if (!r?.language?.includes("eng")) continue;
+    b.language = "en";
+    const known = /\b(Books|Press|Penguin|Random House|Harper|Vintage|Ace|Tor|Bantam|Scribner|Knopf|Doubleday|Macmillan|Simon|Little, Brown|Faber|Bloomsbury|Puffin|Scholastic|Houghton|Viking|Anchor|Del Rey|Orbit|Gollancz|Picador|Riverhead|Crown|Signet|Dover|Norton|Grand Central|Ballantine)\b/;
+    const pick = r.publisher?.find((p) => known.test(p)) ?? r.publisher?.find((p) => /^[\x20-\x7E]{4,}$/.test(p) && !/^\d/.test(p));
+    if (pick) b.publisher = pick;
+  }
+} catch { /* raw snapshot optional */ }
 const authors = read<SeedAuthor[]>("authors.json");
 const authorByKey = new Map(authors.map((a) => [a.olKey, a]));
 

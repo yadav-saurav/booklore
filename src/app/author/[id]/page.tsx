@@ -55,10 +55,10 @@ export default async function AuthorPage({ params, searchParams }: Props) {
     <div className="page pb-16 pt-8 md:pt-12">
       {/* Header: name in large type, photo, facts */}
       <header className="grid gap-6 md:grid-cols-[220px_1fr] md:gap-10 lg:grid-cols-[260px_1fr]">
-        <div className="order-2 w-[52%] max-w-[200px] md:order-1 md:w-full md:max-w-none">
+        <div className="w-[48%] max-w-[200px] md:w-full md:max-w-none">
           <AuthorPhoto name={author.name} photoId={author.photoId} photoUrl={author.photoUrl} priority monogramSize={120} className="shadow-card" />
         </div>
-        <div className="order-1 min-w-0 md:order-2">
+        <div className="min-w-0">
           <h1 className="text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.02em]">{author.name}</h1>
           <p className="mt-3 text-[15px] text-muted">
             <span className="font-semibold text-ink-2">Author</span>
@@ -101,9 +101,9 @@ export default async function AuthorPage({ params, searchParams }: Props) {
       {knownFor.length > 0 && (
         <Section className="!py-10">
           <SectionHeader title="Known for" />
-          <ul className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 [&>li>article]:!w-full">
+          <ul className="grid grid-cols-2 gap-x-4 gap-y-8 sm:flex sm:flex-wrap sm:gap-6 [&>li>article]:!w-full">
             {knownFor.map((b) => (
-              <li key={b.id}><BookCard book={b} state={states[b.id]} /></li>
+              <li key={b.id} className="sm:w-[176px]"><BookCard book={b} state={states[b.id]} /></li>
             ))}
           </ul>
         </Section>

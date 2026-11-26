@@ -9,7 +9,7 @@ export function GenreTileCard({ g }: { g: Tile }) {
   return (
     <Link href={`/genre/${g.slug}`}
       className="group relative flex min-h-[220px] flex-col justify-between overflow-hidden border border-hair bg-card p-5 transition-colors duration-300 hover:border-cobalt">
-      {g.kanji && <HalftoneKanji kanji={g.kanji} size={120} className="absolute -right-3 -top-5 transition-transform duration-500 group-hover:-translate-y-1" />}
+      {g.kanji && <HalftoneKanji kanji={g.kanji} size={96} className="absolute -right-4 -top-9 transition-transform duration-500 group-hover:-translate-y-1" />}
       <div className="relative">
         <h2 className="text-[22px] font-semibold leading-tight tracking-tight group-hover:text-cobalt">{g.name}</h2>
         <p className="mt-1 text-[13px] text-muted">{plural(g.count, "book")}</p>

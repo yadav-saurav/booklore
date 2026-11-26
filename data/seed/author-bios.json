@@ -1,0 +1,826 @@
+{
+  "OL21594A": {
+    "bio": "Jane Austen was an English novelist whose sharp social observation and wit made her one of the most celebrated writers in the language. Living quietly in the English countryside, she completed six novels exploring courtship, family and class in the Regency era. Most of her work appeared anonymously during her lifetime.",
+    "nationality": "British"
+  },
+  "OL113362A": {
+    "bio": "Charlotte Brontë was the eldest of the three Brontë sisters, whose novels reshaped English fiction with intense emotion and psychological insight. Raised in the Yorkshire parsonage at Haworth, she published Jane Eyre under the pseudonym Currer Bell. She married late and died in 1855, not long after her wedding.",
+    "nationality": "British"
+  },
+  "OL24529A": {
+    "bio": "Emily Brontë grew up in the isolated parsonage at Haworth, on the Yorkshire moors. Her only novel, Wuthering Heights, appeared in 1847 under a male pseudonym and initially puzzled critics with its harsh landscapes and dark passions. She also wrote poetry and died the following year, aged thirty.",
+    "nationality": "British"
+  },
+  "OL25342A": {
+    "bio": "Mary Shelley, born Mary Wollstonecraft Godwin, wrote Frankenstein at the age of nineteen during a stay near Lake Geneva with Lord Byron and Percy Bysshe Shelley. Her novel became a foundational work of science fiction. She went on to write other novels, including The Last Man, and to edit her husband's poetry.",
+    "nationality": "British"
+  },
+  "OL31727A": {
+    "bio": "Bram Stoker was an Irish author and theatre manager who worked for years for the actor Henry Irving in London. His 1897 novel Dracula drew on folklore, travel notes and Gothic traditions to create the most enduring vampire of modern fiction. Stoker wrote several other novels, though none matched the influence of his most famous creation.",
+    "nationality": "Irish"
+  },
+  "OL29497A": {
+    "bio": "Herman Melville spent his youth at sea, working on whaling ships and voyaging in the Pacific, experiences that shaped his early adventure novels. Moby-Dick, published in 1851, was a commercial disappointment in its time but is now considered one of the greatest American novels. Later he turned to poetry and worked as a customs inspector in New York.",
+    "nationality": "American"
+  },
+  "OL27349A": {
+    "bio": "F. Scott Fitzgerald became the chronicler of the Jazz Age, capturing the glamour, excess and disillusionment of 1920s America. Born in Minnesota, he rose to fame with his debut novel, This Side of Paradise, and later with The Great Gatsby. He struggled with money and alcohol for much of his life and died in 1940.",
+    "nationality": "American"
+  },
+  "OL498120A": {
+    "bio": "Harper Lee grew up in Monroeville, Alabama, a small town that inspired the setting of her acclaimed novel To Kill a Mockingbird. Published in 1960, the book won the Pulitzer Prize and became a fixture of school reading lists. Lee published very little afterward, and her later novel, Go Set a Watchman, appeared in 2015.",
+    "nationality": "American"
+  },
+  "OL118077A": {
+    "bio": "George Orwell, the pen name of Eric Arthur Blair, was an English writer and journalist known for his clear, incisive prose. His experiences in Burma, the Spanish Civil War and wartime broadcasting shaped books such as Animal Farm and Nineteen Eighty-Four. His essays on language and politics remain widely read and influential.",
+    "nationality": "British"
+  },
+  "OL19767A": {
+    "bio": "Aldous Huxley was an English writer from a distinguished scientific family, known for novels, essays and provocative ideas. Brave New World, published in 1932, imagines a technologically controlled society built on pleasure rather than fear. In later years he explored mysticism and psychedelics, and he died in Los Angeles in 1963.",
+    "nationality": "British"
+  },
+  "OL540486A": {
+    "bio": "J.D. Salinger was an American writer who gained fame with The Catcher in the Rye, published in 1951. After serving in the Second World War, he wrote short stories often featuring the Glass family. He later withdrew from public life to a home in rural New Hampshire and published little after the 1960s.",
+    "nationality": "American"
+  },
+  "OL16224933A": {
+    "bio": "Fyodor Dostoevsky was a Russian novelist and thinker whose work explores psychology, faith and the moral complexity of the human soul. Imprisoned and later exiled to Siberia in his youth, he drew on that suffering in his writing. His major works include Crime and Punishment, The Idiot and The Brothers Karamazov.",
+    "nationality": "Russian"
+  },
+  "OL26783A": {
+    "bio": "Leo Tolstoy was a Russian aristocrat and novelist whose epic works, including War and Peace and Anna Karenina, are among the greatest in literature. After a spiritual crisis in midlife, he turned toward moral philosophy, nonviolence and simple living. His essays on faith and conscience influenced many later reformers.",
+    "nationality": "Russian"
+  },
+  "OL6819624A": {
+    "bio": "Alexandre Dumas was a prolific French novelist and playwright whose adventure stories made him one of the most popular writers of the nineteenth century. Working with collaborators, he produced dozens of plays and serialized novels. The Count of Monte Cristo and The Three Musketeers remain staples of adventure fiction.",
+    "nationality": "French"
+  },
+  "OL107571A": {
+    "bio": "Victor Hugo was a French poet, playwright and novelist, a leading voice of Romanticism and an outspoken political figure. Exiled for years after opposing Napoleon III, he wrote much of his fiction during and after that period. Les Misérables and The Hunchback of Notre-Dame are among his best-known works.",
+    "nationality": "French"
+  },
+  "OL24638A": {
+    "bio": "Charles Dickens was a Victorian novelist whose vivid characters and social commentary made him one of the most popular writers of his era. Growing up in poverty, he drew on his childhood hardship in many novels. His serialized works, including Oliver Twist, Bleak House and A Christmas Carol, remain enduring classics.",
+    "nationality": "British"
+  },
+  "OL20646A": {
+    "bio": "Oscar Wilde was an Irish playwright, poet and wit whose sparkling epigrams and aesthetic philosophy made him a celebrity in Victorian London. The Importance of Being Earnest and the novel The Picture of Dorian Gray secured his reputation. Imprisoned in 1895 after a scandal, he spent his last years in exile in France.",
+    "nationality": "Irish"
+  },
+  "OL25963A": {
+    "bio": "Robert Louis Stevenson was a Scottish author of adventure novels, travel writing and essays. Often in poor health, he traveled widely and eventually settled in Samoa, where he died in 1894. Treasure Island, Kidnapped and Strange Case of Dr Jekyll and Mr Hyde remain among his most celebrated books.",
+    "nationality": "Scottish"
+  },
+  "OL161167A": {
+    "bio": "Arthur Conan Doyle was a Scottish-born physician who began writing fiction to supplement his income. His detective Sherlock Holmes, introduced in 1887, became one of literature's most famous characters. Doyle also wrote historical novels and, later in life, became an outspoken advocate of spiritualism.",
+    "nationality": "British"
+  },
+  "OL22098A": {
+    "bio": "Lewis Carroll was the pen name of Charles Lutwidge Dodgson, an English mathematician and lecturer at Oxford. He first told the story of Alice's Adventures in Wonderland during a boating trip in 1862. The book's wordplay, logic puzzles and nonsense verse have delighted readers ever since.",
+    "nationality": "British"
+  },
+  "OL16230323A": {
+    "bio": "J.M. Barrie was a Scottish playwright and novelist best known for creating Peter Pan. Early in his career he wrote novels about Scottish village life, and his play Peter Pan premiered in London in 1904. Barrie later gave the rights to the play to a children's hospital in London, securing its lasting legacy.",
+    "nationality": "Scottish"
+  },
+  "OL23761A": {
+    "bio": "Kenneth Grahame was a Scottish-born writer who worked for the Bank of England before turning to stories about childhood and the natural world. His book The Wind in the Willows, published in 1908, grew out of bedtime tales he told his young son. He is celebrated for capturing the spirit of riverbanks, animals and home.",
+    "nationality": "Scottish"
+  },
+  "OL23767A": {
+    "bio": "Frances Hodgson Burnett was an Anglo-American novelist who emigrated to the United States as a teenager and became one of its most successful writers. Her children's novels, including Little Lord Fauntleroy and The Secret Garden, won enduring popularity. She also wrote plays and novels for adults over a long and productive career.",
+    "nationality": "British"
+  },
+  "OL26680A": {
+    "bio": "Louisa May Alcott grew up in a household of Transcendentalist thinkers in Concord, Massachusetts. She supported her family through writing and nursing during the Civil War, experiences she drew on in Hospital Sketches. Her novel Little Women, published in 1868, became one of the most beloved books in American literature.",
+    "nationality": "American"
+  },
+  "OL13066A": {
+    "bio": "H.G. Wells was an English writer whose scientific romances, including The Time Machine and The War of the Worlds, helped establish modern science fiction. Trained as a biologist, he also wrote widely on social reform, history and politics. His ideas about the future and technology remain influential in literature and public debate.",
+    "nationality": "British"
+  },
+  "OL13640A": {
+    "bio": "Ernest Hemingway was an American novelist and journalist whose spare, direct prose transformed twentieth-century fiction. After serving as an ambulance driver in the First World War, he drew on war, travel and sport in novels such as The Sun Also Rises and A Farewell to Arms. He received the Nobel Prize in Literature in 1954.",
+    "nationality": "American"
+  },
+  "OL19450A": {
+    "bio": "Virginia Woolf was an English novelist, essayist and critic who was a central figure in the Bloomsbury Group. Her experimental novels, including Mrs Dalloway and To the Lighthouse, explore consciousness, time and the inner lives of women. Her essays on feminism and literature remain highly influential.",
+    "nationality": "British"
+  },
+  "OL335424A": {
+    "bio": "William Golding was an English novelist and poet who taught English and philosophy before serving in the Royal Navy during the Second World War. His experiences of war and human violence shaped his fiction. Lord of the Flies, published in 1954, became a classic, and Golding received the Nobel Prize in Literature in 1983.",
+    "nationality": "British"
+  },
+  "OL25788A": {
+    "bio": "John Steinbeck was an American novelist known for his sympathetic portrayals of working people, migrants and the landscapes of California. Born in Salinas, he drew on the Dust Bowl era and the Great Depression for novels such as The Grapes of Wrath. He received the Nobel Prize in Literature in 1962.",
+    "nationality": "American"
+  },
+  "OL34047A": {
+    "bio": "Daphne du Maurier was an English novelist and short story writer known for atmospheric, suspenseful fiction. Her novel Rebecca, published in 1938, became a bestseller and was adapted into a celebrated film by Alfred Hitchcock. Many of her works are set in Cornwall, whose landscape inspired her gothic tales.",
+    "nationality": "British"
+  },
+  "OL151749A": {
+    "bio": "Margaret Mitchell was an American journalist and novelist from Atlanta, Georgia. After an injury left her largely homebound, she wrote Gone with the Wind, which was published in 1936 and won the Pulitzer Prize the following year. The novel became one of the best-selling books of all time.",
+    "nationality": "American"
+  },
+  "OL226273A": {
+    "bio": "Zora Neale Hurston was an American novelist, folklorist and anthropologist who documented the rich oral traditions of Black communities in the American South. Trained at Barnard College and Columbia University, she collected folklore in Florida, Louisiana and the Caribbean. Her novel Their Eyes Were Watching God has become a foundational work of African American literature.",
+    "nationality": "American"
+  },
+  "OL31120A": {
+    "bio": "Toni Morrison was an American novelist and editor whose works explored African American history, memory and identity with lyrical power. Born in Ohio, she worked as an editor at Random House before publishing The Bluest Eye in 1970. Beloved won the Pulitzer Prize in 1988, and she received the Nobel Prize in Literature in 1993.",
+    "nationality": "American"
+  },
+  "OL24137A": {
+    "bio": "Ray Bradbury was an American writer of science fiction, fantasy and horror, known for lyrical prose and imaginative storytelling. He wrote hundreds of short stories and many novels, including Fahrenheit 451 and The Martian Chronicles. Throughout his career he was an outspoken advocate of libraries, reading and the power of the imagination.",
+    "nationality": "American"
+  },
+  "OL33512A": {
+    "bio": "Joseph Heller was an American novelist and playwright whose satirical war novel Catch-22 drew on his own experience as a bombardier in the Second World War. Published in 1961, the book became a cultural touchstone for its absurd logic and dark humor. Heller went on to write other novels, including Something Happened and Closing Time.",
+    "nationality": "American"
+  },
+  "OL48139A": {
+    "bio": "Vladimir Nabokov was a Russian-born writer who worked in Russian and English and later became an American novelist. Fleeing revolution, he lived in Berlin and Paris before settling in the United States, where he taught literature at Cornell. His novel Lolita, published in 1955, is among the most discussed and provocative works of the twentieth century.",
+    "nationality": "American"
+  },
+  "OL66452A": {
+    "bio": "Miguel de Cervantes was a Spanish writer who spent part of his life as a soldier, a captive and a tax collector. His novel Don Quixote, published in two parts in 1605 and 1615, is often considered the first modern novel. Cervantes also wrote plays, short stories and poetry that influenced generations of writers.",
+    "nationality": "Spanish"
+  },
+  "OL13280534A": {
+    "bio": "Homer is the legendary poet traditionally credited with the Iliad and the Odyssey, the foundational epics of ancient Greek literature. Little is known with certainty about his life, and scholars debate whether a single author composed both works. The poems were performed orally before being written down, and they have shaped Western storytelling for millennia.",
+    "nationality": "Greek"
+  },
+  "OL23178A": {
+    "bio": "Walt Whitman was an American poet and journalist who helped shape modern free verse. Born on Long Island, he worked as a printer, editor and volunteer nurse during the Civil War. His landmark collection Leaves of Grass, first published in 1855, was revised across his life and celebrated democracy, the body and the self.",
+    "nationality": "American"
+  },
+  "OL79034A": {
+    "bio": "Frank Herbert was an American science fiction author and journalist. He spent years researching ecology, religion and politics before completing Dune, which became one of the best-selling science fiction novels of all time. The book launched a long series of sequels that Herbert continued until his death in 1986.",
+    "nationality": "American"
+  },
+  "OL31353A": {
+    "bio": "Ursula K. Le Guin was an American novelist, poet and critic who became one of the most acclaimed writers of speculative fiction. Her works, including The Left Hand of Darkness and the Earthsea series, explore gender, politics and anthropology. She won many Hugo and Nebula awards and received major literary honors late in life.",
+    "nationality": "American"
+  },
+  "OL274606A": {
+    "bio": "Philip K. Dick was an American science fiction writer known for novels that probe reality, identity and what it means to be human. Working in paperback publishing for much of his career, he produced dozens of novels and many stories. Several of his works, including Do Androids Dream of Electric Sheep?, were adapted into celebrated films.",
+    "nationality": "American"
+  },
+  "OL52922A": {
+    "bio": "Margaret Atwood is a Canadian novelist, poet and critic known for speculative and literary fiction. Her novels, including The Handmaid's Tale and The Blind Assassin, examine power, gender and history. She has won the Booker Prize and many other honors, and she continues to publish poetry, essays and fiction.",
+    "nationality": "Canadian"
+  },
+  "OL28493A": {
+    "bio": "Kazuo Ishiguro was born in Japan and moved to England as a child, later becoming one of the most acclaimed novelists writing in English. His quiet, restrained narrators often reveal as much through what they leave unsaid. The Remains of the Day won the Booker Prize, and Ishiguro received the Nobel Prize in Literature in 2017.",
+    "nationality": "British"
+  },
+  "OL272947A": {
+    "bio": "Douglas Adams was an English writer and humorist known for his comic science fiction. His radio series, later adapted into the novel The Hitchhiker's Guide to the Galaxy, became a global cult phenomenon. Adams also worked as a script editor on Doctor Who and wrote other novels, including the Dirk Gently books.",
+    "nationality": "British"
+  },
+  "OL25712A": {
+    "bio": "Terry Pratchett was an English novelist and journalist who created the Discworld series, a comic fantasy saga that satirizes society, religion and human nature. Beginning with The Colour of Magic in 1983, he wrote more than forty novels. He was known for his wit, his memorable characters and his campaigning for causes he cared about.",
+    "nationality": "British"
+  },
+  "OL26320A": {
+    "bio": "J.R.R. Tolkien was an English philologist and professor at Oxford who created the rich mythology of Middle-earth. Drawing on his knowledge of ancient languages and legends, he wrote The Hobbit and The Lord of the Rings. His works helped define modern fantasy literature and inspired generations of writers.",
+    "nationality": "British"
+  },
+  "OL234664A": {
+    "bio": "George R.R. Martin is an American novelist and television writer best known for A Song of Ice and Fire, the epic fantasy series that inspired the television drama Game of Thrones. Before writing novels he worked as a screenwriter and television producer. His fiction is known for morally complex characters and political intrigue.",
+    "nationality": "American"
+  },
+  "OL2830895A": {
+    "bio": "Patrick Rothfuss is an American fantasy author who taught creative writing before publishing The Name of the Wind. His series, The Kingkiller Chronicle, follows a gifted young man recounting his legendary life. Rothfuss is known for lyrical prose and for a devoted community of readers.",
+    "nationality": "American"
+  },
+  "OL1394865A": {
+    "bio": "Brandon Sanderson is an American fantasy writer known for intricate magic systems, fast-paced plots and expansive worlds. He completed Robert Jordan's Wheel of Time series after the author's death. His own works, including the Mistborn books and The Stormlight Archive, have made him one of the most popular fantasy authors today.",
+    "nationality": "American"
+  },
+  "OL31574A": {
+    "bio": "C.S. Lewis was an Irish-born scholar and writer who taught English literature at Oxford and Cambridge. A Christian apologist and novelist, he wrote The Screwtape Letters and the Chronicles of Narnia, a children's series that remains beloved worldwide. His essays on faith and reason are widely read today.",
+    "nationality": "Irish"
+  },
+  "OL1387961A": {
+    "bio": "Susanna Clarke is an English novelist known for her ambitious, richly detailed fantasy set in an alternate nineteenth-century England. Her debut, Jonathan Strange & Mr Norrell, took years to write and became an international bestseller. Her later novel, Piranesi, was praised for its inventive and enigmatic world.",
+    "nationality": "British"
+  },
+  "OL7032054A": {
+    "bio": "Leigh Bardugo is an American author of fantasy for young adults and adults. She began her career with the Grishaverse, a shared fantasy world that includes Shadow and Bone and Six of Crows. Her adult novel Ninth House, set at Yale, blends campus mystery with occult fantasy and became a bestseller.",
+    "nationality": "American"
+  },
+  "OL7486601A": {
+    "bio": "R.F. Kuang is an American author of fantasy and literary fiction. She began writing while studying at Yale and gained acclaim for The Poppy War, a fantasy inspired by Chinese history about war and power. Her novel Babel explores colonialism and language, and her satire Yellowface became a bestseller.",
+    "nationality": "American"
+  },
+  "OL7411322A": {
+    "bio": "TJ Klune is an American author known for warm, whimsical fantasy and romance. After years of working in a variety of jobs, he began publishing novels, and The House in the Cerulean Sea became a bestseller. His stories often focus on found family, kindness and unlikely heroes.",
+    "nationality": "American"
+  },
+  "OL9109447A": {
+    "bio": "Travis Baldree is an American author known for cozy fantasy novels. His bestselling debut, Legends & Lattes, follows an orc who opens a coffee shop. Baldree's books focus on warmth, community and the small pleasures of everyday life, with a gentle sense of humor.",
+    "nationality": "American"
+  },
+  "OL7115219A": {
+    "bio": "Sarah J. Maas is an American author of fantasy and romance with a large young adult and adult readership. Her Throne of Glass and A Court of Thorns and Roses series have sold millions of copies worldwide. She is known for immersive world-building, romantic tension and intricate storylines.",
+    "nationality": "American"
+  },
+  "OL7825177A": {
+    "bio": "Rebecca Yarros is an American author who writes romantic fantasy and contemporary romance. Before becoming a full-time novelist she worked as a nurse. Her Empyrean series, beginning with Fourth Wing, follows dragon riders at a brutal military academy and became a global bestseller.",
+    "nationality": "American"
+  },
+  "OL1926056A": {
+    "bio": "Madeline Miller is an American novelist and classicist who retells stories from Greek myth. Her debut, The Song of Achilles, won the Orange Prize, and her follow-up, Circe, became an international bestseller. Miller gives voice to mythological women and overlooked figures with careful scholarship and emotional depth.",
+    "nationality": "American"
+  },
+  "OL1433006A": {
+    "bio": "Gillian Flynn is an American novelist and former television writer known for psychologically sharp thrillers. Her novels, including Sharp Objects and Gone Girl, explore dark family secrets and the stories people tell about themselves. Gone Girl was adapted into a major film in 2014.",
+    "nationality": "American"
+  },
+  "OL1414302A": {
+    "bio": "Stieg Larsson was a Swedish journalist and editor who campaigned against right-wing extremism and for human rights. He wrote the Millennium trilogy, which he completed shortly before his sudden death in 2004. The series, beginning with The Girl with the Dragon Tattoo, became an international publishing phenomenon.",
+    "nationality": "Swedish"
+  },
+  "OL2032671A": {
+    "bio": "Thomas Harris is an American novelist and former journalist known for suspense thrillers featuring the cannibal psychiatrist Hannibal Lecter. His novel The Silence of the Lambs, published in 1988, won major awards and was adapted into an Oscar-winning film. Harris is known for meticulous research and precise, atmospheric prose.",
+    "nationality": "American"
+  },
+  "OL28577A": {
+    "bio": "Patricia Highsmith was an American writer of psychological suspense, best known for her Tom Ripley novels. Although she spent much of her life in Europe, she wrote about American characters and moral ambiguity. Her novel Strangers on a Train was adapted into an acclaimed film by Alfred Hitchcock.",
+    "nationality": "American"
+  },
+  "OL27695A": {
+    "bio": "Agatha Christie was an English crime writer who created the detectives Hercule Poirot and Miss Marple. Her career spanned more than five decades, and she wrote dozens of novels, plays and short story collections. Christie is one of the best-selling authors in history, and her mysteries remain among the most widely adapted.",
+    "nationality": "British"
+  },
+  "OL7973935A": {
+    "bio": "Richard Osman is an English television producer and author who created quiz shows before turning to fiction. His Thursday Murder Club series, beginning in 2020, follows a group of retirees who investigate crimes. The books became international bestsellers, praised for their warmth, wit and clever plotting.",
+    "nationality": "British"
+  },
+  "OL1394359A": {
+    "bio": "Suzanne Collins is an American author and screenwriter best known for The Hunger Games trilogy. She began her career writing for children's television before turning to young adult fiction. Her dystopian novels explore power, violence and survival, and they have been adapted into major films.",
+    "nationality": "American"
+  },
+  "OL507165A": {
+    "bio": "Shirley Jackson was an American writer of short stories and novels, known for her unsettling tales of domestic life and the uncanny. Her story The Lottery became one of the most anthologized American stories of the twentieth century. Her novel The Haunting of Hill House remains a landmark of psychological horror.",
+    "nationality": "American"
+  },
+  "OL19981A": {
+    "bio": "Stephen King is an American author of horror, suspense and fantasy who has sold hundreds of millions of books. Beginning with Carrie in 1974, he built a prolific career with novels such as The Shining, It and The Stand. King is also known for his memoir On Writing and for the many films adapted from his work.",
+    "nationality": "American"
+  },
+  "OL7481396A": {
+    "bio": "Silvia Moreno-Garcia is a Mexican-Canadian writer of speculative fiction, including horror, fantasy and science fiction. Her novel Mexican Gothic blends classic gothic conventions with Mexican history and social critique. She has also written about folklore, colonialism and the lives of women across the Americas.",
+    "nationality": "Mexican"
+  },
+  "OL81831A": {
+    "bio": "William Peter Blatty was an American novelist and screenwriter who worked as a publicist before turning to writing. His novel The Exorcist, published in 1971, became a bestseller and a landmark horror film. Blatty's fiction often explores faith and doubt, and he also wrote screenplays.",
+    "nationality": "American"
+  },
+  "OL1478799A": {
+    "bio": "Jojo Moyes is an English novelist and former journalist known for romantic fiction with emotional depth. Her novel Me Before You became an international bestseller and was adapted into a film. Moyes writes about love, family and social issues, often with a sharp sense of humor.",
+    "nationality": "British"
+  },
+  "OL531502A": {
+    "bio": "Diana Gabaldon is an American novelist whose Outlander series blends historical fiction, romance and time travel. Before becoming a novelist she worked in academic and research roles. Outlander, published in 1991, launched a long-running series that inspired a successful television adaptation.",
+    "nationality": "American"
+  },
+  "OL7919580A": {
+    "bio": "Sally Rooney is an Irish novelist known for literary fiction about relationships, class and communication among young people. Her debut, Conversations with Friends, was followed by Normal People, which won major awards and became a television series. Her work is noted for precise and observant prose.",
+    "nationality": "Irish"
+  },
+  "OL3056525A": {
+    "bio": "Audrey Niffenegger is an American author and artist whose work blends literary fiction, romance and visual art. Her novel The Time Traveler's Wife, published in 2003, was a major bestseller and was adapted into a film. She is also known for graphic novels and illustrated books that combine text and image.",
+    "nationality": "American"
+  },
+  "OL7410858A": {
+    "bio": "Emily Henry is an American author of contemporary romance known for witty dialogue and emotional honesty. Beginning with Beach Read, she built a large readership with stories that often feature rivals and reunions. Her books, including People We Meet on Vacation and Happy Place, have been bestsellers around the world.",
+    "nationality": "American"
+  },
+  "OL7315784A": {
+    "bio": "Colleen Hoover is an American novelist of contemporary romance and emotional drama. Her books first gained a huge following through social media before she signed with major publishers. It Ends with Us became one of the bestselling novels of its time, and Hoover is known for intense, emotionally charged stories.",
+    "nationality": "American"
+  },
+  "OL9587269A": {
+    "bio": "Bonnie Garmus is an American writer who spent much of her career in the business world before publishing fiction. Her debut novel, Lessons in Chemistry, follows a female chemist in 1960s California and became an international bestseller. Garmus is praised for her wit and her sharp portrait of gender, science and society.",
+    "nationality": "American"
+  },
+  "OL221083A": {
+    "bio": "Barbara Kingsolver is an American novelist and essayist known for books that combine social themes with compelling storytelling. Her works, including The Poisonwood Bible and The Bean Trees, explore family, the environment and politics. Her novel Demon Copperhead reimagines a Dickens classic in Appalachia.",
+    "nationality": "American"
+  },
+  "OL1394023A": {
+    "bio": "Gabrielle Zevin is an American novelist and screenwriter whose books explore creativity, love and the lives of young people. She has written several novels for young adults and adults, and her work often considers how technology shapes relationships. Tomorrow, and Tomorrow, and Tomorrow became an international bestseller.",
+    "nationality": "American"
+  },
+  "OL1425869A": {
+    "bio": "Markus Zusak is an Australian author of novels for young adults and adults. Born in Sydney to German parents, he grew up hearing stories from his family's past, which influenced The Book Thief. His books are known for lyrical voices and emotional depth, and The Book Thief became one of the most successful novels of its decade.",
+    "nationality": "Australian"
+  },
+  "OL2631224A": {
+    "bio": "Abraham Verghese is an Ethiopian-born physician and author of Indian descent who lives in the United States. He practiced medicine and taught at Stanford before turning to fiction. His novel Cutting for Stone became an international bestseller, and his books draw on his experience in medicine and his interest in history.",
+    "nationality": "American"
+  },
+  "OL248608A": {
+    "bio": "Ann Patchett is an American novelist and essayist known for humane, carefully crafted fiction. Her novel Bel Canto won the PEN/Faulkner Award, and Commonwealth and The Dutch House have been widely praised. Patchett also co-owns Parnassus Books, an independent bookstore in Nashville.",
+    "nationality": "American"
+  },
+  "OL7652100A": {
+    "bio": "Paul Lynch is an Irish novelist and former journalist known for intense, lyrical fiction about politics, family and survival. His novel Prophet Song won the Booker Prize in 2023. Lynch's books often confront political crisis and the resilience of ordinary people.",
+    "nationality": "Irish"
+  },
+  "OL6475686A": {
+    "bio": "Samantha Harvey is a British novelist known for lyrical, reflective fiction. Her novels explore nature, loss and human connection, including The Western Wind. Her novel Orbital won the Booker Prize in 2024 for its meditative vision of six astronauts aboard the International Space Station.",
+    "nationality": "British"
+  },
+  "OL34745A": {
+    "bio": "Percival Everett is an American novelist, poet and professor known for witty, unclassifiable fiction. His novels, including Erasure, often satirize publishing, race and identity. James, his retelling of Huckleberry Finn from the perspective of Jim, became one of his most celebrated books.",
+    "nationality": "American"
+  },
+  "OL7544392A": {
+    "bio": "Nana Kwame Adjei-Brenyah is an American writer of short fiction and novels, born to Ghanaian parents and raised in New York. A former law student and retail worker, he writes sharp satire about violence, race and capitalism. His short story collection Friday Black was widely praised before he published his novel Chain-Gang All-Stars.",
+    "nationality": "American"
+  },
+  "OL3163253A": {
+    "bio": "Rachel Kushner is an American novelist and essayist known for ambitious, research-driven fiction. Her novels, including The Flamethrowers and The Mars Room, examine art, politics and life at the social margins. Her work often draws on years of reporting and cultural history.",
+    "nationality": "American"
+  },
+  "OL13515159A": {
+    "bio": "Kaliane Bradley is a British writer whose debut novel, The Ministry of Time, blends science fiction, romance and political satire. The book imagines a near-future government program that brings people from the past into the present. It became a widely discussed bestseller, noted for its wit and its tender, complicated characters.",
+    "nationality": "British"
+  },
+  "OL6538530A": {
+    "bio": "Emily St. John Mandel is a Canadian-born American novelist whose books explore art, catastrophe and connection across time. Her novel Station Eleven became a critically acclaimed bestseller and was adapted into a television series. Her later novel Sea of Tranquility continues her interest in interlinked lives and speculative themes.",
+    "nationality": "Canadian"
+  },
+  "OL1394231A": {
+    "bio": "John Scalzi is an American science fiction writer known for witty, fast-paced novels. His debut, Old Man's War, launched a popular series, and his books often blend humor with social commentary and space adventure. Scalzi is also a prolific essayist and commentator on writing and publishing.",
+    "nationality": "American"
+  },
+  "OL1515577A": {
+    "bio": "Ann Napolitano is an American novelist known for emotionally rich stories about family, grief and moral choice. Her novel Dear Edward was a bestseller and widely praised. Napolitano's writing is marked by compassion for ordinary people facing difficult decisions.",
+    "nationality": "American"
+  },
+  "OL9599807A": {
+    "bio": "Shelby Van Pelt is an American novelist whose debut, Remarkably Bright Creatures, became a bestselling book club favorite. Her warm, character-driven story explores grief, companionship and the unexpected bonds between people and animals. She writes about the natural world with humor and tenderness.",
+    "nationality": "American"
+  },
+  "OL12495552A": {
+    "bio": "Jenny Jackson is an American novelist and former book editor whose fiction examines wealth, family and the quiet social codes of her characters' worlds. Her debut, Pineapple Street, was a bestseller praised for its humor and sharp observation. She has worked in publishing for many years.",
+    "nationality": "American"
+  },
+  "OL7526140A": {
+    "bio": "Hernán Díaz is an Argentine-born writer living in the United States. He worked as a literary translator and editor before publishing fiction. His novel Trust, which won the Pulitzer Prize for Fiction in 2023, is built from competing narratives about money, power and storytelling.",
+    "nationality": "Argentine"
+  },
+  "OL6840257A": {
+    "bio": "Shehan Karunatilaka is a Sri Lankan novelist, screenwriter and journalist. His novel The Seven Moons of Maali Almeida won the Booker Prize in 2022. His earlier novel Chinaman was also widely acclaimed, and his fiction uses satirical humor to examine politics and identity in Sri Lanka.",
+    "nationality": "Sri Lankan"
+  },
+  "OL30522A": {
+    "bio": "Kristin Hannah is an American novelist known for emotionally powerful stories about war, family and resilience. She began with contemporary novels before turning to historical fiction. The Nightingale, published in 2015, became one of her biggest bestsellers, and The Women followed in 2024.",
+    "nationality": "American"
+  },
+  "OL1392722A": {
+    "bio": "Anthony Doerr is an American novelist and short story writer known for lyrical, carefully researched fiction. His novel All the Light We Cannot See won the Pulitzer Prize for Fiction in 2015. Doerr's writing often explores nature, science and ordinary people shaped by larger historical forces.",
+    "nationality": "American"
+  },
+  "OL444620A": {
+    "bio": "James Clavell was an Australian-born novelist and screenwriter who served in the British Army during the Second World War and was held as a prisoner of war by the Japanese. His experiences inspired novels about Asia, including the epic Shogun, published in 1975. Clavell's books became enormously popular around the world.",
+    "nationality": "British"
+  },
+  "OL585131A": {
+    "bio": "John Kennedy Toole was an American writer from New Orleans. His comic novel A Confederacy of Dunces was rejected by publishers and was published posthumously in 1980, after his death in 1969 at age thirty-one. The book won the Pulitzer Prize for Fiction in 1981.",
+    "nationality": "American"
+  },
+  "OL7370073A": {
+    "bio": "Angie Thomas is an American author of young adult fiction whose debut novel, The Hate U Give, was inspired by the Black Lives Matter movement. Her stories center on Black teenagers navigating family, activism and identity. The book was adapted into a major film in 2018.",
+    "nationality": "American"
+  },
+  "OL221009A": {
+    "bio": "Lois Lowry is an American author of children's and young adult fiction, known for thought-provoking books on identity and memory. Her novel The Giver won the Newbery Medal in 1994 and helped shape a generation of dystopian fiction. Number the Stars also won a Newbery Medal, for its story of wartime Denmark.",
+    "nationality": "American"
+  },
+  "OL397826A": {
+    "bio": "S.E. Hinton, born Susan Eloise Hinton, wrote The Outsiders while still a teenager in Tulsa, Oklahoma. Her realistic novels about teenagers helped define the young adult genre. Hinton also wrote Rumble Fish and Tex, and several of her books were adapted into films.",
+    "nationality": "American"
+  },
+  "OL5046634A": {
+    "bio": "John Green is an American author of novels for young adults. His books, including The Fault in Our Stars, combine humor, sorrow and philosophical reflection. Green is a co-creator of the educational video channels Crash Course and VlogBrothers, and he is known for a warm, engaged relationship with his readers.",
+    "nationality": "American"
+  },
+  "OL6941868A": {
+    "bio": "Ernest Cline is an American screenwriter and novelist whose books are rich in references to the 1980s and to video games. His debut, Ready Player One, became a bestseller and was adapted into a film directed by Steven Spielberg. Cline's later novels continue to blend science fiction with nostalgia.",
+    "nationality": "American"
+  },
+  "OL23919A": {
+    "bio": "J.K. Rowling is a British author best known for the Harry Potter series, which has sold hundreds of millions of copies and been translated into dozens of languages. Before publishing her first novel she worked as a researcher and teacher. She has also written adult novels and crime fiction under the pen name Robert Galbraith.",
+    "nationality": "British"
+  },
+  "OL30765A": {
+    "bio": "Rick Riordan is an American author who taught English and history before writing novels for young readers. His Percy Jackson and the Olympians series, beginning with The Lightning Thief, introduced many children to Greek mythology. Riordan has since written series drawing on Norse, Egyptian and other mythologies.",
+    "nationality": "American"
+  },
+  "OL28188A": {
+    "bio": "Madeleine L'Engle was an American author of children's and adult novels that blend science fiction, fantasy and Christian themes. Her Newbery Medal-winning novel, A Wrinkle in Time, was rejected by many publishers before becoming a classic. She also served as a writer-in-residence at a New York cathedral.",
+    "nationality": "American"
+  },
+  "OL39485A": {
+    "bio": "L.M. Montgomery was a Canadian novelist born on Prince Edward Island. Her novel Anne of Green Gables, published in 1908, became an international classic and inspired a long series of sequels. Montgomery also wrote short stories, poetry and a celebrated set of journals that offer insight into her life.",
+    "nationality": "Canadian"
+  },
+  "OL24461A": {
+    "bio": "Rudyard Kipling was an English writer born in Bombay, India, known for stories, poems and novels about British India and the wider world. He received the Nobel Prize in Literature in 1907. His children's works, including The Jungle Book and the Just So Stories, remain widely read.",
+    "nationality": "British"
+  },
+  "OL25123A": {
+    "bio": "Anna Sewell was an English writer who produced only one book, Black Beauty, published in 1877 shortly before her death. Often confined by illness, she wrote the novel to encourage kindness toward horses. The book became one of the best-selling children's novels of its time and helped inspire animal welfare reform.",
+    "nationality": "British"
+  },
+  "OL197120A": {
+    "bio": "Laura Ingalls Wilder was an American writer who recorded her childhood on the frontier in a series of books beginning with Little House in the Big Woods. Based on her family pioneer life, the stories were published in the 1930s and 1940s. She began writing late in life, after years as a farm wife and teacher.",
+    "nationality": "American"
+  },
+  "OL30250A": {
+    "bio": "E.B. White was an American essayist, poet and children's author who wrote for The New Yorker for decades. Known for his clear, graceful prose, he co-wrote The Elements of Style and wrote the children's classics Stuart Little and Charlotte's Web. He lived on a farm in Maine, which inspired much of his writing.",
+    "nationality": "American"
+  },
+  "OL366346A": {
+    "bio": "Maurice Sendak was an American illustrator and author of picture books that explored childhood emotions, imagination and fear. His classic Where the Wild Things Are, published in 1963, won the Caldecott Medal. Sendak also illustrated works by other writers, and his art influenced generations of children's book creators.",
+    "nationality": "American"
+  },
+  "OL34330A": {
+    "bio": "Eric Carle was a German-born American illustrator and author of picture books for young children. Drawing on his childhood in Germany and his later career in the United States, he developed a distinctive collage technique. His book The Very Hungry Caterpillar, published in 1969, has sold tens of millions of copies around the world.",
+    "nationality": "American"
+  },
+  "OL22122A": {
+    "bio": "Margaret Wise Brown was an American children's author who wrote more than a hundred books, many with simple, rhythmic language. Working in New York, she helped transform picture books for young readers. Her bedtime classic Goodnight Moon, published in 1947, became one of the best-loved children's books of all time.",
+    "nationality": "American"
+  },
+  "OL2622837A": {
+    "bio": "Dr. Seuss was the pen name of Theodor Seuss Geisel, an American author and illustrator of children's books known for playful rhyme and inventive creatures. He built many of his books around a limited vocabulary to help children learn to read. He also won an Academy Award for an animated short film.",
+    "nationality": "American"
+  },
+  "OL34184A": {
+    "bio": "Roald Dahl was a British author of children's stories, novels and screenplays known for dark humor and memorable characters. Born in Wales to Norwegian parents, he served as a fighter pilot during the Second World War. Matilda, Charlie and the Chocolate Factory and The BFG are among his best-loved works.",
+    "nationality": "British"
+  },
+  "OL2980597A": {
+    "bio": "Raina Telgemeier is an American cartoonist and author of graphic novels for young readers. Her memoir Smile, about a childhood dental injury and years of braces, became one of the most successful graphic novels of its time. She has since written books that explore friendship, family and growing up.",
+    "nationality": "American"
+  },
+  "OL250856A": {
+    "bio": "Art Spiegelman is an American cartoonist and editor who helped establish comics as serious literature. Born in Stockholm to Polish Jewish parents who survived the Holocaust, he drew on his family's history for Maus, which received a special Pulitzer Prize in 1992. He co-founded the magazine RAW with Françoise Mouly.",
+    "nationality": "American"
+  },
+  "OL1394320A": {
+    "bio": "Marjane Satrapi is an Iranian-born French graphic novelist and filmmaker. Born in Rasht, she grew up in Tehran and later moved to Europe, where she studied illustration. Her graphic memoir Persepolis, published in four volumes, was adapted into an animated film she co-directed and remains a celebrated work on family and political change.",
+    "nationality": "Iranian"
+  },
+  "OL440715A": {
+    "bio": "Alan Moore is an English writer best known for comics that helped redefine the medium for adult readers. His works, including Watchmen, V for Vendetta and From Hell, explore power, politics and the nature of myth. Moore has also written prose novels and performance pieces and is a prominent voice on the history of comics.",
+    "nationality": "British"
+  },
+  "OL53305A": {
+    "bio": "Neil Gaiman is an English author whose work spans novels, comics, films and children's books. Known for The Sandman, American Gods and Coraline, he blends myth, fantasy and horror with a distinctive, playful voice. He co-wrote Good Omens with Terry Pratchett and has received major awards in fantasy and children's literature.",
+    "nationality": "British"
+  },
+  "OL1399650A": {
+    "bio": "Brian K. Vaughan is an American comic book and television writer known for series such as Y: The Last Man and Saga. Earlier in his career he wrote for television drama, including Lost. His collaborations with artists have earned him critical acclaim for their humor, emotional depth and bold world-building.",
+    "nationality": "American"
+  },
+  "OL6595354A": {
+    "bio": "Alison Bechdel is an American cartoonist known for autobiographical graphic memoirs that examine family, sexuality and literature. Her long-running comic strip, Dykes to Watch Out For, built a devoted following over decades. Her memoir Fun Home, published in 2006, was a landmark of the form and was adapted into a Broadway musical.",
+    "nationality": "American"
+  },
+  "OL7273024A": {
+    "bio": "N.D. Stevenson is an American writer and illustrator of graphic novels, known for Nimona, a fantasy comic about a shape-shifting teenager. Stevenson's work often explores queer characters, friendship and self-discovery. Nimona was adapted into an animated film and has become a popular choice for young readers.",
+    "nationality": "American"
+  },
+  "OL1394336A": {
+    "bio": "Daniel Clowes is an American cartoonist whose comics often examine the awkwardness, alienation and disappointments of everyday life. His series Eightball and graphic novels such as Ghost World made him a major figure in alternative comics. Ghost World was adapted into a film in 2001.",
+    "nationality": "American"
+  },
+  "OL1469057A": {
+    "bio": "Shaun Tan is an Australian illustrator, author and filmmaker known for wordless picture books about migration, memory and wonder. His short film based on The Lost Thing won an Academy Award. The Arrival, a wordless graphic novel, is widely regarded as a landmark of visual storytelling.",
+    "nationality": "Australian"
+  },
+  "OL755920A": {
+    "bio": "Katsuhiro Otomo is a Japanese manga artist and filmmaker whose work helped bring Japanese comics to global audiences. His epic cyberpunk manga Akira was serialized in the 1980s and adapted into a landmark animated film in 1988. Otomo has also directed films and worked on science fiction and horror projects.",
+    "nationality": "Japanese"
+  },
+  "OL461054A": {
+    "bio": "Bill Watterson is an American cartoonist who created the comic strip Calvin and Hobbes, which ran from 1985 to 1995. He famously refused to license merchandise and chose to end the strip on his own terms. The strip's imaginative, philosophical humor has made it one of the most celebrated comics ever published.",
+    "nationality": "American"
+  },
+  "OL7362769A": {
+    "bio": "Rupi Kaur is a Canadian poet, illustrator and performer born in Punjab, India, and raised in Canada. Her debut collection, Milk and Honey, became a bestseller and introduced poetry to many new readers. Her work often explores trauma, femininity, love and healing through short, direct verses and her own illustrations.",
+    "nationality": "Canadian"
+  },
+  "OL4327652A": {
+    "bio": "Sylvia Plath was an American poet and novelist whose intense, precise verse explored identity, nature, motherhood and mental illness. Her novel The Bell Jar, published under a pseudonym in 1963, drew on her own experiences. Ariel, published posthumously in 1965, established her as one of the most influential poets of the twentieth century.",
+    "nationality": "American"
+  },
+  "OL9087168A": {
+    "bio": "Amanda Gorman is an American poet and activist who became the youngest inaugural poet in United States history when she recited The Hill We Climb at the 2021 presidential inauguration. A Harvard graduate, she writes about justice, hope and community. Her poetry has been published in several collections and translated into many languages.",
+    "nationality": "American"
+  },
+  "OL7607606A": {
+    "bio": "Ocean Vuong is a Vietnamese-born American poet and novelist. Raised by his mother in Hartford, Connecticut, he writes about immigration, trauma and queer identity. His poetry collection Night Sky with Exit Wounds won major awards, and his novel On Earth We're Briefly Gorgeous explores family and memory.",
+    "nationality": "American"
+  },
+  "OL22176A": {
+    "bio": "Mary Oliver was an American poet known for her attentive, joyful writing about the natural world, spirituality and everyday life. Born in Ohio, she lived for many years in Provincetown, Massachusetts, where she found much of her inspiration. She won the Pulitzer Prize for Poetry in 1984 for American Primitive.",
+    "nationality": "American"
+  },
+  "OL89930A": {
+    "bio": "Pablo Neruda was a Chilean poet and diplomat who received the Nobel Prize in Literature in 1971. His early love poems, including Twenty Love Poems and a Song of Despair, made him widely read across Latin America. Neruda was also a political activist, and his later work includes the epic Canto General.",
+    "nationality": "Chilean"
+  },
+  "OL2659024A": {
+    "bio": "Rumi, born in the late twelfth century in what is now Afghanistan, was a Persian poet, theologian and Sufi mystic. He spent most of his life in Konya, in present-day Turkey, where he composed thousands of lyric poems and the long Masnavi. His mystical verses on love and the divine remain among the most widely read works of world poetry.",
+    "nationality": "Persian"
+  },
+  "OL19512A": {
+    "bio": "Emily Dickinson was an American poet from Amherst, Massachusetts, who lived largely in seclusion. Although she wrote nearly 1,800 poems, only a handful were published in her lifetime. Her compressed, original style and unconventional punctuation transformed American poetry, and most of her work appeared after her death.",
+    "nationality": "American"
+  },
+  "OL28885A": {
+    "bio": "Maya Angelou was an American poet, memoirist and civil rights activist. Her autobiographical works, beginning with I Know Why the Caged Bird Sings in 1969, explore identity, resilience and Black womanhood. She read a poem at the 1993 inauguration of Bill Clinton, becoming one of America's most beloved public voices.",
+    "nationality": "American"
+  },
+  "OL133986A": {
+    "bio": "Marcus Aurelius was a Roman emperor from 161 to 180 CE and one of the last great Stoic philosophers. His Meditations, a private collection of notes written largely during military campaigns, reflects on duty, mortality and self-discipline. The book has been read for nearly two thousand years as a practical guide to living well.",
+    "nationality": "Roman"
+  },
+  "OL12823A": {
+    "bio": "Plato was an ancient Greek philosopher and student of Socrates who founded the Academy in Athens. Writing mostly in dialogue form, he explored justice, knowledge, beauty and the nature of the soul. His works, including The Republic and the Symposium, form a foundation of Western philosophy.",
+    "nationality": "Greek"
+  },
+  "OL22105A": {
+    "bio": "Aristotle was an ancient Greek philosopher who studied under Plato and tutored Alexander the Great. He wrote on logic, science, ethics, politics and metaphysics, and his influence on Western thought has been immense. His Nicomachean Ethics explores happiness, virtue and the good life.",
+    "nationality": "Greek"
+  },
+  "OL18293A": {
+    "bio": "Laozi is the traditional name of the ancient Chinese philosopher credited with writing the Tao Te Ching. Historians debate whether he was a single historical figure, and the text likely developed over time. Its short verses on the Tao, balance and humility have shaped Daoist philosophy and Chinese thought for centuries.",
+    "nationality": "Chinese"
+  },
+  "OL30553A": {
+    "bio": "Sun Tzu was a legendary ancient Chinese military strategist traditionally credited with writing The Art of War. Historians debate the details of his life and whether a single author compiled the text. Its principles on strategy, planning and deception have been studied by military leaders and business thinkers worldwide.",
+    "nationality": "Chinese"
+  },
+  "OL3778242A": {
+    "bio": "Yuval Noah Harari is an Israeli historian who teaches at the Hebrew University of Jerusalem. His bestselling books, including Sapiens, Homo Deus and 21 Lessons for the 21st Century, explore the history and future of humankind. His accessible approach to big questions has made him one of the world's most widely read intellectuals.",
+    "nationality": "Israeli"
+  },
+  "OL540031A": {
+    "bio": "Jared Diamond is an American geographer, physiologist and author whose work bridges science and history. Trained as a physiologist, he studied birds and the natural history of New Guinea before writing about human societies. Guns, Germs, and Steel won the Pulitzer Prize for general nonfiction in 1998.",
+    "nationality": "American"
+  },
+  "OL2675573A": {
+    "bio": "Stephen Hawking was an English theoretical physicist and cosmologist whose research on black holes and the origins of the universe transformed modern physics. Diagnosed with motor neuron disease as a young man, he continued his work for decades with the help of assistive technology. A Brief History of Time became one of the best-selling science books ever published.",
+    "nationality": "British"
+  },
+  "OL236174A": {
+    "bio": "Richard Dawkins is an English evolutionary biologist and author who popularized the gene-centered view of evolution. Formerly a professor at Oxford, he is known for The Selfish Gene and later books on science and religion. His work has influenced biology, philosophy and public debate.",
+    "nationality": "British"
+  },
+  "OL450295A": {
+    "bio": "Carl Sagan was an American astronomer, planetary scientist and science communicator who worked on NASA missions to the planets. His television series Cosmos reached millions of viewers, and his books, including The Demon-Haunted World, championed scientific thinking. He won the Pulitzer Prize for The Dragons of Eden.",
+    "nationality": "American"
+  },
+  "OL35839A": {
+    "bio": "Charles Darwin was an English naturalist whose voyage aboard HMS Beagle and decades of research led to his theory of evolution by natural selection. He presented his ideas in On the Origin of Species, published in 1859. Darwin's work transformed biology and continues to shape scientific understanding of life on Earth.",
+    "nationality": "British"
+  },
+  "OL225621A": {
+    "bio": "Rachel Carson was an American marine biologist and writer whose books made science accessible to the public. Her trilogy about the sea, including The Sea Around Us, brought her wide acclaim. Silent Spring, published in 1962, prompted new scrutiny of pesticides and helped launch the environmental movement.",
+    "nationality": "American"
+  },
+  "OL6720423A": {
+    "bio": "Rebecca Skloot is an American science writer and journalist who spent years researching the story of Henrietta Lacks and her family. Her book The Immortal Life of Henrietta Lacks became a national bestseller and was adapted for television. Skloot continues to write about the ethics of science and medicine.",
+    "nationality": "American"
+  },
+  "OL7396111A": {
+    "bio": "Siddhartha Mukherjee is an Indian-born American physician, oncologist and author. He is a professor at Columbia University and has written about cancer, genetics and medical history. His book The Emperor of All Maladies won the Pulitzer Prize for general nonfiction in 2011.",
+    "nationality": "Indian"
+  },
+  "OL531166A": {
+    "bio": "Thomas S. Kuhn was an American physicist and historian of science whose ideas transformed the philosophy of science. Trained as a physicist, he turned to the history of science and taught at several universities. His concept of paradigm shifts entered everyday language and remains central to debates about scientific change.",
+    "nationality": "American"
+  },
+  "OL7147517A": {
+    "bio": "Matthew Walker is a British neuroscientist and professor who studies sleep and its effects on the brain. Based at the University of California, Berkeley, he has led research on memory, emotion and sleep disorders. His book Why We Sleep became an international bestseller and popularized the science of rest.",
+    "nationality": "British"
+  },
+  "OL2066695A": {
+    "bio": "Daniel Kahneman was an Israeli-American psychologist who received the Nobel Memorial Prize in Economic Sciences in 2002 for his work on judgment and decision-making. With Amos Tversky, he studied cognitive biases and heuristics. His book Thinking, Fast and Slow summarized decades of research for general readers. He died in 2024.",
+    "nationality": "Israeli"
+  },
+  "OL128213A": {
+    "bio": "Viktor E. Frankl was an Austrian psychiatrist and neurologist who survived several Nazi concentration camps. After the war he founded logotherapy, an approach centered on finding meaning in life. Man's Search for Meaning, written shortly after his liberation, became one of the most widely read books on psychology and purpose.",
+    "nationality": "Austrian"
+  },
+  "OL709877A": {
+    "bio": "Robert Cialdini is an American psychologist and professor emeritus at Arizona State University, known for research on persuasion and social influence. His book Influence, first published in 1984, became a bestseller in both business and psychology. He has also worked with organizations applying behavioral science to their practices.",
+    "nationality": "American"
+  },
+  "OL6965041A": {
+    "bio": "Charles Duhigg is an American journalist and author who writes about productivity, behavior and decision-making. Formerly a reporter for The New York Times, he is known for books on habits and how people change. His book The Power of Habit popularized the habit loop of cue, routine and reward.",
+    "nationality": "American"
+  },
+  "OL241293A": {
+    "bio": "Carol S. Dweck is an American psychologist and professor at Stanford University whose research on motivation and achievement has shaped education. Her work on fixed and growth mindsets has influenced teachers, parents and business leaders. Her book Mindset, first published in 2006, became a widely read introduction to her ideas.",
+    "nationality": "American"
+  },
+  "OL2873756A": {
+    "bio": "Bessel van der Kolk is a Dutch-born American psychiatrist and trauma researcher. He founded the Trauma Center in Boston and has spent decades studying how trauma affects the brain and body. His book The Body Keeps the Score brought his research and clinical work to a wide audience.",
+    "nationality": "American"
+  },
+  "OL1544747A": {
+    "bio": "Johann Hari is a British journalist and author who writes about mental health, drugs, technology and social issues. His bestselling books include Lost Connections and Stolen Focus, which examine the forces that shape modern attention and wellbeing. Hari's reporting often combines interviews with research to challenge popular assumptions.",
+    "nationality": "British"
+  },
+  "OL1428806A": {
+    "bio": "Jonathan Haidt is an American social psychologist and professor at New York University's Stern School of Business. He is known for research on morality, political polarization and the effects of technology on young people. His book The Anxious Generation examines the rise of mental health problems among adolescents.",
+    "nationality": "American"
+  },
+  "OL7422948A": {
+    "bio": "James Clear is an American writer and speaker known for his work on habits, decision-making and personal improvement. His newsletter reached a large audience before his book Atomic Habits became an international bestseller. Clear draws on research in psychology and biology to explain how small changes compound into lasting results.",
+    "nationality": "American"
+  },
+  "OL107569A": {
+    "bio": "Dale Carnegie was an American writer and lecturer who taught public speaking and interpersonal skills. Born on a Missouri farm, he developed courses in human relations in New York that drew large audiences. His book How to Win Friends and Influence People, published in 1936, became one of the best-selling self-help books ever published.",
+    "nationality": "American"
+  },
+  "OL383159A": {
+    "bio": "Stephen R. Covey was an American educator, speaker and author on leadership and personal effectiveness. He taught at Brigham Young University and later founded an organization focused on leadership training. His book The 7 Habits of Highly Effective People, published in 1989, became one of the most influential business and self-help books of its era.",
+    "nationality": "American"
+  },
+  "OL2964000A": {
+    "bio": "Mark Manson is an American writer and blogger known for frank, humorous advice on living well. He built a large online audience before publishing The Subtle Art of Not Giving a F*ck in 2016. His books and essays challenge the assumption that happiness requires constant positivity.",
+    "nationality": "American"
+  },
+  "OL6961868A": {
+    "bio": "Mel Robbins is an American lawyer, television host and author who writes about confidence, habits and decision-making. Her podcast and books have reached a large audience, and her best-known idea, the five-second rule, is widely discussed. The Let Them Theory focuses on letting go of control over other people's choices.",
+    "nationality": "American"
+  },
+  "OL2853212A": {
+    "bio": "Cal Newport is an American computer science professor at Georgetown University and a writer on productivity and technology. His books, including Deep Work and Digital Minimalism, argue that focus and deliberate habits are essential in a distracting world. He writes often about the costs of constant connectivity.",
+    "nationality": "American"
+  },
+  "OL7513446A": {
+    "bio": "David Epstein is an American science journalist and author who writes about sports, human performance and the science of expertise. Formerly a reporter at Sports Illustrated, he wrote The Sports Gene, which examined athletic ability. His book Range argues that broad experience and varied exploration often lead to stronger outcomes than early specialization.",
+    "nationality": "American"
+  },
+  "OL7082274A": {
+    "bio": "Héctor García co-wrote Ikigai, with the author Francesc Miralles, a book that explores the Japanese concept of purpose and became an international bestseller. The two have written several other books on wellbeing, routine and mindfulness. Their work draws on everyday habits and small rituals to help readers find meaning.",
+    "nationality": null
+  },
+  "OL8082183A": {
+    "bio": "Rick Rubin is an American record producer and co-founder of Def Jam Recordings who has worked across rock, hip-hop, country and pop. Known for a minimalist approach and a focus on the creative process, he has produced major albums for many musicians. The Creative Act reflects on his philosophy of making art.",
+    "nationality": "American"
+  },
+  "OL581744A": {
+    "bio": "Jim Collins is an American author and management researcher known for studying what makes organizations great. Before writing full time, he taught at Stanford's business school. His books, including Built to Last and Good to Great, combine rigorous research with practical lessons for leaders.",
+    "nationality": "American"
+  },
+  "OL2976628A": {
+    "bio": "Peter Thiel is an American entrepreneur and investor best known as a co-founder of PayPal and an early backer of Facebook. He has written and spoken about innovation, competition and the future of technology. His book Zero to One draws on his experience building and funding companies in Silicon Valley.",
+    "nationality": "American"
+  },
+  "OL7987562A": {
+    "bio": "Ben Horowitz is an American entrepreneur and venture capitalist. He co-founded the software company Loudcloud and later co-founded the venture firm Andreessen Horowitz with Marc Andreessen. His book The Hard Thing About Hard Things draws on his experience leading companies through difficult periods.",
+    "nationality": "American"
+  },
+  "OL7170902A": {
+    "bio": "Sheryl Sandberg is an American technology executive who served as chief operating officer of Facebook. Earlier she worked in the United States Treasury and at Google. Her book Lean In became a bestseller and sparked widespread discussion about women's leadership in the workplace.",
+    "nationality": "American"
+  },
+  "OL6645079A": {
+    "bio": "Simon Sinek is a British-born author and speaker on leadership and organizational culture. He is known for a widely viewed talk about starting with why, and he has written several books, including Start with Why and Leaders Eat Last. His ideas about purpose and trust are used widely in business training.",
+    "nationality": "British"
+  },
+  "OL6787957A": {
+    "bio": "Phil Knight is an American business executive who co-founded the company that became Nike, after starting a small footwear import business as a former distance runner. He built the company into a global sportswear brand over several decades. He published his memoir, Shoe Dog, in 2016.",
+    "nationality": "American"
+  },
+  "OL832299A": {
+    "bio": "Walter Isaacson is an American author, journalist and biographer who has led major news organizations and written about science, history and technology. He has written biographies of Benjamin Franklin, Albert Einstein and Steve Jobs. His work often explores how individuals shape scientific and technological change.",
+    "nationality": "American"
+  },
+  "OL1453058A": {
+    "bio": "Steven D. Levitt is an American economist and professor at the University of Chicago known for applying economic methods to unusual questions. With Stephen Dubner, he co-wrote Freakonomics, which popularized the study of hidden incentives. His research often focuses on crime, education and everyday decisions.",
+    "nationality": "American"
+  },
+  "OL7421376A": {
+    "bio": "John Carreyrou is an American investigative journalist known for his reporting at The Wall Street Journal. His coverage of the company Theranos earned him wide recognition and led to his book Bad Blood. The book chronicles the rise and fall of the company and its founder, and it became a bestseller.",
+    "nationality": "American"
+  },
+  "OL15140394A": {
+    "bio": "Sarah Wynn-Williams is a former executive who worked for many years in global public policy at Facebook, now Meta. Her memoir Careless People draws on her experiences inside the company during a period of rapid growth and controversy. She has since spoken publicly about her time there.",
+    "nationality": null
+  },
+  "OL15012660A": {
+    "bio": "Karen Hao is an American journalist who has reported on artificial intelligence and technology for major publications. She has covered the research and business strategies of leading AI labs for years. Empire of AI draws on that reporting to examine the industry's power, its costs and its concentration of influence.",
+    "nationality": "American"
+  },
+  "OL2685022A": {
+    "bio": "John Vaillant is a Canadian writer and journalist known for narrative nonfiction about nature and industry. His book The Tiger won major awards, and The Golden Spruce examined a logging dispute in British Columbia. Fire Weather blends reporting and science to explore how climate change is reshaping wildfire.",
+    "nationality": "Canadian"
+  },
+  "OL222155A": {
+    "bio": "Doris Kearns Goodwin is an American historian and author who has written extensively about American presidents and leadership. Her book Team of Rivals, about Abraham Lincoln's cabinet, won the Lincoln Prize. Her other works include No Ordinary Time and The Bully Pulpit, and she has also appeared as a commentator on television.",
+    "nationality": "American"
+  },
+  "OL2652669A": {
+    "bio": "David McCullough was an American historian and narrator who wrote acclaimed biographies and popular histories. His books Truman and John Adams each won the Pulitzer Prize for Biography. He presented many history documentaries and was known for vivid, accessible storytelling about America's past.",
+    "nationality": "American"
+  },
+  "OL24465A": {
+    "bio": "Erik Larson is an American narrative nonfiction author known for blending history with suspense. His books, including The Devil in the White City and Dead Wake, reconstruct historical events through archival research and vivid storytelling. Larson began his career as a journalist and reporter before turning to books.",
+    "nationality": "American"
+  },
+  "OL3379613A": {
+    "bio": "Ta-Nehisi Coates is an American journalist and author who writes about race, history and American society. Formerly a senior editor at The Atlantic, he wrote the memoir Between the World and Me, which won the National Book Award. He has also written comics and novels, including work for Marvel.",
+    "nationality": "American"
+  },
+  "OL767553A": {
+    "bio": "Malcolm X was an American Muslim minister and civil rights leader who became one of the most influential voices against racism in the United States. Born Malcolm Little, he was involved in crime before converting to Islam in prison. After a pilgrimage to Mecca he broadened his vision of human rights before his assassination in 1965.",
+    "nationality": "American"
+  },
+  "OL2684549A": {
+    "bio": "Howard Zinn was an American historian, playwright and activist who taught at Spelman College and Boston University. His book A People's History of the United States, first published in 1980, retold American history from the perspective of ordinary people and marginalized groups. Zinn was a prominent advocate of civil rights and anti-war movements.",
+    "nationality": "American"
+  },
+  "OL39017A": {
+    "bio": "Mary Beard is a British classicist and professor at the University of Cambridge who has written widely about ancient Rome and Greece. She is also known for television documentaries and public commentary. SPQR, her history of ancient Rome, became an international bestseller and was praised for its accessible scholarship.",
+    "nationality": "British"
+  },
+  "OL7421324A": {
+    "bio": "Tara Westover is an American historian and memoirist. Raised in rural Idaho by parents who distrusted formal education and institutions, she eventually earned a PhD from the University of Cambridge. Her memoir Educated became an international bestseller and was widely praised for its honesty about family and self-discovery.",
+    "nationality": "American"
+  },
+  "OL7119254A": {
+    "bio": "Michelle Obama is an American lawyer, author and advocate who served as First Lady of the United States from 2009 to 2017. Earlier she worked in law and public service in Chicago. Her memoir Becoming, published in 2018, became one of the best-selling books of its time, and she has continued to work on education and health initiatives.",
+    "nationality": "American"
+  },
+  "OL7406196A": {
+    "bio": "Trevor Noah is a South African comedian, television host and author. Born in Johannesburg during apartheid, he rose to fame as a stand-up comedian and later became host of The Daily Show. His memoir Born a Crime recounts his childhood and the complicated circumstances of his birth.",
+    "nationality": "South African"
+  },
+  "OL7290596A": {
+    "bio": "Amy Poehler is an American actress, comedian and writer best known for Saturday Night Live and the sitcom Parks and Recreation. She co-founded the Upright Citizens Brigade theater in Los Angeles. Her memoir Yes Please mixes humor with candid advice about confidence, friendship and saying yes to opportunities.",
+    "nationality": "American"
+  },
+  "OL6893262A": {
+    "bio": "Tina Fey is an American writer, actress and producer best known for her work as head writer of Saturday Night Live and for the sitcom 30 Rock. Her memoir Bossypants became a bestseller and blends comedy with reflections on career and gender. She also wrote the screenplay for the film Mean Girls.",
+    "nationality": "American"
+  },
+  "OL1426174A": {
+    "bio": "Cheryl Strayed is an American writer known for memoirs and personal essays. Her memoir Wild, about hiking the Pacific Crest Trail alone, became a bestseller and was adapted into a film. She also wrote the advice column Dear Sugar, which earned her a devoted readership.",
+    "nationality": "American"
+  },
+  "OL30835A": {
+    "bio": "Elizabeth Gilbert is an American writer known for narrative nonfiction and fiction. Her memoir Eat, Pray, Love, which recounts a year of travel after a divorce, became a global bestseller and was adapted into a film. Her other works include Big Magic, a book about creativity, and the novel The Signature of All Things.",
+    "nationality": "American"
+  },
+  "OL237257A": {
+    "bio": "Jon Krakauer is an American journalist and author of nonfiction about adventure, crime and the outdoors. A former climber, he writes about mountaineering and wilderness survival, drawing on personal experience. Into the Wild and Into Thin Air are among his best-known books, and he has also written about religion and violence.",
+    "nationality": "American"
+  },
+  "OL239800A": {
+    "bio": "Truman Capote was an American writer known for his fiction, essays and the nonfiction novel In Cold Blood. Born in New Orleans, he rose to fame in New York literary circles with short stories and the novella Breakfast at Tiffany's. His work often blends reportage with literary technique, and he died in 1984.",
+    "nationality": "American"
+  },
+  "OL371337A": {
+    "bio": "Vincent Bugliosi was an American lawyer and author who served as a Los Angeles County deputy district attorney. He prosecuted Charles Manson and his followers in the late 1960s and early 1970s. His book Helter Skelter, co-written with Curt Gentry, remains one of the best-selling true crime books ever published.",
+    "nationality": "American"
+  },
+  "OL5124799A": {
+    "bio": "David Grann is an American staff writer for The New Yorker known for narrative nonfiction about history, crime and adventure. His book Killers of the Flower Moon uncovered a long-buried chapter of American history and was adapted into a film by Martin Scorsese. Grann's earlier works include The Lost City of Z.",
+    "nationality": "American"
+  },
+  "OL1433728A": {
+    "bio": "Jon Ronson is a British journalist and author known for humorous, investigative books about subcultures, extremism and online culture. His work often involves interviews with people on the margins of society. The Psychopath Test explores the labels society applies to human behavior and what they reveal about us.",
+    "nationality": "British"
+  },
+  "OL78937A": {
+    "bio": "Ann Rule was an American true crime writer who began her career as a freelance journalist. Her early work at a Seattle crisis hotline placed her alongside Ted Bundy, a connection that shaped her book The Stranger Beside Me. She wrote dozens of true crime books and became one of the genre's most widely read authors.",
+    "nationality": "American"
+  },
+  "OL21718A": {
+    "bio": "Bill Bryson is an American-born writer who spent much of his adult life in Britain before returning to the United States. Known for humorous travel writing and popular science, including A Short History of Nearly Everything, he has written about walking the Appalachian Trail and traveling through Australia and Britain. His books are celebrated for wit and curiosity.",
+    "nationality": "American"
+  },
+  "OL215610A": {
+    "bio": "Jerome K. Jerome was an English humorist, playwright and novelist who wrote comic fiction and essays. After working in a variety of jobs, he became a journalist and founded a magazine called The Idler. Three Men in a Boat, published in 1889, is his most famous work, a comic account of a Thames boating holiday.",
+    "nationality": "British"
+  },
+  "OL20984A": {
+    "bio": "Frances Mayes is an American poet, memoirist and travel writer. After publishing poetry and academic work, she bought a villa in Tuscany and wrote about restoring it in Under the Tuscan Sun, which became an international bestseller. She has since become a prominent voice in writing about Italy, food and travel.",
+    "nationality": "American"
+  }
+}

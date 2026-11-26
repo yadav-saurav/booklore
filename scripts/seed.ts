@@ -227,9 +227,9 @@ sqlite.transaction(() => {
 })();
 
 /* Rankings: compute "last week", then "this week", so BookMeter has movement arrows. */
-sqlite.exec(`UPDATE book_views SET day = date(day, '-7 days')`);
+sqlite.exec(`UPDATE book_views SET day = date(day, '-100 days')`);
 recomputeRankings();
-sqlite.exec(`UPDATE book_views SET day = date(day, '+7 days')`);
+sqlite.exec(`UPDATE book_views SET day = date(day, '+100 days')`);
 recomputeRankings();
 
 const top = sqlite.prepare(`SELECT title, round(weighted_score,2) w, rating_count n FROM books ORDER BY weighted_score DESC LIMIT 5`).all();

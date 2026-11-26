@@ -1,0 +1,10 @@
+BOOKLORE seed fetch report (2026-11-26T16:18:49.587Z)
+Inputs: 227
+Matched: 227
+With cover: 226
+Authors: 210 (with photo: 167)
+
+No match (0):
+
+Matched without cover (1):
+  - Anna Karenina / Leo Tolstoy [OL45899654W]

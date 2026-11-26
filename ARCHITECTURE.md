@@ -7,13 +7,13 @@ BOOKLORE is a book discovery platform modelled on IMDb's information architectur
   - Next 16 has breaking changes versus older docs: `params`/`searchParams` are Promises (`const { id } = await params`).
   - When unsure, read `node_modules/next/dist/docs/`.
 - **Tailwind CSS v4**. Design tokens live in `src/app/globals.css` (`@theme inline`). Use the tokens (`bg-paper`, `text-cobalt`, `border-hair`, …), never raw hex values.
-- **SQLite** (better-sqlite3) with a **Drizzle** schema (`src/db/schema.ts`) and migrations in `drizzle/`. Hot paths use raw prepared SQL through `sqlite` from `@/db`. FTS5 table `books_fts` handles search.
+- **Postgres**, provider-agnostic (Neon, Supabase, Render, any 14+), via a small async layer in `src/db/index.ts`: `db.all/get/run/exec/tx` with `?` placeholders and camelCase aliases auto-quoted. It uses postgres.js when `DATABASE_URL` is set and embedded **PGlite** otherwise. Migrations (`src/db/migrations.ts`) apply automatically on first connection. Search uses a weighted `tsvector` in `books_search`. Row types live in `src/db/schema.ts`. Dialect notes: `scripts/pg-migration.md`.
 - **Auth:** scrypt password hashes plus a DB session cookie (`src/lib/auth.ts`). `getCurrentUser()` is memoised per request.
 - **Providers:** `src/lib/providers/*`. `BookProvider` interface; Open Library is primary, Google Books secondary. Responses are cached in `api_cache`. To add a source, write one file and register it in `registry.ts`.
 
 ## Running
 ```
-npm run db:seed                       # rebuild data/booklore.db from data/seed/*.json
+npm run db:seed                       # wipe + reseed from data/seed/*.json (db:prepare = only if empty)
 NODE_USE_ENV_PROXY=1 npm run dev      # NODE_USE_ENV_PROXY only needed behind an HTTPS proxy
 ```
 Demo login: `demo@booklore.app` / `booklore123`.
@@ -31,7 +31,7 @@ Demo login: `demo@booklore.app` / `booklore123`.
 
 ## External books
 - External results use the id `<source>:<externalId>`, e.g. `openlibrary:OL45883W`.
-- They link to `/book/<encodeURIComponent(ref)>`. The book page calls `resolveExternalRef()` (src/lib/catalog.ts), which imports the book into SQLite and then `redirect()`s to the local slug.
+- They link to `/book/<encodeURIComponent(ref)>`. The book page calls `resolveExternalRef()` (src/lib/catalog.ts), which imports the book into the database and then `redirect()`s to the local slug.
 
 ## Shared building blocks (reuse; do not fork)
 | Need | Use |

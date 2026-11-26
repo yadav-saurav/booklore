@@ -5,7 +5,7 @@ A book discovery and recommendation platform. It follows IMDb's information arch
 ## Quick start
 ```bash
 npm install
-npm run db:seed      # builds data/booklore.db: 227 books, 206 authors, sample community
+npm run db:seed      # 227 books, 206 authors, sample community (embedded Postgres, no install needed)
 npm run dev          # http://localhost:3000
 ```
 - Demo account: **demo@booklore.app / booklore123**. Or register a new account.
@@ -15,7 +15,7 @@ Production: `npm run build && npm start`. Optional environment variables:
 
 | Variable | Purpose |
 |---|---|
-| `DATABASE_PATH` | SQLite file location (default `data/booklore.db`) |
+| `DATABASE_URL` | Any Postgres 14+ (Neon, Supabase, Render, …). Unset locally = embedded PGlite in `data/pglite`. |
 | `GOOGLE_BOOKS_API_KEY` | Higher free Google Books quota. Keyless works at low volume. |
 | `BOOKLORE_DISABLE_OPENLIBRARY=1`, `BOOKLORE_DISABLE_GOOGLE=1` | Turn a source off |
 
@@ -41,6 +41,9 @@ Production: `npm run build && npm start`. Optional environment variables:
   - run `node scripts/seed-data/build-catalog.mjs` (books need a synopsis in `data/seed/synopses.json`)
   - run `npm run db:seed`
 - **New data source:** implement `BookProvider` in `src/lib/providers/` and register it in `registry.ts`.
+
+## Deploying
+Free options include Vercel + Neon, Vercel + Supabase, and Render (a one-click `render.yaml` Blueprint). See **[DEPLOY.md](./DEPLOY.md)**.
 
 ## Development
 - `npm run typecheck` and `npm test` (vitest: recommender math, the advanced search query builder, birth-date parsing).

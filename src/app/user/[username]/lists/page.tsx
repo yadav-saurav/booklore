@@ -5,7 +5,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getMemberByUsername } from "@/lib/queries/users";
 import { getUserLists } from "@/lib/queries/lists";
 import { SectionHeader } from "@/components/ui/Section";
-import { ListCard } from "@/components/lists/ListCard";
+import { MosaicListCard } from "@/components/profile/Profile";
 
 type Params = { params: Promise<{ username: string }> };
 
@@ -39,8 +39,8 @@ export default async function UserListsPage({ params }: Params) {
           {isSelf && <Link href="/list/new" className="btn btn-outline mt-5">Make your first list</Link>}
         </div>
       ) : (
-        <ul className="grid grid-cols-2 gap-x-4 gap-y-9 md:grid-cols-3 lg:grid-cols-4">
-          {lists.map((l) => <li key={l.id}><ListCard list={l} /></li>)}
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {lists.map((l) => <li key={l.id}><MosaicListCard list={l} /></li>)}
         </ul>
       )}
     </div>

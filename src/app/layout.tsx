@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { db } from "@/db";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
+import { RecentlyViewed } from "@/components/recent/RecentlyViewed";
 
 const inter = Inter_Tight({ subsets: ["latin"], variable: "--font-inter-tight", display: "swap" });
 const newsreader = Newsreader({ subsets: ["latin"], variable: "--font-newsreader", style: ["normal", "italic"], display: "swap" });
@@ -38,6 +39,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </a>
         <SiteHeader user={user} listCount={listCount} />
         <main id="main">{children}</main>
+        <RecentlyViewed />
         <SiteFooter />
         <div className="grain" aria-hidden />
       </body>

@@ -1,3 +1,4 @@
+import { TrackRecentlyViewed } from "@/components/recent/TrackRecentlyViewed";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -73,6 +74,7 @@ export default async function BookPage({ params }: Props) {
   return (
     <>
       <BookHero book={book} viewer={viewer} listMentions={lists.total} topRank={topRank} />
+      <TrackRecentlyViewed book={{ id: book.id, title: book.title, coverId: book.coverId, coverUrl: book.coverUrl, authorName: book.authors.map((x) => x.name).join(", ") || null, year: book.year ?? null }} />
 
       <div className="page grid gap-x-12 pb-16 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="min-w-0">

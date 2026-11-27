@@ -1,99 +1,63 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { getListDetail, getListItems, getListLikeState } from "@/lib/queries/lists";
-import { BookCover } from "@/components/book/BookCover";
-import { RatingInline } from "@/components/book/Rating";
-import { RateButton } from "@/components/book/RateButton";
-import { Avatar } from "@/components/ui/Avatar";
+import { getGenres } from "@/lib/queries/books";
+import { getListDetail, getListLikeState } from "@/lib/queries/lists";
+import { getTitleItems } from "@/lib/queries/users";
 import { LikeButton } from "@/components/lists/LikeButton";
-import { CoverMosaic } from "@/components/lists/ListCard";
-import { plural } from "@/lib/util";
+import { ListHeader } from "@/components/titlelist/ListHeader";
+import { ListToolbar } from "@/components/titlelist/ListToolbar";
+import { TitleList } from "@/components/titlelist/TitleList";
+import { EmptyList } from "@/components/titlelist/EmptyList";
+import { listHref, parseListState, refineCount, TITLE_SORT_DIR_ORDER, type SortKey, type SP } from "@/components/titlelist/params";
 
-type Params = { params: Promise<{ id: string }> };
+type Props = { params: Promise<{ id: string }>; searchParams: Promise<SP> };
+const SORTS: SortKey[] = ["order", "title", "rating", "votes", "popularity", "year", "pages", "yours"];
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const lid = Number((await params).id);
-  const list = Number.isInteger(lid) ? await getListDetail(lid) : null;
-  return { title: list ? list.title : "List" };
+  const list = Number.isInteger(lid) && lid > 0 ? await getListDetail(lid) : null;
+  return { title: list ? list.title : "List", description: list?.description || undefined };
 }
 
-export default async function ListPage({ params }: Params) {
+export default async function ListPage({ params, searchParams }: Props) {
   const lid = Number((await params).id);
   if (!Number.isInteger(lid) || lid < 1) notFound();
-  const me = await getCurrentUser();
-  const list = await getListDetail(lid);
+  const [me, list] = await Promise.all([getCurrentUser(), getListDetail(lid)]);
   if (!list) notFound();
   const isOwner = me?.id === list.ownerId;
   if (!list.isPublic && !isOwner) notFound();
 
-  const items = await getListItems(lid, me?.id ?? null);
-  const like = await getListLikeState(lid, me?.id ?? null);
+  const state = parseListState(await searchParams, SORTS);
+  const path = `/list/${lid}`;
+  const [{ items, total, genres }, like, allGenres] = await Promise.all([
+    getTitleItems({ kind: "list", listId: lid }, me?.id ?? null, {
+      sort: state.sort, dir: state.dir ?? undefined,
+      filters: { genres: state.genres, minRating: state.minRating, yearFrom: state.yearFrom, yearTo: state.yearTo },
+    }),
+    getListLikeState(lid, me?.id ?? null),
+    getGenres(),
+  ]);
+  const genreNames = Object.fromEntries(allGenres.map((g) => [g.slug, g.name]));
 
   return (
-    <div className="page py-10 md:py-14">
-      <header className="grid gap-8 md:grid-cols-[220px_minmax(0,1fr)] md:gap-10">
-        <div className="max-w-[260px] md:max-w-none">
-          <CoverMosaic covers={list.covers} />
-        </div>
-        <div className="flex flex-col justify-end">
-          <p className="lbl flex items-center gap-2 text-cobalt font-jp">
-            リスト{!list.isPublic && <span className="box text-muted">Private</span>}
-          </p>
-          <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{list.title}</h1>
-          {list.description && <p className="prose-serif mt-4 max-w-2xl text-ink-2">{list.description}</p>}
-          <p className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-[14px] text-muted">
-            <Link href={`/user/${list.ownerUsername}`} className="inline-flex items-center gap-2 font-semibold text-ink hover:text-cobalt">
-              <Avatar name={list.ownerName} hue={list.ownerHue} size={24} />
-              {list.ownerName}
-            </Link>
-            <span aria-hidden>·</span>
-            <span>{plural(list.itemCount, "title")}</span>
-            <span aria-hidden>·</span>
-            <span>{like.likeCount.toLocaleString("en-US")} {like.likeCount === 1 ? "like" : "likes"}</span>
-          </p>
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <LikeButton listId={lid} initialLiked={like.liked} initialCount={like.likeCount} />
-            {isOwner && <Link href={`/list/${lid}/edit`} className="btn btn-outline btn-sm">Edit list</Link>}
-          </div>
-        </div>
-      </header>
-
-      <section aria-labelledby="items-h" className="mt-12">
-        <h2 id="items-h" className="sec-title mb-6 text-[20px]">Titles <span className="text-base font-medium text-muted">{list.itemCount}</span></h2>
-        {items.length === 0 ? (
-          <div className="border border-dashed border-hair py-14 text-center">
-            <p className="text-[15px] text-muted">This list has no titles yet.</p>
-            {isOwner && <Link href={`/list/${lid}/edit`} className="btn btn-outline btn-sm mt-4">Add some</Link>}
-          </div>
+    <>
+      <ListHeader kicker={`${list.isFeatured ? "Featured list" : "User list"} · リスト`} title={list.title} isPublic={list.isPublic}
+        owner={{ name: list.ownerName, username: list.ownerUsername, hue: list.ownerHue }} editedAt={list.updatedAt}
+        description={list.description} editHref={isOwner ? `/list/${lid}/edit` : null} sharePath={path}
+        stats={<span className="text-muted">{total.toLocaleString("en-US")} {total === 1 ? "title" : "titles"}</span>}
+        extra={<LikeButton listId={lid} initialLiked={like.liked} initialCount={like.likeCount} />} />
+      <div className="page pb-16">
+        <ListToolbar state={state} sorts={SORTS} defaultSort="order" count={items.length} total={total} genres={genres}
+          naturalDir={TITLE_SORT_DIR_ORDER(state.sort, true)} />
+        {items.length ? (
+          <TitleList items={items} view={state.view} mode="list" genreNames={genreNames} signedIn={!!me} />
         ) : (
-          <ol className="border-t border-hair">
-            {items.map((it) => (
-              <li key={it.id} className="grid grid-cols-[2.25rem_64px_minmax(0,1fr)] gap-x-4 border-b border-hair py-5 sm:grid-cols-[3rem_80px_minmax(0,1fr)_auto] sm:gap-x-6">
-                <span className="pt-1 text-right text-2xl font-light tabular-nums text-muted" aria-hidden>{it.position + 1}</span>
-                <Link href={`/book/${it.id}`} className="block" tabIndex={-1} aria-hidden>
-                  <BookCover book={it} size="S" />
-                </Link>
-                <div className="min-w-0">
-                  <Link href={`/book/${it.id}`} className="font-semibold leading-snug hover:text-cobalt hover:underline">{it.title}</Link>
-                  <p className="text-[13px] text-muted">{it.authorName ?? "Unknown author"}{it.year ? ` · ${it.year}` : ""}</p>
-                  <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px]">
-                    <RatingInline avg={it.ratingAvg} count={it.ratingCount} />
-                    {me && (
-                      <span className="flex items-center gap-1">
-                        <span className="text-muted">Yours</span>
-                        <RateButton bookId={it.id} title={it.title} current={it.yourRating} />
-                      </span>
-                    )}
-                  </div>
-                  {it.note && <p className="prose-serif mt-2 text-[15px] italic text-ink-2">“{it.note}”</p>}
-                </div>
-              </li>
-            ))}
-          </ol>
+          <EmptyList title="This list has no titles yet" actions={false} filtered={total > 0 && refineCount(state) > 0}
+            clearHref={listHref(path, { ...state, genres: [], minRating: null, yearFrom: null, yearTo: null })}
+            body={isOwner ? "Use Edit to add books and notes." : "Check back later; the owner hasn't added any books."} />
         )}
-      </section>
-    </div>
+      </div>
+    </>
   );
 }

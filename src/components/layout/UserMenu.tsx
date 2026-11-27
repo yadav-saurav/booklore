@@ -24,10 +24,11 @@ export function UserMenu({ user, listCount, archive }: { user: SessionUser; list
       {open && (
         <div role="menu" className="absolute right-0 top-[calc(100%+6px)] z-[80] w-56 border border-hair bg-sheet py-2 text-[14px] text-ink shadow-card">
           {[
-            ["Your profile", `/user/${user.username}`],
+            ["Your activity", "/you"],
             [`Your Reading List${listCount ? ` (${listCount})` : ""}`, "/readinglist"],
             ["Your ratings", "/you/ratings"],
             ["Your lists", `/user/${user.username}/lists`],
+            ["Your profile", `/user/${user.username}`],
             ["Recommendations", "/recommendations"],
             ["Account settings", "/settings"],
           ].map(([label, href]) => (

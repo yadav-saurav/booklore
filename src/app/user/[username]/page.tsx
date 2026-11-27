@@ -3,21 +3,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import {
-  getMemberByUsername, getProfileStats, getFollowCounts, isFollowing, favoriteGenres,
-  getUserRatings, getReviews, ratingHistogram,
+  getMemberByUsername, getProfileStats, getFollowCounts, isFollowing, getUserRatings, getReviews, countReviews,
+  getShelf, getShelfCounts, getProfileInsights, getBadges,
 } from "@/lib/queries/users";
-import { getUserLists, type ListSummary } from "@/lib/queries/lists";
+import { getUserLists } from "@/lib/queries/lists";
 import { Avatar } from "@/components/ui/Avatar";
-import { Rail } from "@/components/ui/Rail";
-import { Section } from "@/components/ui/Section";
-import { BookCover } from "@/components/book/BookCover";
-import { StarIcon } from "@/components/book/Rating";
+import { SectionHeader } from "@/components/ui/Section";
 import { FollowButton } from "@/components/user/FollowButton";
-import { Histogram } from "@/components/user/Histogram";
-import { ReviewCard } from "@/components/user/ReviewCard";
-import { StatStrip } from "@/components/user/StatStrip";
-import { ListCard } from "@/components/lists/ListCard";
-import { plural } from "@/lib/util";
+import { BadgeRow, CoverRail, EmptyNote, Insights, MosaicListCard, ProfileReviewCard } from "@/components/profile/Profile";
 
 type Params = { params: Promise<{ username: string }> };
 
@@ -33,124 +26,91 @@ export default async function ProfilePage({ params }: Params) {
   const me = await getCurrentUser();
   const isSelf = me?.id === member.id;
 
-  const stats = await getProfileStats(member.id, isSelf);
-  const counts = await getFollowCounts(member.id);
-  const following = me && !isSelf ? await isFollowing(me.id, member.id) : false;
-  const hist = await ratingHistogram(member.id);
-  const recentRatings = await getUserRatings(member.id, { sort: "date", limit: 14 });
-  const recentReviews = await getReviews({ userId: member.id, limit: 4 });
-  const genres = await favoriteGenres(member.id, 6);
-  const lists: ListSummary[] = (await getUserLists(member.id, isSelf)).slice(0, 4);
-  const joined = new Date(member.createdAt * 1000).toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  const [stats, follows, following, badges, insights, ratings, reviews, reviewCount, shelfCounts, wantList, lists] = await Promise.all([
+    getProfileStats(member.id, isSelf),
+    getFollowCounts(member.id),
+    me && !isSelf ? isFollowing(me.id, member.id) : Promise.resolve(false),
+    getBadges(member.id),
+    getProfileInsights(member.id),
+    getUserRatings(member.id, { sort: "date", limit: 18 }),
+    getReviews({ userId: member.id, limit: 10 }),
+    countReviews({ userId: member.id }),
+    getShelfCounts(member.id),
+    isSelf ? getShelf(member.id, "want") : Promise.resolve([]),
+    getUserLists(member.id, isSelf),
+  ]);
+  const joined = new Date(member.createdAt * 1000).toLocaleDateString("en-US", { month: "short", year: "numeric" });
+  const scores = new Map(ratings.map((r) => [r.id, r.yourRating]));
+  const first = member.displayName.split(" ")[0];
 
   return (
-    <div className="page py-10 md:py-14">
-      <header className="flex flex-col gap-6 md:flex-row md:items-start md:gap-10">
-        <Avatar name={member.displayName} hue={member.avatarHue} size={112} className="!text-[44px]" />
-        <div className="min-w-0 flex-1">
-          <p className="lbl text-cobalt font-jp">読者 · Member{member.isMock ? " · sample" : ""}</p>
-          <h1 className="mt-2 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{member.displayName}</h1>
-          <p className="mt-1 text-[15px] text-muted">@{member.username}</p>
-          {member.bio && <p className="prose-serif mt-4 max-w-2xl text-ink-2">{member.bio}</p>}
-          <p className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-[14px] text-muted">
-            {member.location && <span>{member.location}</span>}
-            <span>Member since {joined}</span>
-          </p>
-          <p className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[14px]">
-            <span><span className="font-semibold text-ink tabular-nums">{counts.followers.toLocaleString("en-US")}</span> <span className="text-muted">{counts.followers === 1 ? "follower" : "followers"}</span></span>
-            <span><span className="font-semibold text-ink tabular-nums">{counts.following.toLocaleString("en-US")}</span> <span className="text-muted">following</span></span>
-          </p>
+    <div className="pb-16">
+      {/* Header band */}
+      <header className="border-b border-hair bg-sheet">
+        <div className="page flex flex-col gap-6 py-10 sm:flex-row sm:items-center sm:gap-8 md:py-12">
+          <Avatar name={member.displayName} hue={member.avatarHue} size={120} className="!text-[46px] shrink-0" />
+          <div className="min-w-0 flex-1">
+            <p className="lbl font-jp text-cobalt">読者 · Member{member.isMock ? " · sample" : ""}</p>
+            <h1 className="mt-2 break-words text-[32px] font-semibold leading-[1.05] tracking-[-0.02em] sm:text-[40px]">{member.displayName}</h1>
+            <p className="mt-2 text-[14.5px] text-muted">
+              @{member.username} · Joined {joined}{member.location ? ` · ${member.location}` : ""}
+            </p>
+            {member.bio && <p className="prose-serif mt-3 max-w-2xl text-ink-2">{member.bio}</p>}
+            <p className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[14px]">
+              <span><b className="tabular-nums">{follows.followers.toLocaleString("en-US")}</b> <span className="text-muted">{follows.followers === 1 ? "follower" : "followers"}</span></span>
+              <span><b className="tabular-nums">{follows.following.toLocaleString("en-US")}</b> <span className="text-muted">following</span></span>
+            </p>
+          </div>
+          <div className="flex shrink-0 gap-3">
+            {isSelf ? (
+              <>
+                <Link href="/settings" className="btn btn-outline">Edit profile</Link>
+                <Link href="/you" className="btn btn-ghost">Your activity</Link>
+              </>
+            ) : (
+              <FollowButton targetId={member.id} username={member.username} initial={following} />
+            )}
+          </div>
         </div>
-        <div className="flex shrink-0 gap-3">
-          {isSelf ? (
-            <Link href="/settings" className="btn btn-outline">Edit profile</Link>
-          ) : (
-            <FollowButton targetId={member.id} username={member.username} initial={following} />
-          )}
-        </div>
+        {badges.length > 0 && <div className="page pb-6"><BadgeRow badges={badges} /></div>}
       </header>
 
-      <div className="mt-10">
-        <StatStrip items={[
-          { label: "Ratings", value: stats.ratings },
-          { label: "Reviews", value: stats.reviews },
-          { label: "Lists", value: stats.lists },
-          { label: "Books read", value: stats.read },
-        ]} />
-      </div>
+      <div className="page grid gap-x-12 gap-y-10 pt-4 lg:grid-cols-[minmax(0,1fr)_340px]">
+        <div className="min-w-0">
+          <section className="pt-8">
+            <SectionHeader title="Ratings" count={stats.ratings} href={isSelf ? "/you/ratings" : undefined}
+              subtitle={isSelf ? "Your most recent ratings" : `${first}'s most recent ratings`} />
+            {ratings.length ? <CoverRail label="Ratings" books={ratings} score={(b) => scores.get(b.id) ?? null} />
+              : <EmptyNote href={isSelf ? "/chart/top" : undefined} cta="Rate from the Top 250">No ratings yet.</EmptyNote>}
+          </section>
 
-      <div className="mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_320px]">
-        <div className="flex min-w-0 flex-col gap-12">
-          <Section className="!py-0">
-            <h2 className="sec-title mb-6 text-[20px]">Rating distribution</h2>
-            <div className="max-w-xl">
-              <Histogram data={hist} caption={stats.ratings ? `${plural(stats.ratings, "rating")} across the archive` : "No ratings yet."} />
-            </div>
-          </Section>
-
-          {recentRatings.length > 0 && (
-            <Section className="!py-0">
-              <div className="mb-5 flex items-baseline justify-between">
-                <h2 className="sec-title text-[20px]">Recent ratings</h2>
-                {isSelf ? (
-                  <Link href="/you/ratings" className="text-[13px] font-semibold text-cobalt hover:underline">See all {stats.ratings}</Link>
-                ) : (
-                  <span className="text-[13px] text-muted">{plural(stats.ratings, "rating")}</span>
-                )}
-              </div>
-              <Rail label="Recent ratings">
-                {recentRatings.map((r) => (
-                  <div key={r.id} role="listitem" className="w-[120px] shrink-0">
-                    <Link href={`/book/${r.id}`} className="block"><BookCover book={r} size="S" /></Link>
-                    <Link href={`/book/${r.id}`} className="mt-2 line-clamp-2 block text-[13px] font-semibold leading-snug hover:text-cobalt">{r.title}</Link>
-                    <p className="mt-1 inline-flex items-center gap-1 text-[13px] font-semibold">
-                      <StarIcon className="h-3 w-3 text-star" />{r.yourRating}<span className="font-normal text-muted">/10</span>
-                    </p>
-                  </div>
-                ))}
-              </Rail>
-            </Section>
-          )}
-
-          <Section className="!py-0">
-            <div className="mb-5 flex items-baseline justify-between">
-              <h2 className="sec-title text-[20px]">Recent reviews</h2>
-              <span className="text-[13px] text-muted">{plural(stats.reviews, "review")}</span>
-            </div>
-            {recentReviews.length === 0 ? (
-              <p className="border border-dashed border-hair py-10 text-center text-[15px] text-muted">{member.displayName} hasn&apos;t written a review yet.</p>
+          <section className="pt-8">
+            <SectionHeader title="Reading List" count={shelfCounts.want} href={isSelf ? "/readinglist" : undefined} />
+            {isSelf ? (
+              wantList.length ? <CoverRail label="Reading List" books={wantList.slice(0, 18)} />
+                : <EmptyNote href="/chart/bookmeter" cta="Browse popular books">Your Reading List is empty.</EmptyNote>
             ) : (
-              <div>{recentReviews.map((r) => <ReviewCard key={r.reviewId} review={r} />)}</div>
-            )}
-          </Section>
-        </div>
-
-        <aside className="flex flex-col gap-10">
-          {genres.length > 0 && (
-            <section aria-labelledby="fav-h">
-              <h2 id="fav-h" className="lbl mb-4 border-b border-hair pb-3 text-cobalt">Favourite genres</h2>
-              <ul className="flex flex-wrap gap-2">
-                {genres.map((g) => (
-                  <li key={g.slug}><Link href={`/genre/${g.slug}`} className="chip">{g.name}<span className="text-muted">{g.count}</span></Link></li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          <section aria-labelledby="lists-h">
-            <div className="mb-4 flex items-baseline justify-between border-b border-hair pb-3">
-              <h2 id="lists-h" className="lbl text-cobalt">{isSelf ? "Your lists" : "Lists"}</h2>
-              <Link href={`/user/${member.username}/lists`} className="text-[13px] font-semibold text-cobalt hover:underline">All {stats.lists}</Link>
-            </div>
-            {lists.length === 0 ? (
-              <p className="text-[14px] text-muted">{isSelf ? "You haven't made a list yet." : "No public lists yet."}</p>
-            ) : (
-              <ul className="grid grid-cols-2 gap-4">
-                {lists.map((l) => <li key={l.id}><ListCard list={l} /></li>)}
-              </ul>
+              <p className="text-[15px] text-muted">{first}&apos;s Reading List is private · {shelfCounts.want.toLocaleString("en-US")} books saved, {shelfCounts.read.toLocaleString("en-US")} read.</p>
             )}
           </section>
-        </aside>
+
+          <section className="pt-8">
+            <SectionHeader title="Lists" count={lists.length} href={`/user/${member.username}/lists`} />
+            {lists.length ? (
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">{lists.slice(0, 4).map((l) => <MosaicListCard key={l.id} list={l} />)}</div>
+            ) : (
+              <EmptyNote href={isSelf ? "/list/new" : undefined} cta="Create a list">{isSelf ? "You haven't made a list yet." : "No public lists yet."}</EmptyNote>
+            )}
+          </section>
+
+          <section id="reviews" className="scroll-mt-24 pt-8">
+            <SectionHeader title="Reviews" count={reviewCount} />
+            {reviews.length ? <div className="grid grid-cols-[minmax(0,1fr)] gap-4">{reviews.map((r) => <ProfileReviewCard key={r.reviewId} r={r} />)}</div>
+              : <EmptyNote>No reviews yet.</EmptyNote>}
+          </section>
+        </div>
+
+        <div className="lg:pt-8"><div className="lg:sticky lg:top-24"><Insights data={insights} /></div></div>
       </div>
     </div>
   );
